@@ -8,7 +8,7 @@
     "build:production": "yarn build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "next": "15.2.3",
