@@ -1,0 +1,13 @@
+.card{
+    min-width: 100px;
+    min-height: 100px;
+
+    color: #ffffff;
+
+    // border: 1px solid #4C4C4C;
+    // background-color: #0D0D0D;
+    
+    border-radius: 2px;
+    border: 1px solid var(--dark-100);
+    background-color: var(--dark-300);
+}
