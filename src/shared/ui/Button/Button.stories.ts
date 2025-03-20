@@ -13,7 +13,6 @@ export const Primary: Story = {
     args: {
         variant: 'primary',
         title: 'Button',
-        children: 'Primary Button',
     },
 }
 
@@ -21,7 +20,6 @@ export const Secondary: Story = {
     args: {
         variant: 'secondary',
         title: 'Button',
-        children: 'Secondary Button',
     },
 }
 
@@ -29,14 +27,14 @@ export const Outlined: Story = {
     args: {
         variant: 'outlined',
         title: 'Button',
-        children: 'Hover Button',
     },
 }
 
-export const Ghost: Story = {
+export const Link: Story = {
     args: {
-        variant: 'ghost',
+        variant: 'link',
         title: 'Button',
-        children: 'Focus Button',
+        asChild: 'a',
+        href: 'google.com'
     },
 }
