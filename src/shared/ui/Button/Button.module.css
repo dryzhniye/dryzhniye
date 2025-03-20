@@ -1,0 +1,11 @@
+.primary {
+  background: var(--accent-500);
+  border-radius: 2px;
+  padding: 6px 24px;
+  width: 182px;
+  height: 36px;
+}
+
+.fullWidth {
+  width: 100%;
+}
