@@ -20,6 +20,7 @@ export const Secondary: Story = {
     args: {
         variant: 'secondary',
         title: 'Button',
+
     },
 }
 
@@ -36,6 +37,13 @@ export const Link: Story = {
         title: 'Button',
         asChild: 'a',
         href: 'google.com',
-        onClick: () => (alert ()),
+    },
+}
+
+export const Disabled: Story = {
+    args: {
+        variant: 'primary',
+        title: 'Button',
+        disabled: true
     },
 }
