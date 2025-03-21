@@ -9,9 +9,9 @@ export type Props<T extends ElementType = 'button'> = {
 } & ComponentPropsWithoutRef<T>
 
 export const Button = <T extends ElementType = 'button'>(props: Props<T>) => {
-  const {variant = "primary", fullWidth, title, className, asChild: Component = 'button'} = props
+  const {variant = "primary", fullWidth, title, className, asChild: Component = 'button', ...rest} = props
 
   return (
-      <Component className={`${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className} ${s.button} `}>{title}</Component>
+      <Component {...rest} className={ `${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className} ${s.button} `}>{title}</Component>
   )
 }

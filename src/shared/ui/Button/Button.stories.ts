@@ -35,6 +35,7 @@ export const Link: Story = {
         variant: 'link',
         title: 'Button',
         asChild: 'a',
-        href: 'google.com'
+        href: 'google.com',
+        onClick: () => (alert ()),
     },
 }
