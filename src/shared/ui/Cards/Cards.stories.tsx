@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import '../../../app/globals.css'
+
 import Cards from './Cards'
 
 const meta = {
