@@ -1,7 +1,16 @@
-import React from 'react'
+import type { ComponentProps } from 'react'
+import s from './Cards.module.scss'
 
-export default function Cards() {
+type Type = ComponentProps<'div'>
+
+/**
+ * universal cards component, принимает в виде пропсов:
+ * className для стилизации и children для внутренней структуры
+ */
+export default function Cards({ className, children, ...rest }: Type) {
   return (
-    <div>Cards</div>
+    <div className={className ? className + ' ' + s.card : s.card} {...rest}>
+      {children}
+    </div>
   )
 }
