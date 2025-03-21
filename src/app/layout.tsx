@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import { Inter, Roboto } from "next/font/google";
 import './globals.css'
 
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["cyrillic", "latin"],
+  weight: ['400', '500', '600', '700', '800', '900'],
 });
 
 const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["cyrillic", "latin"],
+  weight: ['400', '500', '600', '700', '800', '900'],
 });
 
 export const metadata: Metadata = {
