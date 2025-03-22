@@ -19,15 +19,15 @@ export const Select = ({placeholder = "Select-box", disabled, options}: Props) =
   };
 
   return (
-    <div className={styles.selectBox}>
+    <div className={`${styles.selectBox} ${isOpen ? styles.open : ""}`}>
       <div
-        className={`${styles.selectBoxHeader} ${isOpen ? styles.open : ""}`}
+        className={styles.selectBoxHeader}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span>{selectedOption}</span>
         {isOpen ? <Image src={'arrow2.svg'} alt={'arrow'} width="15" height="8"/> : <Image src={'arrow1.svg'} alt={'arrow'} width="15" height="8"/>}
       </div>
-      {isOpen && (
+      <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ""}`}>
         <ul className={styles.selectBoxList}>
           {options.map((option, index) => (
             <li
@@ -39,7 +39,7 @@ export const Select = ({placeholder = "Select-box", disabled, options}: Props) =
             </li>
           ))}
         </ul>
-      )}
+      </div>
     </div>
   );
 }
