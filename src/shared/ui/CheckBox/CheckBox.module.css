@@ -1,14 +1,15 @@
 .checkboxWrapper {
-    position: relative; /* Для позиционирования круга */
+    position: relative;
     display: flex;
-    gap: 8px;
+    gap: 11px;
     align-items: center;
 }
 
 .customCheckbox {
     cursor: pointer;
 
-    position: relative; /* Для позиционирования круга */
+    position: relative;
+    z-index: 2;
 
     display: flex;
     align-items: center;
@@ -16,57 +17,72 @@
 
     width: 18px;
     height: 18px;
-    border: 2px solid white; /* Белая рамка */
-    border-radius: 4px; /* Скругление углов */
+    border-radius: 2px;
 
-    background-color: transparent; /* Прозрачный фон */
+    background-color: transparent;
+    outline: 2px solid var(--light-500);
+    outline-offset: -2px;
 
-    transition: border-color 0.2s;
+    transition: outline-color 0.2s;
 }
 
 .customCheckbox.checked {
-    border-color: black; /* Черная рамка при нажатии */
+    outline-color: var(--light-100);
 }
 
-.customCheckbox:hover:not(.disabled) {
-    border-color: #ccc; /* Изменение рамки при наведении */
-}
-
-/* Круг при наведении */
-.customCheckbox:hover:not(.disabled)::before {
+.customCheckbox:hover::before {
     content: '';
 
     position: absolute;
-    z-index: -1; /* Отправляем круг на задний план */
+    z-index: -1;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Центрируем круг */
+    transform: translate(-50%, -50%);
 
     width: 36px;
     height: 36px;
     border-radius: 50%;
 
-    background-color: rgb(0 0 0 / 10%); /* Полупрозрачный круг */
+    background-color: var(--dark-300);
+}
+
+.customCheckbox:active::before {
+    background-color: var(--dark-100);
+}
+
+.customCheckbox:focus::before {
+    background-color: var(--dark-500);
 }
 
 .checkboxTitle {
     cursor: pointer;
     font-size: 14px;
-    color: white; /* Белый текст по умолчанию */
-    white-space: nowrap; /* Текст не переносится на новую строку */
+    color: var(--light-100);
+    white-space: nowrap;
 }
 
-/* Стили для disabled */
+.checkIcon {
+    color: var(--light-100);
+}
+
+.disabled .checkIcon {
+    color: var(--light-900);
+}
+
 .disabled .customCheckbox {
     cursor: not-allowed;
-    border-color: #999; /* Серый цвет рамки */
+    outline-color: var(--light-900);
 }
 
 .disabled .customCheckbox.checked {
-    border-color: #999; /* Серый цвет рамки при нажатии */
+    outline-color: var(--light-900);
 }
 
 .disabled .checkboxTitle {
     cursor: not-allowed;
-    color: #999; /* Серый цвет текста */
+    color: var(--light-900);
+}
+
+.disabled .customCheckbox::before {
+    display: none; /* Скрываем круг при disabled */
 }
