@@ -18,3 +18,17 @@ export const Default: Story = {
     options: ['first', 'second']
   },
 }
+
+export const DefaultWithTitle: Story = {
+  args: {
+    options: ['first', 'second'],
+    title: 'Select-box'
+  },
+}
+
+export const Disabled: Story = {
+  args: {
+    options: ['first', 'second'],
+    disabled: true
+  },
+}
