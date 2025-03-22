@@ -1,0 +1,88 @@
+.checkboxWrapper {
+    position: relative;
+    display: flex;
+    gap: 11px;
+    align-items: center;
+}
+
+.customCheckbox {
+    cursor: pointer;
+
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 18px;
+    height: 18px;
+    border-radius: 2px;
+
+    background-color: transparent;
+    outline: 2px solid var(--light-500);
+    outline-offset: -2px;
+
+    transition: outline-color 0.2s;
+}
+
+.customCheckbox.checked {
+    outline-color: var(--light-100);
+}
+
+.customCheckbox:hover::before {
+    content: '';
+
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+
+    background-color: var(--dark-300);
+}
+
+.customCheckbox:active::before {
+    background-color: var(--dark-100);
+}
+
+.customCheckbox:focus::before {
+    background-color: var(--dark-500);
+}
+
+.checkboxTitle {
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--light-100);
+    white-space: nowrap;
+}
+
+.checkIcon {
+    color: var(--light-100);
+}
+
+.disabled .checkIcon {
+    color: var(--light-900);
+}
+
+.disabled .customCheckbox {
+    cursor: not-allowed;
+    outline-color: var(--light-900);
+}
+
+.disabled .customCheckbox.checked {
+    outline-color: var(--light-900);
+}
+
+.disabled .checkboxTitle {
+    cursor: not-allowed;
+    color: var(--light-900);
+}
+
+.disabled .customCheckbox::before {
+    display: none; /* Скрываем круг при disabled */
+}
