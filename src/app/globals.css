@@ -24,18 +24,18 @@
   --warning-100: #FFD073;
   --warning-300: #E5AC39;
   --warning-500: #D99000;
-  --warning-700: #996600;
-  --warning-900: #664400;
+  --warning-700: #960;
+  --warning-900: #640;
 
   /* Dark */
   --dark-100: #4C4C4C;
-  --dark-300: #333333;
+  --dark-300: #333;
   --dark-500: #171717;
   --dark-700: #0D0D0D;
-  --dark-900: #000000;
+  --dark-900: #000;
 
   /* Light */
-  --light-100: #FFFFFF;
+  --light-100: #FFF;
   --light-300: #F7FBFF;
   --light-500: #EDF3FA;
   --light-700: #D5DAE0;
@@ -53,8 +53,8 @@ html {
 }
 
 * {
-  font-family: var(--font-inter), var(--font-roboto), sans-serif;
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  font-family: Inter, Roboto, sans-serif;
 }
