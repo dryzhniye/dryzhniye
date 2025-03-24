@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import styles from './CheckBox.module.css'
+import styles from './CheckBox.module.scss'
 
 type Props = {
   title?: string,

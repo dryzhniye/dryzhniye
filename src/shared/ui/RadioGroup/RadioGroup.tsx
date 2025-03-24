@@ -1,6 +1,6 @@
 'use client'
 import React, { ChangeEvent } from 'react'
-import styles from './RadioGroup.module.css'
+import styles from './RadioGroup.module.scss'
 
 type Option = {
   value: string
