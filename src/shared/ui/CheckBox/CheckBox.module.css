@@ -30,7 +30,10 @@
     outline-color: var(--light-100);
 }
 
-.customCheckbox:hover::before {
+.customCheckbox:hover::before,
+.customCheckbox:active::before,
+.customCheckbox:focus::before
+{
     content: '';
 
     position: absolute;
@@ -42,7 +45,9 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
+}
 
+.customCheckbox:hover::before {
     background-color: var(--dark-300);
 }
 
@@ -84,5 +89,5 @@
 }
 
 .disabled .customCheckbox::before {
-    display: none; /* Скрываем круг при disabled */
+    display: none;
 }
