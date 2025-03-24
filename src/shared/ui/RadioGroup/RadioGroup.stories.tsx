@@ -14,14 +14,25 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>;
 
-const options = [{value: '1', label: 'RadioGroup'}, {value: '2', label: 'RadioGroup'}]
+const options = [{ value: '1', label: 'RadioGroup' }, { value: '2', label: 'RadioGroup' }]
 
 export const Controlled: Story = {
+  args: {
+    options,
+    selectedValue: '1',
+    onChange: (value: string) => console.log(value),
+  },
   render: () => {
-    const [selectedValue, setSelectedValue] = useState('1')
+    const ControlledComponent = () => {
+      const [selectedValue, setSelectedValue] = useState('1')
 
-    return <RadioGroup options={options} selectedValue={selectedValue} onChange={setSelectedValue}/>
-  }
+      return (
+        <RadioGroup options={options} selectedValue={selectedValue} onChange={setSelectedValue} />
+      )
+    }
+
+    return <ControlledComponent />
+  },
 }
 
 export const Disabled: Story = {
@@ -29,6 +40,7 @@ export const Disabled: Story = {
     options,
     selectedValue: '1',
     disabled: true,
-    onChange: () => {}
+    onChange: () => {
+    },
   },
 }
