@@ -10,6 +10,10 @@ type Type = {
    */
   onPageChange: (page: number) => void
   /**
+   * функция обратного вызова с обновленным значением элементов на странице из select
+   */
+  onPageSizeChange: (size: string) => void
+  /**
    * className, который будет добавлен в контейнер верхнего уровня.
    */
   className?: string
@@ -36,7 +40,15 @@ type Type = {
  * universal pagination component
  */
 export const Pagination = (props: Type) => {
-  const { onPageChange, totalCount, siblingCount = 1, currentPage, pageSize, className } = props
+  const {
+    onPageChange,
+    onPageSizeChange,
+    totalCount,
+    siblingCount = 1,
+    currentPage,
+    pageSize,
+    className,
+  } = props
 
   const paginationRange = usePagination({
     currentPage,
@@ -48,15 +60,15 @@ export const Pagination = (props: Type) => {
   if (currentPage === 0 || paginationRange.length < 2) {
     return null
   }
-
   const onNext = () => {
     onPageChange(currentPage + 1)
   }
-
   const onPrevious = () => {
     onPageChange(currentPage - 1)
   }
-
+  const onChangeHandler = (value: string) => {
+    onPageSizeChange(value)
+  }
   let lastPage = paginationRange[paginationRange.length - 1]
 
   return (
@@ -76,7 +88,7 @@ export const Pagination = (props: Type) => {
         </div>
 
         {paginationRange.map(pageNumber => {
-          // убирает cursor: pointer с точек '...'
+          // убираем cursor: pointer с точек '...'
           if (pageNumber === DOTS) {
             return <div className={`${s.paginationItem} ${s.dots}`}>{DOTS}</div>
           }
@@ -98,8 +110,13 @@ export const Pagination = (props: Type) => {
           <img src="/Arrow_right.svg" alt="Arrow right" />
         </div>
       </div>
+
       <span>Show</span>
-      <Select options={ELEMENTS_ON_PAGE}></Select>
+      <Select
+        options={ELEMENTS_ON_PAGE}
+        onChange={onChangeHandler}
+        selectedValue={String(pageSize)}
+      />
       <span>on page</span>
     </div>
   )
