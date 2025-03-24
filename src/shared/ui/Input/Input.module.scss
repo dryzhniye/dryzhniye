@@ -15,7 +15,9 @@
     }
   }
 }
-
+.inputContainer.disabled .icon img {
+  opacity: 0.2;
+}
 .inputWrapper {
   width: 279px;
   display: flex;
@@ -28,7 +30,6 @@
     color: var(--light-900);
   }
 }
-
 .icon {
   position: absolute;
   width: 20px;
@@ -55,6 +56,7 @@
   transition: border-color 0.2s ease-in-out;
   cursor: pointer;
   background-color: inherit;
+  color: var(--light-900);
 
   &.withIconStart {
     padding-left: 41px;
@@ -85,6 +87,7 @@
   &:disabled {
     border-color: var(--dark-100);
     cursor: not-allowed;
+    color: var(--dark-100);
 
     &::placeholder {
       color: var(--dark-100);
