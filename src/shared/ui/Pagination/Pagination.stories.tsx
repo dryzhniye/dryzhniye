@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { Pagination } from './Pagination'
+import { action } from '@storybook/addon-actions'
 
 const meta = {
   title: 'Pagination',
@@ -17,14 +18,16 @@ type Story = StoryObj<typeof meta>
 export const FirstPage: Story = {
   args: {
     currentPage: 1,
-    onPageChange: () => {},
+    onPageSizeChange: action('onPageSizeChange'), // добавляем действие
+    onPageChange: action('onPageChange'), // добавляем действие
     pageSize: 10,
     totalCount: 550,
   },
 }
 export const SevenPage: Story = {
   args: {
-    onPageChange: () => {},
+    onPageSizeChange: action('onPageSizeChange'), // добавляем действие
+    onPageChange: action('onPageChange'), // добавляем действие
     currentPage: 7,
     pageSize: 10,
     totalCount: 550,
