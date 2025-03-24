@@ -4,11 +4,6 @@ import { useState } from 'react'
 
 const meta = {
   component: RadioGroup,
-  decorators: [(Story) =>
-    <div style={{ backgroundColor: 'black', padding: '20px', minHeight: '100vh' }}>
-      <Story />
-    </div>,
-  ],
 } satisfies Meta<typeof RadioGroup>
 
 export default meta
