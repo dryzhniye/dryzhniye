@@ -1,27 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Select } from '@/shared/ui/Select/Select'
+import { RadioGroup } from '@/shared/ui/RadioGroup/RadioGroup'
 import { useState } from 'react'
 
 const meta = {
-  component: Select,
-} satisfies Meta<typeof Select>
+  component: RadioGroup,
+} satisfies Meta<typeof RadioGroup>
 
 export default meta
 type Story = StoryObj<typeof meta>;
 
-const options = ['first', 'second']
+const options = [{ value: '1', label: 'RadioGroup' }, { value: '2', label: 'RadioGroup' }]
 
 export const Controlled: Story = {
   args: {
     options,
+    selectedValue: '1',
     onChange: (value: string) => console.log(value),
   },
   render: () => {
     const ControlledComponent = () => {
-      const [selectedValue, setSelectedValue] = useState<string | undefined>()
+      const [selectedValue, setSelectedValue] = useState('1')
 
       return (
-        <Select selectedValue={selectedValue} options={options} onChange={setSelectedValue} />
+        <RadioGroup options={options} selectedValue={selectedValue} onChange={setSelectedValue} />
       )
     }
 
@@ -29,18 +30,10 @@ export const Controlled: Story = {
   },
 }
 
-export const WithTitle: Story = {
-  args: {
-    options,
-    title: 'Select-box',
-    onChange: () => {
-    },
-  },
-}
-
 export const Disabled: Story = {
   args: {
     options,
+    selectedValue: '1',
     disabled: true,
     onChange: () => {
     },
