@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import styles from './Select.module.css'
+import styles from './Select.module.scss'
 import Image from 'next/image'
 
 type Props = {
