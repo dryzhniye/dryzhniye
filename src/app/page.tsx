@@ -1,6 +1,6 @@
 import { Typography } from '@/shared/ui/Typography/Typography'
 import s from './page.module.scss'
-import { Inputt } from '@/shared/ui/DatePicker/DatePicker'
+import { DatePickerInput } from '@/shared/ui/DatePicker/DatePicker'
 import { DayPicker } from 'react-day-picker'
 import { TestPicker } from '@/shared/ui/DatePicker/TestPicker'
 import "react-day-picker/style.css";
@@ -16,7 +16,7 @@ export default function Home() {
 
       {/*<MyDatePicker />*/}
       <TestPicker />
-      <Inputt />
+      <DatePickerInput />
       {/*<DayPicker/>*/}
     </>
     )

@@ -1,5 +1,4 @@
 .rdp {
-    /*--rdp-cell-size: 160px;*/
     width: 300px;
     height: 348px;
     border: 1px solid var(--dark-300);
@@ -8,81 +7,52 @@
     border-radius: 2px;
     color: var(--light-100);
     font-size: 16px;
-
 }
 
-.rdp-day.rdp-selected.rdp-range_middle {
-    background-color: var(--accent-900);
+.rdp-today {
+    color: var(--accent-500) !important;
 }
 
-.rdp-day.rdp-selected.rdp-range_middle:hover {
-    background-color: var(--accent-700);
+.rdp-day_weekend {
+    color: var(--danger-300);
 }
-/*.rdp-day.rdp-selected.rdp-range_start {*/
-/*    background-color: var(--accent-900);*/
-/*    border-radius: 50% 0 0 50%;*/
-
-/*}*/
-.rdp-day.rdp-selected.rdp-range_end {
-    background-color: var(--accent-900);
-    border-radius: 0 50% 50% 0;
-
-}
-
-/* When only the start date is selected */
-.range-start-full {
-    background-color: var(--accent-900);
-    border-radius: 50%;
-}
-
-/* When both start and end dates are selected */
-.range-start-corners {
-    background-color: var(--accent-900);
-    border-radius: 50% 0 0 50%;
-}
-
 
 .rdp-day {
     font-size: 16px;
-    /*color: var(--danger-100);*/
     width: 36px;
     height: 36px;
     padding: 4px;
     text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 
-}
-div.rdp-month_caption{
-    position: relative;
-    padding-left: 6px;
-    padding-right: 6px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 26px;
-    margin-top: 6px;
-    /*justify-content: center;*/
-
-}
-.rdp-outside {
-    color: var(--light-900);
-
-}
-.rdp-day.rdp-outside.rdp-day_weekend{
-    color: var(--light-900);
-}
-.rdp-day_button {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
+    &.rdp-selected {
+        &.rdp-range_middle{
+            background-color: var(--accent-900);
+            &:hover {
+                background-color: var(--accent-700) !important;
+                border-radius: 0 !important;
+            }
+        }
+    }
+    &:hover {
+        cursor: pointer;
+        background-color: var(--accent-700) !important;
+        border-radius: 50% !important;
+        transform: scale(1.05);
+    }
 }
 
-.rdp-day_weekend {
-    /*color: #22c55e !important; */
-    color: var(--danger-300); /* Change text color */
-    /*background-color: rgba(255, 0, 0, 0.1);*/
+.same-range {
+    background-color: var(--accent-900);
+    border-radius: 50%;
+}
+.range-start-full {
+    background-color: var(--accent-900);
+    border-radius: 50% 0 0 50% ;
+}
+.range-end-full {
+    background-color: var(--accent-900);
+    border-radius: 0 50% 50% 0;
 }
 
 .rdp-caption_label {
@@ -90,11 +60,25 @@ div.rdp-month_caption{
     font-size: 16px;
     line-height: 150%;
 }
-th {
-    margin-bottom: 20px;
+.rdp-month_caption{
+    padding: 0 6px;
+    margin-top: 6px;
+    margin-bottom: 26px;
 }
 
-th.rdp-weekday {
+.rdp-outside {
+    color: var(--light-900);
+    &.rdp-day_weekend {
+        color: var(--light-900);
+    }
+}
+
+.rdp-day_button {
+    width: 100%;
+    height: 100%;
+}
+
+.rdp-weekday {
     font-weight: 400;
     font-size: 16px;
     line-height: 150%;
@@ -103,152 +87,16 @@ th.rdp-weekday {
     text-align: center;
 }
 
-td.rdp-day {
-    text-align: center;
-}
+.datepicker-input {
+    background: var(--dark-500);
+    border: 1px solid var(--dark-300);
+    color: var(--light-100);
+    border-radius: 2px;
+    min-width: 262px;
+    margin-bottom: 2px;
 
-
-.rdp-caption {
-    margin-bottom: 122px !important; /* Adjust as needed */
-}
-
-/* Ensure the date grid starts with enough space */
-.rdp-table {
-    border-collapse: separate;
-    border-spacing: 0 10px; /* Adjust as needed */
-}
-
-/* Customize the navigation container */
-.rdp-nav {
-    display: flex;
-    gap: 20px;
-    margin-right: 4px;
-    /*padding-right: 30px;*/
-
-    /*padding-bottom: 40px;*/
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f8f9fa; /* Light background */
-    /*padding: 8px;*/
-    border-radius: 8px;
-}
-
-/* Style both navigation buttons */
-.rdp-button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    font-size: 1.2rem;
-    color: #333; /* Default text color */
-    transition: color 0.3s ease, transform 0.2s ease;
-}
-
-/* Hover and active states for buttons */
-/*.rdp-button:hover {*/
-/*    color: #d9534f; !* Red on hover *!*/
-/*    transform: scale(1.1);*/
-/*}*/
-
-/* Style for previous button */
-/*.rdp-button_previous::before {*/
-/*    content: "←"; !* Custom icon *!*/
-/*    font-weight: bold;*/
-/*}*/
-
-/*!* Style for next button *!*/
-/*.rdp-button_next::before {*/
-/*    content: "→"; !* Custom icon *!*/
-/*    font-weight: bold;*/
-/*}*/
-
-
-
-
-.rdp-cell {
-    padding: 0;
-}
-
-
-.rdp-table {
-    margin: 0 auto; /* Center the entire table */
-    border-spacing: 4px; /* Adjust space between cells */
-}
-
-.rdp-cell {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-}
-
-/* Hover effect */
-.rdp-day:hover {
-    background-color: var(--accent-700) !important;
-    border-radius: 50% !important;
-}
-
-.rdp-day.rdp-selected.rdp-range_middle:hover {
-    background-color: var(--accent-700) !important;
-    border-radius: 0% !important;
-
-}
-
-.rdp-body {
-    display:flex;
-    justify-content: center;
-
-}
-
-/* Today */
-.rdp-today {
-    color: var(--accent-500) !important;
-}
-
-/* Selected day */
-.rdp-day_selected {
-    background-color: #ef4444 !important; /* Red */
-    color: white !important;
-}
-
-/* Range start */
-.rdp-range-start {
-    background-color: #22c55e !important; /* Green */
-    color: white !important;
-    border-radius: 50% !important;
-}
-
-/* Range middle */
-.rdp-day_range_middle {
-    background-color: rgba(34, 197, 94, 0.2) !important; /* Green with opacity */
-}
-
-/* Range end */
-.rdp-day_range_end {
-    background-color: #22c55e !important; /* Green */
-    color: white !important;
-    border-radius: 50% !important;
-}
-
-
-/*animation*/
-.datepicker-container {
-    position: absolute;
-    z-index: 10;
-    opacity: 0;
-    transform: translateY(-10px);
-    visibility: hidden;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-}
-
-.datepicker-container.open {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-}
-
-.datepicker-container.closed {
-    opacity: 0;
-    transform: translateY(-10px);
-    visibility: hidden;
+    &:focus-visible {
+        outline: 2px solid var(--accent-700);
+        border-color: transparent;
+    }
 }
