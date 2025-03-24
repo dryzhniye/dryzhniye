@@ -4,19 +4,19 @@ import styles from './Select.module.css'
 import Image from 'next/image'
 
 type Props = {
-  placeholder?: string
+  selectedValue?: string
   disabled?: boolean
   title?: string
   options: string[]
+  onChange: (value: string) => void
 }
 
-export const Select = ({ placeholder = 'Select-box', disabled, title, options }: Props) => {
+export const Select = ({ selectedValue = 'Select-box', disabled, title, options, onChange }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(placeholder)
 
   const handleOptionClick = (option: string) => {
     if (!disabled) {
-      setSelectedOption(option)
+      onChange(option)
       setIsOpen(false)
     }
   }
@@ -34,7 +34,7 @@ export const Select = ({ placeholder = 'Select-box', disabled, title, options }:
         <div
           className={styles.selectBoxHeader}
           onClick={toggleDropdown}>
-          <span>{selectedOption}</span>
+          <span>{selectedValue}</span>
           <Image
             src={isOpen ? 'arrow2.svg' : 'arrow1.svg'}
             alt="arrow"

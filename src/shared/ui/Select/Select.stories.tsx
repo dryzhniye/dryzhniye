@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Select } from '@/shared/ui/Select/Select'
+import { useState } from 'react'
 
 const meta = {
   component: Select,
@@ -13,22 +14,28 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    options: ['first', 'second']
-  },
+const options = ['first', 'second']
+
+export const Controlled: Story = {
+  render: () => {
+    const [selectedValue, setSelectedValue] = useState<string | undefined>()
+
+    return <Select selectedValue={selectedValue} options={options} onChange={setSelectedValue}/>
+  }
 }
 
-export const DefaultWithTitle: Story = {
+export const WithTitle: Story = {
   args: {
-    options: ['first', 'second'],
-    title: 'Select-box'
+    options,
+    title: 'Select-box',
+    onChange: () => {}
   },
 }
 
 export const Disabled: Story = {
   args: {
-    options: ['first', 'second'],
-    disabled: true
+    options,
+    disabled: true,
+    onChange: () => {}
   },
 }
