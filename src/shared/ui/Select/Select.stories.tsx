@@ -4,11 +4,6 @@ import { useState } from 'react'
 
 const meta = {
   component: Select,
-  decorators: [(Story) => (
-    <div style={{ backgroundColor: 'black', padding: '20px', minHeight: '100vh' }}>
-      <Story />
-    </div>
-  )],
 } satisfies Meta<typeof Select>
 
 export default meta
