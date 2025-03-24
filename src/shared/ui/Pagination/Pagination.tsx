@@ -61,9 +61,9 @@ export const Pagination = (props: Type) => {
 
   return (
     <div className={className ? `${className} ${s.wrapper}` : s.wrapper}>
-      <ul className={s.paginationContainer}>
+      <div className={s.paginationContainer}>
         {/* стрелка навигации влево */}
-        <li className={s.paginationItem} onClick={onPrevious}>
+        <div className={s.paginationItem} onClick={onPrevious}>
           {currentPage === 1 ? (
             <img
               src="/Arrow_left_disabled.svg"
@@ -73,26 +73,31 @@ export const Pagination = (props: Type) => {
           ) : (
             <img src="/Arrow_left_active.svg" alt="Arrow left active" />
           )}
-        </li>
+        </div>
+
         {paginationRange.map(pageNumber => {
-          // рендер точек ...
+          // убирает cursor: pointer с точек '...'
           if (pageNumber === DOTS) {
-            return <li className={`${s.paginationItem} ${s.dots}`}>{DOTS}</li>
+            return <div className={`${s.paginationItem} ${s.dots}`}>{DOTS}</div>
           }
-          // рендер страниц пагинации
+          // репндерим страницы пагинации
           return (
-            <li className={s.paginationItem} onClick={() => onPageChange(+pageNumber)}>
+            <div
+              className={
+                pageNumber === currentPage ? `${s.paginationItem} ${s.selected}` : s.paginationItem
+              }
+              onClick={() => onPageChange(Number(pageNumber))}
+            >
               {pageNumber}
-            </li>
+            </div>
           )
         })}
 
         {/*  стрелка навигации вправо */}
-        <li className={s.paginationItem} onClick={onNext}>
+        <div className={s.paginationItem} onClick={onNext}>
           <img src="/Arrow_right.svg" alt="Arrow right" />
-        </li>
-      </ul>
-
+        </div>
+      </div>
       <span>Show</span>
       <Select options={ELEMENTS_ON_PAGE}></Select>
       <span>on page</span>
