@@ -43,6 +43,7 @@
 }
 
 html {
+  /*background-color: black;*/
   scroll-behavior: smooth;
 }
 
@@ -58,3 +59,9 @@ html {
   padding: 0;
   margin: 0;
 }
+
+/*.rdp-root {*/
+/*  --rdp-accent-color: red; !* Change the accent color to indigo. *!*/
+/*  --rdp-accent-background-color: tomato; !* Change the accent background color. *!*/
+/*  !* Add more CSS variables here. *!*/
+/*}*/
