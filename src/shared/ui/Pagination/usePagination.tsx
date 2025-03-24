@@ -1,13 +1,23 @@
+// original code: https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react/
+
 import { useMemo } from 'react'
 
 export const DOTS = '...'
 
+const range = (start: number, end: number) => {
+  let length = end - start + 1
+  /*
+    Create an array of certain length and set the elements within it from start value to end value.
+    */
+  return Array.from({ length }, (_, idx) => idx + start)
+}
+
 type Type = {
-    totalCount: number
-    pageSize: number
-    siblingCount?: number
-    currentPage: number
-  }
+  totalCount: number
+  pageSize: number
+  siblingCount?: number
+  currentPage: number
+}
 
 export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentPage }: Type) => {
   const paginationRange = useMemo(() => {
@@ -16,14 +26,6 @@ export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentP
     // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
     const totalPageNumbers = siblingCount + 5
 
-    const range = (start: number, end: number) => {
-      let length = end - start + 1
-      /*
-        Create an array of certain length and set the elements within it from
-        start value to end value.
-        */
-      return Array.from({ length }, (_, idx) => idx + start)
-    }
     /*
         Case 1:
         If the number of pages is less than the page numbers we want to show in our
