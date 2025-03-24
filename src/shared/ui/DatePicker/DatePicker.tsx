@@ -1,17 +1,18 @@
 'use client'
 
-import React, { useEffect, useId, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { format, isValid, parse } from 'date-fns'
 import { DateRange, DayPicker } from 'react-day-picker'
 import { enGB } from 'date-fns/locale'
+import { CalendarRange } from 'lucide-react'
 import 'react-day-picker/style.css'
 import './DatePicker.scss'
-import './custom.css'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import s from './DatePickerCustomNav.module.scss'
+
+import { DatePickerCustomNav } from '@/shared/ui/DatePicker/DatePickerCustomNav'
 
 /** Render an input field bound to a DayPicker calendar with range selection. */
-export function Inputt() {
-  const inputId = useId()
+export function DatePickerInput() {
   const calendarRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -20,40 +21,19 @@ export function Inputt() {
 
   // Hold the selected date range in state
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(undefined)
-  console.log(selectedRange)
+
   // Hold the input value in state
   const [inputValue, setInputValue] = useState('')
-  console.log(inputValue)
+
   // State to control datepicker visibility
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
-  // Custom modifiers for styling specific days
-  // const modifiers = {
-  //   today: (date: Date) => isSameDay(date, new Date()),
-  // };
-
+  console.log(month)
+  console.log(selectedRange)
+//create right local weekdays order started from monday
   const modifiers = {
     weekend: (date: Date) => date.getDay() === 0 || date.getDay() === 6, // Sunday (0) & Saturday (6)
   }
-
-  // Add CSS to the component for the cell size
-  useEffect(() => {
-    // Create a style element
-    const styleElement = document.createElement('style')
-    styleElement.innerHTML = `
-      .rdp {
-        --rdp-cell-size: auto;
-      }
-    `
-
-    // Append to document head
-    document.head.appendChild(styleElement)
-
-    // Clean up
-    return () => {
-      document.head.removeChild(styleElement)
-    }
-  }, [])
 
   /**
    * Function to handle the DayPicker select event: update the input value and
@@ -72,9 +52,6 @@ export function Inputt() {
       // Both from and to dates selected
       setMonth(range.from)
       setInputValue(`${format(range.from, 'MM/dd/yyyy')} - ${format(range.to, 'MM/dd/yyyy')}`)
-
-      // Removed the automatic calendar closing code that was here:
-      // setIsCalendarOpen(false);
     }
   }
 
@@ -134,27 +111,49 @@ export function Inputt() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isCalendarOpen])
 
+
+  const fromDate = selectedRange?.from ? format(selectedRange.from, 'yyyy-MM-dd') : null;
+  const toDate = selectedRange?.to ? format(selectedRange.to, 'yyyy-MM-dd') : null;
+
+  const isSameDay = fromDate && toDate && fromDate === toDate;
+
   return (
     <div style={{ position: 'relative' }}>
 
       <div className="rdp-wrapper">
-        {/*<label htmlFor={inputId}>*/}
-        {/*  <strong>Date Range:</strong>*/}
-        {/*</label>*/}
+        <div style={{
+          position: 'relative',  width: 'fit-content', height: 'fit-content', }}>
         <input
           ref={inputRef}
+          autoComplete={'off'}
+          className={'datepicker-input'}
           style={{
             fontSize: 'inherit',
-            padding: '0.25em 0.5em',
-            width: '240px',
+            padding: '6px 12px',
+            width: '340px',
+            height: '36px',
+            color: '#fff',
           }}
-          id={inputId}
+          // id={inputId}
           type="text"
           value={inputValue}
           placeholder="MM/dd/yyyy - MM/dd/yyyy"
           onChange={handleInputChange}
           onClick={handleInputClick}
         />
+
+          <CalendarRange
+            style={{
+              position: 'absolute',
+              right: '12px',
+              top: '8px',
+              color: 'white',
+              pointerEvents: 'none',
+            }}
+            size={20}
+            onClick={() => setIsCalendarOpen(!isCalendarOpen)} // Toggle calendar on icon click
+          />
+        </div>
         {isCalendarOpen && (
           <div
             ref={calendarRef}
@@ -162,7 +161,7 @@ export function Inputt() {
               position: 'absolute',
               zIndex: 10,
             }}
-            className={`datepicker-container ${isCalendarOpen ? 'open' : 'closed'} my-custom-datepicker`}
+            className={`datepicker-container ${isCalendarOpen ? 'open' : 'closed'} ${s['my-custom-datepicker']}`}
           >
             <DayPicker
               month={month}
@@ -177,28 +176,16 @@ export function Inputt() {
               showOutsideDays
               modifiersClassNames={{
                 weekend: 'rdp-day_weekend', // Apply the class to weekends
-                range_start: selectedRange?.to ? 'range-start-corners' : 'range-start-full',
-              }}
-              // modifiersStyles={modifiersStyles}
-              styles={{
-                nav_button: { color: 'red', fontSize: '20px' }, // Style for both buttons
-                nav_button_previous: { marginRight: '10px' }, // Space before next button
-                nav_button_next: { marginLeft: '10px' },
+                range_start: isSameDay ? 'same-range' : 'range-start-full',
+                range_end: isSameDay ? 'same-range' : 'range-end-full',
               }}
               components={{
-                Nav: CustomNav,
+                Nav: DatePickerCustomNav,
               }}
               classNames={{
                 root: 'rdp',
-                // day: "rdp-day",
-                // day_today: "rdp-today",
-                // day_range_start: "rdp-range-start",
-                // day_range_middle: "rdp-day_range_middle",
-                // day_range_end: "rdp-day_range_end",
-                // day_selected: "rdp-day_selected",
               }}
             />
-
           </div>
         )}
       </div>
@@ -207,32 +194,3 @@ export function Inputt() {
 }
 
 
-function CustomNav(props: {
-  onPreviousClick?: React.MouseEventHandler<HTMLButtonElement>;
-  onNextClick?: React.MouseEventHandler<HTMLButtonElement>;
-  previousMonth?: Date;
-  nextMonth?: Date;
-}) {
-  return (
-    <div className="custom-nav">
-      <button
-        type="button"
-        onClick={props.onPreviousClick}
-        disabled={!props.previousMonth}
-        className="custom-nav-button"
-        aria-label="Previous month"
-      >
-        <ChevronLeft style={{ width: '20px', height: '20px', color: 'white' }} />
-      </button>
-      <button
-        type="button"
-        onClick={props.onNextClick}
-        disabled={!props.nextMonth}
-        className="custom-nav-button"
-        aria-label="Next month"
-      >
-        <ChevronRight style={{ width: '20px', height: '20px', color: 'white' }} />
-      </button>
-    </div>
-  )
-}
