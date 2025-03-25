@@ -1,5 +1,6 @@
 import { Select } from '../Select/Select'
 import s from './Pagination.module.scss'
+import Image from 'next/image'
 import { DOTS, usePagination } from './usePagination'
 
 const ELEMENTS_ON_PAGE = ['10', '20', '30', '50', '100']
@@ -77,10 +78,12 @@ export const Pagination = (props: Type) => {
         {/* стрелка навигации влево */}
         <div className={s.paginationItem} onClick={onPrevious}>
           {currentPage === 1 ? (
-            <img
+            <Image
               src="/Arrow_left_disabled.svg"
               alt="Arrow left disabled"
               style={{ cursor: 'default' }}
+              width={16}
+              height={16}
             />
           ) : (
             <img src="/Arrow_left_active.svg" alt="Arrow left active" />
@@ -107,17 +110,18 @@ export const Pagination = (props: Type) => {
 
         {/*  стрелка навигации вправо */}
         <div className={s.paginationItem} onClick={onNext}>
-          <img src="/Arrow_right.svg" alt="Arrow right" />
+          <Image src="/Arrow_right.svg" alt="Arrow right" width={16} height={16} />
         </div>
       </div>
-
-      <span>Show</span>
-      <Select
-        options={ELEMENTS_ON_PAGE}
-        onChange={onChangeHandler}
-        selectedValue={String(pageSize)}
-      />
-      <span>on page</span>
+      <div className={s.selectBox}>
+        <span>Show</span>
+        <Select
+          options={ELEMENTS_ON_PAGE}
+          onChange={onChangeHandler}
+          selectedValue={String(pageSize)}
+        />
+        <span>on page</span>
+      </div>
     </div>
   )
 }
