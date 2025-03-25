@@ -1,33 +1,44 @@
 .my-custom-datepicker {
-    .custom-nav-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background-color: var(--dark-100);
-        color: #333;
-        border: none;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        padding: 0;
+  .custom-nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--dark-100);
+    color: #333;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    //outline: none;
 
-        &:hover:not(:disabled) {
-            background-color: #606060;
-            color: #000;
-            border-color: #606060;
-        }
-
-        &:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
+    &:hover:not(:disabled) {
+      background-color: #606060;
+      //color: #000;
+      //border-color: #606060;
     }
+
+    &:focus-visible {
+      outline: 2px solid var(--dark-100);
+      outline-offset: 2px;
+      border-radius: 8px;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
 }
 
 .custom-nav {
-    position: absolute;
-    display: flex;
-    right: 0;
+  position: absolute;
+  display: flex;
+  right: 0;
+}
+
+.custom-icon {
+
 }
