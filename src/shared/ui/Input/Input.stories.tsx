@@ -6,11 +6,37 @@ const meta = {
 } satisfies Meta<typeof Input>
 type story = StoryObj<typeof Input>
 export default meta
-export const WithIconStart: story = {
+
+export const InputDefault: story = {
   args: {
-    placeholder: 'Input search',
+    label: 'Email',
+    placeholder: 'Epam@epam.com',
     disabled: false,
-    type: 'search',
-    error: 'string',
   },
 }
+export const InputWithIconStart: story = {
+  args: {
+    label: 'Email',
+    placeholder: 'Epam@epam.com',
+    disabled: false,
+    icon: <img src={'/search-outline.svg'} />,
+    iconPosition: 'start',
+  },
+}
+export const InputWithIconEnd: story = {
+  args: {
+    label: 'Email',
+    placeholder: 'Epam@epam.com',
+    disabled: false,
+    icon: <img src={'/eye-outline.svg'} />,
+    iconPosition: 'end',
+  },
+}
+export const InputError: story = {
+  args: {
+    label: 'Email',
+    placeholder: 'Epam@epam.com',
+    error: 'Error text',
+  },
+}
+
