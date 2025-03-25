@@ -6,6 +6,7 @@ const meta = {
 } satisfies Meta<typeof Input>
 type story = StoryObj<typeof Input>
 export default meta
+
 export const InputDefault: story = {
   args: {
     label: 'Email',
@@ -38,3 +39,4 @@ export const InputError: story = {
     error: 'Error text',
   },
 }
+

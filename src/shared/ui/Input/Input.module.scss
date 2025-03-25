@@ -3,6 +3,8 @@
   flex-direction: column;
   margin-left: 170px;
 
+
+
   &.disabled .label {
     color: var(--dark-100);
   }
@@ -18,6 +20,7 @@
 .inputContainer.disabled .icon img {
   opacity: 0.2;
 }
+
 .inputWrapper {
   width: 279px;
   display: flex;
@@ -30,6 +33,7 @@
     color: var(--light-900);
   }
 }
+
 .icon {
   position: absolute;
   width: 20px;
@@ -56,7 +60,9 @@
   transition: border-color 0.2s ease-in-out;
   cursor: pointer;
   background-color: inherit;
+
   color: var(--light-900);
+
 
   &.withIconStart {
     padding-left: 41px;
@@ -64,7 +70,9 @@
 
   &::placeholder {
     color: var(--light-900);
+
     font: 400 16px/150% Inter;
+
   }
 
   &:hover {
@@ -73,6 +81,7 @@
 
   &:focus {
     border-color: var(--accent-500);
+
   }
 
   &:active {
@@ -82,16 +91,19 @@
     &::placeholder {
       color: var(--light-100);
     }
+
   }
 
   &:disabled {
     border-color: var(--dark-100);
     cursor: not-allowed;
+
     color: var(--dark-100);
 
     &::placeholder {
       color: var(--dark-100);
     }
+
   }
 }
 
@@ -108,4 +120,6 @@
   font-size: 14px;
   line-height: 171%;
   color: var(--danger-500);
+
 }
+
