@@ -2,100 +2,115 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { format, isValid, parse } from 'date-fns'
-import { DateRange, DayPicker } from 'react-day-picker'
+import { DateRange, DayPicker, type Mode } from 'react-day-picker'
 import { enGB } from 'date-fns/locale'
-import { CalendarRange } from 'lucide-react'
+import { DatePickerCustomNav } from '@/shared/ui/DatePicker/DatePickerCustomNav'
+import Image from 'next/image'
 import 'react-day-picker/style.css'
 import './DatePicker.scss'
 import s from './DatePickerCustomNav.module.scss'
 
-import { DatePickerCustomNav } from '@/shared/ui/DatePicker/DatePickerCustomNav'
+type DatePickerMode = Exclude<Mode, 'multiple'>;
 
-/** Render an input field bound to a DayPicker calendar with range selection. */
-export function DatePickerInput() {
+interface DatePickerInputProps {
+  mode?: DatePickerMode;
+  error?: string;
+  disabled?: boolean;
+}
+
+export const DatePicker = ({mode= 'range', error, disabled=false}: DatePickerInputProps) => {
   const calendarRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-
-  // Hold the month in state to control the calendar when the input changes
   const [month, setMonth] = useState(new Date())
-
-  // Hold the selected date range in state
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(undefined)
-
-  // Hold the input value in state
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [inputValue, setInputValue] = useState('')
-
-  // State to control datepicker visibility
+  const [inputError, setInputError] = useState<string | undefined>(error)
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
-  console.log(month)
+  console.log(selectedDate)
   console.log(selectedRange)
 //create right local weekdays order started from monday
   const modifiers = {
     weekend: (date: Date) => date.getDay() === 0 || date.getDay() === 6, // Sunday (0) & Saturday (6)
   }
 
-  /**
-   * Function to handle the DayPicker select event: update the input value and
-   * the selected date range, and set the month.
-   */
   const handleDayPickerSelect = (range: DateRange | undefined) => {
-    setSelectedRange(range)
+    setInputError(undefined)
+    debugger
+    if (mode === 'range') {
+      const rangeValue = range as DateRange | undefined
+      setSelectedRange(rangeValue)
 
-    if (!range || (!range.from && !range.to)) {
-      setInputValue('')
-    } else if (range.from && !range.to) {
-      // Only from date selected
-      setMonth(range.from)
-      setInputValue(format(range.from, 'MM/dd/yyyy'))
-    } else if (range.from && range.to) {
-      // Both from and to dates selected
-      setMonth(range.from)
-      setInputValue(`${format(range.from, 'MM/dd/yyyy')} - ${format(range.to, 'MM/dd/yyyy')}`)
+      if (!rangeValue || (!rangeValue.from && !rangeValue.to)) {
+        setInputValue('')
+      } else if (rangeValue.from && rangeValue.to) {
+        setMonth(rangeValue.from)
+        setInputValue(`${format(rangeValue.from, 'dd/MM/yyyy')} - ${format(rangeValue.to, 'dd/MM/yyyy')}`)
+      }
+    }
+    if (mode === 'single') {
+      const dateValue = range as Date | undefined
+
+      if (dateValue) {
+        setSelectedDate(dateValue);
+        setInputValue(format(dateValue, 'dd/MM/yyyy'))
+        setSelectedRange({ from: dateValue, to: undefined })
+        setMonth(dateValue)
+      } else {
+        setSelectedDate(undefined)
+        setSelectedRange(undefined)
+        setInputValue('')
+      }
     }
   }
 
-  /**
-   * Handle the input change event: parse the input value to a date range, update the
-   * selected range and set the month.
-   */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    const regex = /^[0-9/\- ]*$/
+    if (!regex.test(value)) return
+
+    setInputError(undefined)
     setInputValue(e.target.value) // keep the input value in sync
 
-    // Check if the input contains a date range (separated by "-")
     if (e.target.value.includes('-')) {
       const [fromStr, toStr] = e.target.value.split('-').map(d => d.trim())
 
-      const fromDate = parse(fromStr, 'MM/dd/yyyy', new Date())
-      const toDate = parse(toStr, 'MM/dd/yyyy', new Date())
+      const fromDate = parse(fromStr, 'dd/MM/yyyy', new Date());
+      const toDate = parse(toStr, 'dd/MM/yyyy', new Date());
 
       if (isValid(fromDate) && isValid(toDate)) {
-        setSelectedRange({ from: fromDate, to: toDate })
-        setMonth(fromDate)
+        if (toDate < fromDate) {
+          setInputError('End date must be after start date')
+          setSelectedRange(undefined)
+        } else {
+          setSelectedRange({ from: fromDate, to: toDate })
+          setMonth(fromDate)
+        }
       } else {
+        setInputError('Invalid date format. Use dd/MM/yyyy')
         setSelectedRange(undefined)
       }
     } else {
       // Single date input
-      const parsedDate = parse(e.target.value, 'MM/dd/yyyy', new Date())
+      const parsedDate = parse(value, 'dd/MM/yyyy', new Date());
 
       if (isValid(parsedDate)) {
         setSelectedRange({ from: parsedDate, to: undefined })
         setMonth(parsedDate)
       } else {
+        setInputError('Invalid date format. Use dd/MM/yyyy')
         setSelectedRange(undefined)
       }
     }
   }
 
-  // Handle input focus/click to open the calendar
   const handleInputClick = () => {
     setIsCalendarOpen(true)
   }
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      // If calendar is open and the click is outside calendar and outside input
       if (
         isCalendarOpen &&
         calendarRef.current &&
@@ -106,16 +121,14 @@ export function DatePickerInput() {
         setIsCalendarOpen(false)
       }
     }
-
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isCalendarOpen])
 
-
   const fromDate = selectedRange?.from ? format(selectedRange.from, 'yyyy-MM-dd') : null;
   const toDate = selectedRange?.to ? format(selectedRange.to, 'yyyy-MM-dd') : null;
-
   const isSameDay = fromDate && toDate && fromDate === toDate;
+  const displayError = error || inputError;
 
   return (
     <div style={{ position: 'relative' }}>
@@ -126,34 +139,27 @@ export function DatePickerInput() {
         <input
           ref={inputRef}
           autoComplete={'off'}
-          className={'datepicker-input'}
-          style={{
-            fontSize: 'inherit',
-            padding: '6px 12px',
-            width: '340px',
-            height: '36px',
-            color: '#fff',
-          }}
-          // id={inputId}
+          className={`datepicker-input ${displayError ? 'input-error' : ''} ${disabled ? 'input-disabled' : ''}`}
           type="text"
           value={inputValue}
-          placeholder="MM/dd/yyyy - MM/dd/yyyy"
+          placeholder={mode === 'range' ? "dd/MM/yyyy - dd/MM/yyyy" : "dd/MM/yyyy"}
           onChange={handleInputChange}
           onClick={handleInputClick}
+          disabled={disabled}
         />
-
-          <CalendarRange
-            style={{
-              position: 'absolute',
-              right: '12px',
-              top: '8px',
-              color: 'white',
-              pointerEvents: 'none',
-            }}
-            size={20}
-            onClick={() => setIsCalendarOpen(!isCalendarOpen)} // Toggle calendar on icon click
+          <Image
+            src={isCalendarOpen ? '/calendar.svg' : '/calendar-outline.svg'}
+            alt="calendar"
+            width={20}
+            height={20}
+            className={`custom-calendar-icon ${displayError ? 'calendar-error' : ''}`}
           />
         </div>
+        {displayError && (
+          <div className="input-error-message">
+            {displayError}
+          </div>
+        )}
         {isCalendarOpen && (
           <div
             ref={calendarRef}
@@ -166,18 +172,21 @@ export function DatePickerInput() {
             <DayPicker
               month={month}
               // animate
+              // required={undefined}
               locale={enGB}
               onMonthChange={setMonth}
-              mode="range"
+              mode={mode as any}
               fixedWeeks
-              selected={selectedRange}
+              selected={mode === 'single' ? selectedDate : selectedRange}
               onSelect={handleDayPickerSelect}
               modifiers={modifiers}
               showOutsideDays
               modifiersClassNames={{
                 weekend: 'rdp-day_weekend', // Apply the class to weekends
-                range_start: isSameDay ? 'same-range' : 'range-start-full',
-                range_end: isSameDay ? 'same-range' : 'range-end-full',
+                ...(mode === 'range' && {
+                  range_start: isSameDay ? 'same-range' : 'range-start-full',
+                  range_end: isSameDay ? 'same-range' : 'range-end-full',
+                }),
               }}
               components={{
                 Nav: DatePickerCustomNav,
