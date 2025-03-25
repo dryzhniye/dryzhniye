@@ -57,5 +57,5 @@ html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: var(--font-inter), var(--font-roboto), sans-serif;
+  font-family: Inter, Roboto, sans-serif;
 }
