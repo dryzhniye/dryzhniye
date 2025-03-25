@@ -12,11 +12,12 @@ const preview: Preview = {
       backgrounds: {
           default: 'dark',
           values: [
-              { name: 'dark', value: '#000000' }, // Чёрный фон
-              { name: 'light', value: '#ffffff' }, // Белый фон
+              { name: 'dark', value: '#000' },
+              { name: 'light', value: '#fff' },
           ],
       },
   },
 };
+
 
 export default preview;
