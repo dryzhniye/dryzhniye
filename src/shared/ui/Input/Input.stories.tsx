@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import Image from 'next/image'
 import Input from './Input'
 
 const meta = {
@@ -19,7 +20,7 @@ export const InputWithIconStart: story = {
     label: 'Email',
     placeholder: 'Epam@epam.com',
     disabled: false,
-    icon: <img src={'/search-outline.svg'} />,
+    icon: <Image src={'/search-outline.svg'} alt={'search'} width={20} height={20} />,
     iconPosition: 'start',
   },
 }
@@ -28,7 +29,7 @@ export const InputWithIconEnd: story = {
     label: 'Email',
     placeholder: 'Epam@epam.com',
     disabled: false,
-    icon: <img src={'/eye-outline.svg'} />,
+    icon: <Image src="/eye-outline.svg" alt={'eye'} width={20} height={20} />,
     iconPosition: 'end',
   },
 }
@@ -39,4 +40,3 @@ export const InputError: story = {
     error: 'Error text',
   },
 }
-

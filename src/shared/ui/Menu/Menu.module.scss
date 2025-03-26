@@ -1,0 +1,17 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-width: 360px;
+    min-height: 60px;
+
+    padding: 0 48px;
+
+    background-color: var(--dark-700);
+    border-top: 1px solid var(--dark-300);
+}
+
+.image{
+    cursor: pointer;
+}
