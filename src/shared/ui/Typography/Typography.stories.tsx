@@ -15,7 +15,7 @@ type Story = StoryObj<typeof Typography>;
 
 export const AllVariants: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', color:'white' }}>
       <Typography variant="large">Large: Carosserie Test Zürich<br/> Stauffacherstrasse 31 8004 Zürich, ZH, CH</Typography>
       <Typography variant="h1" as="h1">h1: Carosserie Test Zürich<br/> Stauffacherstrasse 31 8004 Zürich, ZH, CH</Typography>
       <Typography variant="h2" as="h2">h2: Carosserie Test Zürich<br/> Stauffacherstrasse 31 8004 Zürich, ZH, CH</Typography>
