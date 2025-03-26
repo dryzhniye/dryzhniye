@@ -3,6 +3,7 @@ import { DatePicker } from '@/shared/ui/DatePicker'
 import { Scrollbar } from '@/shared/ui/Scrollbar/Scrollbar'
 import s from './page.module.scss'
 
+
 export default function Home() {
   return (
     <>
