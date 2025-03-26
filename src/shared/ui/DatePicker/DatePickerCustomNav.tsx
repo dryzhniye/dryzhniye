@@ -38,7 +38,7 @@ export const DatePickerCustomNav = (props: {
           alt="Next month"
           width={20}
           height={20}
-          className={'custom-icon'}
+          className={s['custom-icon']}
         />
       </button>
     </div>
