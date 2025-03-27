@@ -1,7 +1,11 @@
+import {Header} from "@/shared/ui/Header/Header";
+import {Sidebar} from "@/shared/ui/Sidebar/Sidebar";
+
 export default function LoginPage() {
     return (
       <div>
-        <h1>Sing up Page</h1>
+        <Header isLoggedIn={false} title={'Inctagram'}/>
+          <Sidebar />
       </div>
     );
   }
