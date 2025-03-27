@@ -3,7 +3,9 @@ import { RadioGroup } from '@/shared/ui/RadioGroup/RadioGroup'
 import { useState } from 'react'
 
 const meta = {
+  title: 'RadioGroup',
   component: RadioGroup,
+  tags: ['autodocs'],
 } satisfies Meta<typeof RadioGroup>
 
 export default meta
