@@ -3,7 +3,9 @@ import { Select } from '@/shared/ui/Select/Select'
 import { useState } from 'react'
 
 const meta = {
+  title: 'Select',
   component: Select,
+  tags: ['autodocs'],
 } satisfies Meta<typeof Select>
 
 export default meta
