@@ -6,12 +6,13 @@ export type Props<T extends ElementType = 'button'> = {
   variant?: "primary" | "secondary" | "outlined" | "link" | "disabled"
   title?: string
   fullWidth?: boolean
+  width?: string
 } & ComponentPropsWithoutRef<T>
 
 export const Button = <T extends ElementType = 'button'>(props: Props<T>) => {
-  const {variant = "primary", fullWidth, title, className, asChild: Component = 'button', ...rest} = props
+  const {variant = "primary", fullWidth, title, className, asChild: Component = 'button', width, ...rest} = props
 
   return (
-      <Component {...rest} className={ `${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className} ${s.button} `} >{title}</Component>
+      <Component {...rest} className={ `${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className} ${s.button} `} style={{width: width}}>{title}</Component>
   )
 }

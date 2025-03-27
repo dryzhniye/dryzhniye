@@ -14,8 +14,10 @@ export default function Home() {
       <Typography variant={'large'} font={'roboto'} as={'div'} className={s.spanColor}>Hello
         World</Typography>
       <Typography asChild={true}><h1>hello world</h1></Typography>
-      <div style={{ display: 'flex', gap: '4px' }}><DatePicker mode={'single'} />
-        <DatePicker /></div>
+      <div style={{ display: 'flex', gap: '4px' }}>
+          <DatePicker mode={'single'} />
+        <DatePicker />
+      </div>
 
       <div style={{ display: 'flex', alignItems: 'center', marginLeft: '500px' }}>
         <Scrollbar>

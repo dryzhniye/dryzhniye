@@ -48,3 +48,24 @@ export const Disabled: Story = {
     },
   },
 }
+
+export const language: Story = {
+  args: {
+    options: ['English', 'Russian'],
+    onChange: () => {},
+    selectedValue: 'English',
+    isLanguage: true,
+    width: '155px'
+  },
+  render: (args) => { // Получаем args автоматически
+    const [value, setValue] = useState<string | undefined>(args.selectedValue);
+
+    return (
+        <Select
+            {...args}
+            selectedValue={value}
+            onChange={setValue}
+        />
+    );
+  }
+};

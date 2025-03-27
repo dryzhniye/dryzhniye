@@ -1,0 +1,21 @@
+.box {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 15px;
+    height: 15px;
+    background: red;
+    content: var(--notification-count, '');
+    color: white;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 12px;
+  }
+}
