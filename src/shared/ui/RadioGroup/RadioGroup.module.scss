@@ -2,10 +2,10 @@
     display: flex;
     gap: 50px;
     color: var(--light-100);
-}
 
-.radioGroup.disabled {
-    color: var(--light-900);
+    &.disabled {
+        color: var(--light-900);
+    }
 }
 
 .radioOption {
@@ -34,66 +34,69 @@
 
     outline: 2px solid var(--light-100);
     outline-offset: -2px;
-}
 
-.customRadio:hover::before,
-.customRadio:active::before,
-.customRadio:focus::before {
-    content: '';
+    &::after {
+        content: '';
 
-    position: absolute;
-    z-index: -1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
 
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-}
+        opacity: 0;
+        background-color: var(--light-100);
 
-.customRadio:hover::before {
-    background-color: var(--dark-300);
-}
+        transition: opacity 0.2s;
+    }
 
-.customRadio:active::before {
-    background-color: var(--dark-100);
-}
+    &:hover::before,
+    &:active::before,
+    &:focus::before {
+        content: '';
 
-.customRadio:focus::before {
-    background-color: var(--dark-500);
-}
+        position: absolute;
+        z-index: -1;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-.customRadio::after {
-    content: '';
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+    }
 
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+    &:hover::before {
+        background-color: var(--dark-300);
+    }
 
-    opacity: 0;
-    background-color: var(--light-100);
+    &:active::before {
+        background-color: var(--dark-100);
+    }
 
-    transition: opacity 0.2s;
-}
+    &:focus::before {
+        background-color: var(--dark-500);
+    }
 
-.disabled .customRadio::after {
-    background-color: var(--dark-100);
-}
+    .disabled &::after {
+        background-color: var(--dark-100);
+    }
 
-.radioInput:checked + .customRadio::after {
-    opacity: 1;
+    .disabled & {
+        cursor: not-allowed;
+        outline-color: var(--dark-100);
+    }
+
+    .disabled &::before {
+        display: none;
+    }
+
+    .radioInput:checked + &::after {
+        opacity: 1;
+    }
 }
 
 .label {
     font-size: 14px;
 }
 
-.disabled .customRadio {
-    cursor: not-allowed;
-    outline-color: var(--dark-100);
-}
 
-.disabled .customRadio::before {
-    display: none;
-}
+

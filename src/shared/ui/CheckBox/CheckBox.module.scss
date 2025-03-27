@@ -24,39 +24,52 @@
     outline-offset: -2px;
 
     transition: outline-color 0.2s;
-}
 
-.customCheckbox.checked {
-    outline-color: var(--light-100);
-}
+    &.checked {
+        outline-color: var(--light-100);
+    }
 
-.customCheckbox:hover::before,
-.customCheckbox:active::before,
-.customCheckbox:focus::before
-{
-    content: '';
+    &:hover::before,
+    &:active::before,
+    &:focus::before
+    {
+        content: '';
 
-    position: absolute;
-    z-index: -1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+        position: absolute;
+        z-index: -1;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-}
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+    }
 
-.customCheckbox:hover::before {
-    background-color: var(--dark-300);
-}
+    &:hover::before {
+        background-color: var(--dark-300);
+    }
 
-.customCheckbox:active::before {
-    background-color: var(--dark-100);
-}
+    &:active::before {
+        background-color: var(--dark-100);
+    }
 
-.customCheckbox:focus::before {
-    background-color: var(--dark-500);
+    &:focus::before {
+        background-color: var(--dark-500);
+    }
+
+    .disabled & {
+        cursor: not-allowed;
+        outline-color: var(--light-900);
+    }
+
+    .disabled &.checked {
+        outline-color: var(--light-900);
+    }
+
+    .disabled &::before {
+        display: none;
+    }
 }
 
 .checkboxTitle {
@@ -64,30 +77,17 @@
     font-size: 14px;
     color: var(--light-100);
     white-space: nowrap;
+
+    .disabled & {
+        cursor: not-allowed;
+        color: var(--light-900);
+    }
 }
 
 .checkIcon {
     color: var(--light-100);
-}
 
-.disabled .checkIcon {
-    color: var(--light-900);
-}
-
-.disabled .customCheckbox {
-    cursor: not-allowed;
-    outline-color: var(--light-900);
-}
-
-.disabled .customCheckbox.checked {
-    outline-color: var(--light-900);
-}
-
-.disabled .checkboxTitle {
-    cursor: not-allowed;
-    color: var(--light-900);
-}
-
-.disabled .customCheckbox::before {
-    display: none;
+    .disabled & {
+        color: var(--light-900);
+    }
 }
