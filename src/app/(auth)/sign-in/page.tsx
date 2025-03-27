@@ -1,7 +1,9 @@
+import {Sidebar} from "@/shared/ui/Sidebar/Sidebar";
+
 export default function LoginPage() {
     return (
       <div>
-        <h1>Sign in Page</h1>
+       <Sidebar />
       </div>
     );
   }
