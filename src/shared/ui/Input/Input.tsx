@@ -1,18 +1,23 @@
+'use client'
 import React, { useState, InputHTMLAttributes, KeyboardEvent, ChangeEvent } from 'react'
 import s from './Input.module.scss'
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  type?: 'text' | 'search' | 'password'
   label?: string
   placeholder?: string
   value?: string
   disabled?: boolean
   error?: string
   icon?: React.ReactNode
+  toggleIcon?: React.ReactNode
   iconPosition?: 'start' | 'end'
   onEnterPress?: (value: string) => void
+  onIconClick?: () => void
 }
 
 const Input: React.FC<InputProps> = ({
+  type = 'text',
   label,
   error: initialError,
   disabled,
@@ -20,13 +25,16 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   icon,
   iconPosition,
+  toggleIcon,
   onEnterPress,
+  onIconClick,
   onChange,
   value,
   ...res
 }) => {
   const [error, setError] = useState(initialError)
   const [inputValue, setInputValue] = useState(value || '')
+  const [showPassword, setShowPassword] = useState(false)
 
   const onPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && onEnterPress) {
@@ -41,6 +49,13 @@ const Input: React.FC<InputProps> = ({
     onChange?.(e)
   }
 
+  const handleIconClick = () => {
+    if (type === 'password') {
+      setShowPassword(prev => !prev)
+    }
+    onIconClick?.()
+  }
+
   return (
     <div
       className={`${s.inputContainer} ${className || ''} ${disabled ? s.disabled : ''} ${
@@ -51,11 +66,14 @@ const Input: React.FC<InputProps> = ({
 
       <div className={s.inputWrapper}>
         {icon && iconPosition === 'start' && (
-          <div className={`${s.icon} ${s.iconStart}`}>{icon}</div>
+          <button type="button" className={`${s.icon} ${s.iconStart}`} onClick={handleIconClick}>
+            {icon}
+          </button>
         )}
 
         <input
           {...res}
+          type={type === 'search' ? 'search' : showPassword ? 'text' : type}
           placeholder={placeholder}
           disabled={disabled}
           onKeyDown={onPressHandler}
@@ -66,11 +84,16 @@ const Input: React.FC<InputProps> = ({
             ${icon && iconPosition === 'start' ? s.withIconStart : ''} 
             ${icon && iconPosition === 'end' ? s.withIconEnd : ''}`}
         />
-        {icon && iconPosition === 'end' && <div className={`${s.icon} ${s.iconEnd}`}>{icon}</div>}
-      </div>
 
+        {icon && iconPosition === 'end' && (
+          <button type="button" className={`${s.icon} ${s.iconEnd}`} onClick={handleIconClick}>
+            {showPassword && toggleIcon ? toggleIcon : icon}
+          </button>
+        )}
+      </div>
       {error && <span className={s.errorText}>{error}</span>}
     </div>
   )
 }
+
 export default Input
