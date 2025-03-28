@@ -10,6 +10,7 @@ export default meta
 
 export const InputDefault: story = {
   args: {
+    type: 'text',
     label: 'Email',
     placeholder: 'Epam@epam.com',
     disabled: false,
@@ -17,6 +18,7 @@ export const InputDefault: story = {
 }
 export const InputWithIconStart: story = {
   args: {
+    type: 'search',
     label: 'Email',
     placeholder: 'Epam@epam.com',
     disabled: false,
@@ -26,10 +28,12 @@ export const InputWithIconStart: story = {
 }
 export const InputWithIconEnd: story = {
   args: {
+    type: 'password',
     label: 'Email',
     placeholder: 'Epam@epam.com',
     disabled: false,
     icon: <Image src="/eye-outline.svg" alt={'eye'} width={20} height={20} />,
+    toggleIcon: <Image src="/eye-off-outline.svg" alt={'eye'} width={20} height={20} />,
     iconPosition: 'end',
   },
 }
