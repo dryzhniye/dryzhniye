@@ -3,8 +3,6 @@
   flex-direction: column;
   margin-left: 170px;
 
-
-
   &.disabled .label {
     color: var(--dark-100);
   }
@@ -41,6 +39,9 @@
   display: flex;
   align-items: center;
   z-index: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .iconStart {
@@ -60,9 +61,8 @@
   transition: border-color 0.2s ease-in-out;
   cursor: pointer;
   background-color: inherit;
-
   color: var(--light-900);
-
+  appearance: none;
 
   &.withIconStart {
     padding-left: 41px;
@@ -72,7 +72,6 @@
     color: var(--light-900);
 
     font: 400 16px/150% Inter;
-
   }
 
   &:hover {
@@ -81,7 +80,6 @@
 
   &:focus {
     border-color: var(--accent-500);
-
   }
 
   &:active {
@@ -91,7 +89,6 @@
     &::placeholder {
       color: var(--light-100);
     }
-
   }
 
   &:disabled {
@@ -103,7 +100,6 @@
     &::placeholder {
       color: var(--dark-100);
     }
-
   }
 }
 
@@ -120,6 +116,4 @@
   font-size: 14px;
   line-height: 171%;
   color: var(--danger-500);
-
 }
-
