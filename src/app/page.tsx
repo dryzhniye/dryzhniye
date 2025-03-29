@@ -1,6 +1,6 @@
-import { Typography } from '@/shared/ui/Typography/Typography'
 import { DatePicker } from '@/shared/ui/DatePicker'
 import { Scrollbar } from '@/shared/ui/Scrollbar/Scrollbar'
+import { Typography } from '@/shared/ui/Typography/Typography'
 import s from './page.module.scss'
 
 export default function Home() {
@@ -48,4 +48,3 @@ export default function Home() {
     </>
   )
 }
-// src="../../public/eye-off-outline.svg"
