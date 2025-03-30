@@ -1,21 +1,8 @@
+import ReCAPTCHA from 'react-google-recaptcha'
+import { ComponentProps } from 'react'
 
-import ReCAPTCHA from 'react-google-recaptcha';
+type RecaptchaProps = ComponentProps<typeof ReCAPTCHA>
 
-const MyForm = () => {
-
-  const handleRecaptchaChange = (value: string | null) => {
-    console.log("Captcha value:", value);
-  };
-
-
-  return (
-          <ReCAPTCHA
-              theme="dark"
-              sitekey="6Lckav8qAAAAAIr3zUA1Z8DTqPe8ZQgbjU3khpAI"
-              onChange={handleRecaptchaChange}
-          />
-
-  );
-};
-
-export default MyForm;
+export const Recaptcha = (props: RecaptchaProps) => {
+  return <ReCAPTCHA {...props} />
+}
