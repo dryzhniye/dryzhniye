@@ -91,7 +91,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: 279px;
+  width: 100%;
 
   &:focus-within .input,
   .input:focus {
@@ -110,6 +110,7 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
+  width: 279px;
 
   &.disabled .label {
     color: var(--dark-100);

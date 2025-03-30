@@ -12,6 +12,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   icon?: React.ReactNode
   toggleIcon?: React.ReactNode
   iconPosition?: 'start' | 'end'
+  width?: string
   onEnterPress?: (value: string) => void
   onIconClick?: () => void
 }
@@ -30,6 +31,7 @@ const Input: React.FC<InputProps> = ({
   onIconClick,
   onChange,
   value,
+  width,
   ...res
 }) => {
   const [error, setError] = useState(initialError)
@@ -60,7 +62,7 @@ const Input: React.FC<InputProps> = ({
     <div
       className={`${s.inputContainer} ${className || ''} ${disabled ? s.disabled : ''} ${
         error ? s.error : ''
-      }`}
+      }`} style={{width: width}}
     >
       {label && <label className={s.label}>{label}</label>}
 
