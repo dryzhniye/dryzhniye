@@ -20,7 +20,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 const Input: React.FC<InputProps> = ({
   type = 'text',
   label,
-  error: initialError,
+  error,
   disabled,
   className,
   placeholder,
@@ -34,7 +34,6 @@ const Input: React.FC<InputProps> = ({
   width,
   ...res
 }) => {
-  const [error, setError] = useState(initialError)
   const [inputValue, setInputValue] = useState(value || '')
   const [showPassword, setShowPassword] = useState(false)
 
@@ -47,7 +46,6 @@ const Input: React.FC<InputProps> = ({
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
-    setError('')
     onChange?.(e)
   }
 
