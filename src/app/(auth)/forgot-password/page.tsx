@@ -11,9 +11,10 @@ export default function ForgotPassword() {
       <Header isLoggedIn={true} title="Inctagram" />
       <div className={s.block}>
         <h1 className={s.title}>Forgot Password</h1>
-        <Input label={'Email'} placeholder={'Epam@epam.com'} />
-        <Button title={'Send Link'} />
-        <Button title={'Back to Sign In'} />
+        <Input label={'Email'} placeholder={'Epam@epam.com'} width={'100%'}/>
+        <p className={s.label}>Enter your email address and we will send you further instructions </p>
+        <Button title={'Send Link'} width={'100%'}/>
+        <Button title={'Back to Sign In'} variant={'link'} asChild={'a'} width={'100%'} className={s.button + ' ' + s.link}/>
         <Recaptcha />
       </div>
     </div>
