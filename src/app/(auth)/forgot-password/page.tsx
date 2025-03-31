@@ -13,8 +13,8 @@ type ResetPasswordArgs = {
 }
 
 export default function ForgotPassword() {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<ResetPasswordArgs>({
-    mode: 'onTouched',
+  const { register, handleSubmit, reset, setError, formState: { errors, isValid, isDirty } } = useForm<ResetPasswordArgs>({
+    mode: 'onChange',
     defaultValues: { email: '' },
   })
 
@@ -23,35 +23,34 @@ export default function ForgotPassword() {
   const [resetPassword] = useResetPasswordMutation()
 
   const onSubmit: SubmitHandler<ResetPasswordArgs> = async (data) => {
-    // Проверка капчи
     if (!captchaToken) {
-      console.log('captcha token') //todo add error handler
       return
     }
 
     try {
-      // Отправка запроса и автоматическое "разворачивание" ответа
       await resetPassword({
         email: data.email,
         recaptcha: captchaToken,
       }).unwrap()
 
-      // Если запрос успешен (status 204)
       reset()
-      alert('Инструкции по сбросу пароля отправлены на ваш email!')
+
+      alert('Инструкции по сбросу пароля отправлены на ваш email!')//todo use modal window
 
     } catch (error) {
-      if ('data' in error) {
-        const apiError = error.data as {
+      const apiError = (error as {
+        data?: {
           statusCode: number;
           messages: Array<{ message: string; field: string }>;
           error: string;
         }
+      }).data
 
-        if (apiError.messages?.length > 0) {
-          console.log('API Error:', apiError.messages[0].message)
-        }
-      }
+      setError('email', {
+        type: 'manual',
+        message: apiError?.messages[0].message,
+      })
+
     }
   }
 
@@ -73,7 +72,7 @@ export default function ForgotPassword() {
           },
         })} />
         <p className={s.label}>Enter your email address and we will send you further instructions</p>
-        <Button title={'Send Link'} width={'100%'} />
+        <Button title={'Send Link'} width={'100%'} disabled={!captchaToken || !isValid || !isDirty} />
         <Button title={'Back to Sign In'} variant={'link'} asChild={'a'} width={'100%'}
                 className={s.button + ' ' + s.link} href={'/sign-in'} />
         <Recaptcha
