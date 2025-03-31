@@ -1,5 +1,5 @@
 'use client'
-import { Flex, Heading } from '@radix-ui/themes'
+import { Flex } from '@radix-ui/themes'
 import { Select } from '@/shared/ui/Select/Select'
 import { Button } from '@/shared/ui/Button/Button'
 import { useState } from 'react'
@@ -20,10 +20,7 @@ export const Header = ({ isLoggedIn, notifications, countNotifications }: Props)
     <>
       <Flex asChild>
         <header className={s.header}>
-          <Heading size="4" style={{ color: 'var(--light-100)' }}>
-            Inctagram
-          </Heading>
-
+          <h1 style={{ color: 'var(--light-100)', fontSize: '26px' }}>Inctagram</h1>
           {isLoggedIn ? (
             <Flex align="center" gap="4">
               <button
