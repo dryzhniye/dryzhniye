@@ -1,12 +1,13 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import s from '@/app/auth/forgot-password/forgot-password.module.scss'
 import { Header } from '@/shared/ui/Header/Header'
 import Input from '@/shared/ui/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import Image from 'next/image'
 import { Button } from '@/shared/ui/Button/Button'
-import { useSearchParams } from 'next/navigation'
+import { redirect, useSearchParams } from 'next/navigation'
+import { useCheckRecoveryCodeMutation } from '@/app/auth/api/authApi'
 
 type createPasswordArgs = {
   password1: string
@@ -14,7 +15,13 @@ type createPasswordArgs = {
 }
 
 export default function Page() {
-  const { register, handleSubmit, reset, watch, formState: { errors, isValid, isDirty } } = useForm<createPasswordArgs>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors, isValid, isDirty },
+  } = useForm<createPasswordArgs>({
     mode: 'onChange',
     defaultValues: { password1: '', password2: '' },
   })
@@ -23,12 +30,23 @@ export default function Page() {
     reset()
   }
 
-  const params = useSearchParams()
-  console.log(params)
+  const [checkRecoveryCode] = useCheckRecoveryCodeMutation()
+
+  const searchParams = useSearchParams()
+  const code = searchParams.get('code')
+  const email = searchParams.get('email')
+
+  useEffect(() => {
+    if (code) {
+      checkRecoveryCode(code).unwrap().catch((err) => {
+        redirect('/auth/recovery-resending')
+      })
+    }
+  }, [])
 
   return (
     <div>
-      <Header isLoggedIn={true} title="Inctagram" />
+      <Header isLoggedIn={true} />
       <form className={s.block} onSubmit={handleSubmit(onSubmit)}>
         <h1 className={s.title}>Create New Password</h1>
         <Input label={'New password'} type={'password'}
@@ -60,7 +78,8 @@ export default function Page() {
             value === watch('password1') || 'Passwords do not match',
         })} />
         <p className={s.label + ' ' + s.password}>Your password must be between 6 and 20 characters</p>
-        <Button title={'Create new password'} width={'100%'} className={s.button + ' ' + s.password} type={'submit'} disabled={!isValid || !isDirty}/>
+        <Button title={'Create new password'} width={'100%'} className={s.button + ' ' + s.password} type={'submit'}
+                disabled={!isValid || !isDirty} />
       </form>
     </div>
   )

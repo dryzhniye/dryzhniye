@@ -15,7 +15,16 @@ export const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
+    checkRecoveryCode: build.mutation<void, string>({
+      query: (code) => ({
+        url: 'auth/check-recovery-code',
+        method: 'POST',
+        body: {
+          recoveryCode: code
+        }
+      })
+    })
   }),
 })
 
-export const {useResetPasswordMutation} = authApi
+export const {useResetPasswordMutation, useCheckRecoveryCodeMutation} = authApi
