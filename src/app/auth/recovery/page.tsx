@@ -1,5 +1,5 @@
 import React from 'react'
-import s from '@/app/(auth)/forgot-password/forgot-password.module.scss'
+import s from '@/app/auth/forgot-password/forgot-password.module.scss'
 import { Header } from '@/shared/ui/Header/Header'
 
 export default function Page() {
