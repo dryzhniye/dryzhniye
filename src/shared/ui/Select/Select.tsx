@@ -59,7 +59,7 @@ export const Select = ({
               />
               <span>{selectedValue}</span>
             </div>
-            <Image src={isOpen ? 'arrow2.svg' : 'arrow1.svg'} alt="arrow" width="15" height="8" />
+            <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
           </div>
           <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
             <ul className={styles.selectBoxList}>
@@ -83,7 +83,7 @@ export const Select = ({
         >
           <div className={styles.selectBoxHeader} onClick={toggleDropdown}>
             <span>{selectedValue}</span>
-            <Image src={isOpen ? 'arrow2.svg' : 'arrow1.svg'} alt="arrow" width="15" height="8" />
+            <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
           </div>
           <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
             <ul className={styles.selectBoxList}>
