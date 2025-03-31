@@ -12,6 +12,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   icon?: React.ReactNode
   toggleIcon?: React.ReactNode
   iconPosition?: 'start' | 'end'
+  width?: string
   onEnterPress?: (value: string) => void
   onIconClick?: () => void
 }
@@ -19,7 +20,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 const Input: React.FC<InputProps> = ({
   type = 'text',
   label,
-  error: initialError,
+  error,
   disabled,
   className,
   placeholder,
@@ -30,9 +31,9 @@ const Input: React.FC<InputProps> = ({
   onIconClick,
   onChange,
   value,
+  width,
   ...res
 }) => {
-  const [error, setError] = useState(initialError)
   const [inputValue, setInputValue] = useState(value || '')
   const [showPassword, setShowPassword] = useState(false)
 
@@ -45,7 +46,6 @@ const Input: React.FC<InputProps> = ({
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
-    setError('')
     onChange?.(e)
   }
 
@@ -60,7 +60,7 @@ const Input: React.FC<InputProps> = ({
     <div
       className={`${s.inputContainer} ${className || ''} ${disabled ? s.disabled : ''} ${
         error ? s.error : ''
-      }`}
+      }`} style={{width: width}}
     >
       {label && <label className={s.label}>{label}</label>}
 
