@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { ComponentPropsWithoutRef } from 'react'
 import s from './Modal.module.scss'
 
-type Props = {
+export type Props = {
   open: boolean
   onClose: () => void
   modalTitle: string
