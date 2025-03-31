@@ -16,7 +16,7 @@ export default function RecoveryResending() {
 
   const resendCodeHandler = () => {
     if (email) {
-      resendRecoveryCode(email)
+      resendRecoveryCode(email) //todo add modal window
     }
   }
 
