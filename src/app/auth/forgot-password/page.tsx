@@ -7,7 +7,6 @@ import { Recaptcha } from '@/shared/ui/Recaptcha/Recaptcha'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useResetPasswordMutation } from '@/app/auth/api/authApi'
-import { useParams } from 'next/navigation'
 
 type ResetPasswordArgs = {
   email: string
@@ -61,7 +60,7 @@ export default function ForgotPassword() {
 
   return (
     <div>
-      <Header isLoggedIn={true} title="Inctagram" />
+      <Header isLoggedIn={true} />
       <form onSubmit={handleSubmit(onSubmit)} className={s.block}>
         <h1 className={s.title}>Forgot Password</h1>
         <Input label={'Email'} placeholder={'Epam@epam.com'} width={'100%'}
