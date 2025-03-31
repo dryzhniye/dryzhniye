@@ -7,6 +7,7 @@ import { Recaptcha } from '@/shared/ui/Recaptcha/Recaptcha'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useResetPasswordMutation } from '@/app/auth/api/authApi'
+import { useParams } from 'next/navigation'
 
 type ResetPasswordArgs = {
   email: string
