@@ -28,7 +28,7 @@
   --warning-900: #640;
 
   /* Dark */
-  --dark-100: #4c4c4c;
+  --dark-100: #c81d1d;
   --dark-300: #333;
   --dark-500: #171717;
   --dark-700: #0d0d0d;
@@ -60,4 +60,26 @@ html {
   margin: 0;
   padding: 0;
   font-family: var(--font-inter), var(--font-roboto), sans-serif;
+}
+
+/* Базовый класс */
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Модификаторы */
+.button-group--center {
+  justify-content: center;
+}
+
+.button-group--end {
+  justify-content: flex-end;
+}
+
+/* Элементы внутри растянутой группы */
+.button-group--stretch > * {
+  flex: 1;
+  min-width: 0;
 }
