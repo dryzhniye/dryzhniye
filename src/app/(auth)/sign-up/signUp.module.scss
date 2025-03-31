@@ -1,9 +1,30 @@
-s.block {
+.block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
   max-width: 400px;
-  margin: 0 auto;
+  margin: 24px auto;
   padding: 20px;
+  background-color: var(--dark-500);
+}
+
+.button {
+  text-align: center;
+}
+
+.autorizationIcon {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  margin: 13px 0 4px 0;
+}
+
+.iconGithub img {
+  width: 34px;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 14px;
 }
