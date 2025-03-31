@@ -38,8 +38,8 @@ export default function Page() {
 
   useEffect(() => {
     if (code) {
-      checkRecoveryCode(code).unwrap().catch((err) => {
-        redirect('/auth/recovery-resending')
+      checkRecoveryCode(code).unwrap().catch(() => {
+        redirect('/auth/recovery-resending?email=' + email)
       })
     }
   }, [])
