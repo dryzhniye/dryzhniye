@@ -1,10 +1,20 @@
+'use client'
 import { Header } from '@/shared/ui/Header/Header'
 import React from 'react'
 import Image from 'next/image'
 import { Button } from '@/shared/ui/Button/Button'
 import s from './recovery-resending.module.scss'
+import { useSearchParams } from 'next/navigation'
 
-export default function recoveryResending() {
+export default function RecoveryResending() {
+
+  const searchParams = useSearchParams()
+  const email = searchParams.get('email')
+
+  const resendCodeHandler = () => {
+
+  }
+
   return (
     <div>
       <Header isLoggedIn={true} />
