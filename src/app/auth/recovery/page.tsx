@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import Image from 'next/image'
 import { Button } from '@/shared/ui/Button/Button'
 import { redirect, useSearchParams } from 'next/navigation'
-import { useCheckRecoveryCodeMutation } from '@/app/auth/api/authApi'
+import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/app/auth/api/authApi'
 
 type createPasswordArgs = {
   password1: string
@@ -18,6 +18,7 @@ export default function Page() {
   const {
     register,
     handleSubmit,
+    setError,
     reset,
     watch,
     formState: { errors, isValid, isDirty },
@@ -26,11 +27,8 @@ export default function Page() {
     defaultValues: { password1: '', password2: '' },
   })
 
-  const onSubmit: SubmitHandler<createPasswordArgs> = async (data) => {
-    reset()
-  }
-
   const [checkRecoveryCode] = useCheckRecoveryCodeMutation()
+  const [createNewPassword] = useCreateNewPasswordMutation()
 
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
@@ -43,6 +41,36 @@ export default function Page() {
       })
     }
   }, [])
+
+  const onSubmit: SubmitHandler<createPasswordArgs> = async (data) => {
+    if (code) {
+      try {
+        debugger
+        await createNewPassword({ newPassword: data.password1, recoveryCode: `${code}` }).unwrap()
+        redirect('/auth/sign-in')
+      }
+      catch (error) {
+        const apiError = (error as {
+          data?: {
+            statusCode: number;
+            messages: Array<{ message: string; field: string }>;
+            error: string;
+          }
+        }).data
+
+        setError('password1', {
+          type: 'manual',
+          message: apiError?.messages[0].message,
+        })
+        reset()
+      }
+    }
+  }
+
+  //todo fix images issues
+  //todo fix load content before initialize
+  //todo fix validate
+  //todo add ssr for 2 todo
 
   return (
     <div>
