@@ -13,7 +13,15 @@ type Props = {
   width?: string
 }
 
-export const Select = ({ selectedValue, width, disabled, title, options, onChange, isLanguage }: Props) => {
+export const Select = ({
+  selectedValue,
+  width,
+  disabled,
+  title,
+  options,
+  onChange,
+  isLanguage,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const [language, setLanguage] = useState<string>('English')
@@ -35,67 +43,63 @@ export const Select = ({ selectedValue, width, disabled, title, options, onChang
   return (
     <>
       {title && <span className={styles.title}>{title}</span>}
-      {isLanguage
-      ? <div className={`${styles.selectBox} ${isOpen ? styles.open : ''} 
+      {isLanguage ? (
+        <div
+          className={`${styles.selectBox} ${isOpen ? styles.open : ''} 
                ${disabled ? styles.disabled : ''}`}
-             style={{width: width}}
-          >
-            <div
-                className={styles.selectBoxHeader}
-                onClick={toggleDropdown}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <Image src={language === 'English' ? 'flag.svg' : 'flagRussia.svg'} alt={'флаг'} width={'20'} height={'20'} />
-                <span>{selectedValue}</span>
-              </div>
+          style={{ width: width }}
+        >
+          <div className={styles.selectBoxHeader} onClick={toggleDropdown}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
               <Image
-                  src={isOpen ? 'arrow2.svg' : 'arrow1.svg'}
-                  alt="arrow"
-                  width="15"
-                  height="8"
+                src={language === 'English' ? '/flag.svg' : '/flagRussia.svg'}
+                alt={'флаг'}
+                width={'20'}
+                height={'20'}
               />
-            </div>
-            <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
-              <ul className={styles.selectBoxList}>
-                {options.map((option, index) => (
-                    <li
-                        key={index}
-                        className={styles.selectBoxItem}
-                        onClick={() => handleOptionClick(option)}
-                    >
-                      {option}
-                    </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          :
-          <div className={`${styles.selectBox} ${isOpen ? styles.open : ''} ${disabled ? styles.disabled : ''}`}>
-            <div
-                className={styles.selectBoxHeader}
-                onClick={toggleDropdown}>
               <span>{selectedValue}</span>
-              <Image
-                  src={isOpen ? 'arrow2.svg' : 'arrow1.svg'}
-                  alt="arrow"
-                  width="15"
-                  height="8"
-              />
             </div>
-            <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
-              <ul className={styles.selectBoxList}>
-                {options.map((option, index) => (
-                    <li
-                        key={index}
-                        className={styles.selectBoxItem}
-                        onClick={() => handleOptionClick(option)}
-                    >
-                      {option}
-                    </li>
-                ))}
-              </ul>
-            </div>
+            <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
           </div>
-      }
+          <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
+            <ul className={styles.selectBoxList}>
+              {options.map((option, index) => (
+                <li
+                  key={index}
+                  className={styles.selectBoxItem}
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ) : (
+        <div
+          className={`${styles.selectBox} ${isOpen ? styles.open : ''} ${
+            disabled ? styles.disabled : ''
+          }`}
+        >
+          <div className={styles.selectBoxHeader} onClick={toggleDropdown}>
+            <span>{selectedValue}</span>
+            <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
+          </div>
+          <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
+            <ul className={styles.selectBoxList}>
+              {options.map((option, index) => (
+                <li
+                  key={index}
+                  className={styles.selectBoxItem}
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </>
   )
 }
