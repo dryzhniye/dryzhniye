@@ -25,6 +25,28 @@ export const Header = ({ isLoggedIn, notifications, countNotifications }: Props)
           </Heading>
 
           {isLoggedIn ? (
+            <Flex align="center" gap="4">
+              <button
+                style={
+                  {
+                    '--notification-count': countNotifications ? `"${countNotifications}"` : ' ',
+                  } as React.CSSProperties
+                }
+                className={` ${s.notifications} ${notifications ? s.box : ''}`}
+              >
+                {/*todo: добавить точки, если больше 10*/}
+                <Image src={'/notification.svg'} alt={'Уведомление'} width={'18'} height={'20'} />
+              </button>
+
+              <Select
+                options={['English', 'Russian']}
+                onChange={setSelectedValue}
+                isLanguage={true}
+                selectedValue={selectedValue}
+                width={'163px'}
+              />
+            </Flex>
+          ) : (
             <Flex align="center" gap="3">
               <Select
                 options={['English', 'Russian']}
@@ -37,28 +59,6 @@ export const Header = ({ isLoggedIn, notifications, countNotifications }: Props)
               <Link href={'/privacy-policy'}>
                 <Button title="Sign up" variant={'primary'} width={'110px'} />
               </Link>
-            </Flex>
-          ) : (
-            <Flex align="center" gap="4">
-              <button
-                style={
-                  {
-                    '--notification-count': countNotifications ? `"${countNotifications}"` : ' ',
-                  } as React.CSSProperties
-                }
-                className={` ${s.notifications} ${notifications ? s.box : ''}`}
-              >
-                {/*todo: добавить точки, если больше 10*/}
-                <Image src={'notification.svg'} alt={'Уведомление'} width={'18'} height={'20'} />
-              </button>
-
-              <Select
-                options={['English', 'Russian']}
-                onChange={setSelectedValue}
-                isLanguage={true}
-                selectedValue={selectedValue}
-                width={'163px'}
-              />
             </Flex>
           )}
         </header>
