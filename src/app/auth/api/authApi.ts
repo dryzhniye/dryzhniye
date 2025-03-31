@@ -34,10 +34,14 @@ export const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    createNewPassword: build.mutation({
-
+    createNewPassword: build.mutation<void, {newPassword: string, recoveryCode: string}>({
+      query: (args) => ({
+        url: 'auth/new-password',
+        method: 'POST',
+        body: args
+      })
     })
   }),
 })
 
-export const { useResetPasswordMutation, useCheckRecoveryCodeMutation, useResendRecoveryCodeMutation } = authApi
+export const { useResetPasswordMutation, useCheckRecoveryCodeMutation, useResendRecoveryCodeMutation, useCreateNewPasswordMutation } = authApi

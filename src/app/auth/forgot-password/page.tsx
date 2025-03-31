@@ -50,7 +50,6 @@ export default function ForgotPassword() {
         type: 'manual',
         message: apiError?.messages[0].message,
       })
-
     }
   }
 
