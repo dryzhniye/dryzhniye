@@ -107,7 +107,7 @@ export default function Page() {
                error={errors.password2?.message} {...register('password2', {
           required: 'Password is required',
           validate: (value) =>
-            value === watch('password1') || '{Passwords must match',
+            value === watch('password1') || 'Passwords must match',
         })} />
         <p className={s.label + ' ' + s.password}>Your password must be between 6 and 20 characters</p>
         <Button title={'Create new password'} width={'100%'} className={s.button + ' ' + s.password} type={'submit'}
