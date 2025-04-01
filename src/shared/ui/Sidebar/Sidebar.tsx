@@ -67,6 +67,8 @@ export const Sidebar = ({ disabledIcon }: Props) => {
     setActiveItem(value)
   }
 
+  const logoutHandler = () => {}
+
   return (
     <aside className={s.wrapperSidebar}>
       <nav style={{ flex: 1, width: '100%' }}>
@@ -136,7 +138,15 @@ export const Sidebar = ({ disabledIcon }: Props) => {
           <p>Are you sure you want to log out?</p>
           <div className={s.Description}>
             <div className={'button-group button-group--end'}>
-              <Button variant={'outlined'} title={'Yes'} onClick={() => {}} />
+              <Button
+                asChild={'a'}
+                variant={'outlined'}
+                title={'Yes'}
+                onClick={logoutHandler}
+                href={'https://inctagram.work/api/v1/swagger#/Auth/AuthController_logout'}
+              />
+              {/*  <a href={'#'}>YES</a>*/}
+              {/*</Button>*/}
               <Button variant={'primary'} title={'No'} onClick={() => setShowModal(false)} />
             </div>
           </div>
@@ -145,5 +155,3 @@ export const Sidebar = ({ disabledIcon }: Props) => {
     </aside>
   )
 }
-
-// <button className={s.button} style={{display: 'flex', alignItems: 'center', gap: '10px'}}>

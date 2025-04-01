@@ -1,13 +1,16 @@
 .button {
-  color: var(--light-100);
-  border: none;
-  border-radius: 2px;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 6px 24px;
+  cursor: pointer;
+
   width: 182px;
   height: 36px;
-  cursor: pointer;
+  padding: 6px 24px;
+  border: none;
+  border-radius: 2px;
+
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--light-100);
+  text-align: center;
 
   &.primary {
     background: var(--accent-500);
@@ -21,9 +24,9 @@
     }
 
     &:disabled {
-      background: var(--accent-900);
+      cursor: not-allowed;
       opacity: 0.8;
-      cursor: not-allowed
+      background: var(--accent-900);
     }
   }
 
@@ -39,9 +42,9 @@
     }
 
     &:disabled {
-      background: var(--dark-900);
+      cursor: not-allowed;
       opacity: 0.8;
-      cursor: not-allowed
+      background: var(--dark-900);
     }
   }
 
@@ -60,8 +63,8 @@
     }
 
     &:disabled {
+      cursor: not-allowed;
       opacity: 0.8;
-      cursor: not-allowed
     }
   }
 
@@ -83,8 +86,8 @@
     }
 
     &:disabled {
+      cursor: not-allowed;
       opacity: 0.8;
-      cursor: not-allowed
     }
   }
 

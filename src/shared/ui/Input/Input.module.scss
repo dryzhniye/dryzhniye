@@ -7,8 +7,6 @@
   display: flex;
   align-items: center;
 
-  width: 20px;
-  height: 20px;
   border: none;
 
   background: none;
@@ -46,7 +44,11 @@
   }
 
   &.withIconStart {
-    padding-left: 41px;
+    padding-left: 41px; // Отступ для иконки слева
+  }
+
+  &.withIconEnd {
+    padding-right: 41px; // Отступ для иконки справа
   }
 
   &:hover {
