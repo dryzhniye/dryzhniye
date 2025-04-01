@@ -16,9 +16,11 @@
 }
 
 .forgot {
-  margin: 36px 0 24px;
-  text-align: right;
-  color: var(--light-900);
+  margin: 36px 0 24px 214px;
+  padding: 0;
+  width: 114px;
+  height: 24px;
+  color: var(--light-900) !important;
   font-size: 14px;
   font-weight: 400;
 }
