@@ -1,50 +1,56 @@
 .wrapperSidebar {
   position: sticky;
-  left: 0;
+  z-index: 50;
   top: 0;
-  height: 100vh;
-  max-width: 220px;
-  background-color: var(--dark-700);
-  border-right: 1px solid  var(--dark-500);
+  left: 0;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  max-width: 220px;
+  height: 100vh;
   padding: 74px 45px 390px 50px;
+  border-right: 1px solid  var(--dark-500);
+
+  background-color: var(--dark-700);
+
   transition: all 0.3s ease;
-  z-index: 50;
 }
 
 .wrap {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  list-style: none;
-  padding: 0;
+
   margin: 0;
+  padding: 0;
+
+  list-style: none;
 }
 
 .wrapper {
   display: flex;
-  align-items: center;
   gap: 15px;
+  align-items: center;
   width: fit-content;
-}
 
-.wrapper {
   &:focus,
   &:focus-visible {
-    border: 2px solid var(--accent-700);
     padding: 3px;
+    border: 2px solid var(--accent-700);
     border-radius: 5px;
   }
 }
 
 .button {
-  transition: background-color 0.2s, color 0.2s;
-  color:  var(--light-100);
+  cursor: pointer;
+
   font-size: 14px;
   font-weight: 500;
-  cursor: pointer;
+  color:  var(--light-100);
+
+  transition: background-color 0.2s, color 0.2s;
 
   &:hover {
     color: var(--accent-700);
@@ -52,11 +58,12 @@
 }
 
 .icon {
-  width: 1.5rem;
-  height: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 li:hover img {
@@ -68,7 +75,29 @@ li:hover img {
 }
 
 .disabled {
-  opacity: 0.5;
   pointer-events: none; /* Запрещает клики */
   cursor: not-allowed; /* Меняет курсор */
+  opacity: 0.5;
+}
+
+/* Базовый класс */
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Модификаторы */
+.buttonGroupCenter {
+  justify-content: center;
+}
+
+.buttonGroupEnd {
+  justify-content: flex-end;
+}
+
+/* Элементы внутри растянутой группы */
+.buttonGroupStretch > * {
+  flex: 1;
+  min-width: 0;
 }
