@@ -2,8 +2,8 @@
   position: fixed;
   inset: 0;
 
-  background-color: rgb(165 159 159 / 60%);
-  backdrop-filter: blur(2px);
+  opacity: 0.7;
+  background-color: var(--dark-700);
 
   animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -19,8 +19,7 @@
   width: 90vw;
   max-width: 500px;
   max-height: 85vh;
-  padding: 25px;
-  border-radius: 6px;
+  border: 1px solid var(--dark-100);
 
   background-color: var(--dark-300);
   box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
@@ -33,53 +32,31 @@
 }
 
 .titleContainer {
-  position: relative;
-  padding-right: 30px; // Оставляем место для кнопки закрытия
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--dark-100);
 }
 
 .Title {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 700;
   color: var(--light-100);
 }
 
-.divider {
-  height: 1px;
-  margin: 15px -25px;
-  border: none;
-  background-color: var(--light-100);
-}
-
-.modalContent {
-  > * {
-    margin-bottom: 16px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-}
-
-.singleButton {
-  margin-top: 24px;
-  text-align: center;
-}
-
 .Description {
-  margin: 10px 0 0;
+  margin: 30px 24px;
+
   font-size: 15px;
-  line-height: 1.5;
+  font-weight: 400;
+  line-height: 24px;
   color: var(--light-100);
 }
 
 .IconButton {
   cursor: pointer;
-
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
 
   display: flex;
   align-items: center;
