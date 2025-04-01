@@ -7,6 +7,8 @@ import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
 import { Button } from '@/shared/ui/Button/Button'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useRegistrationMutation } from '@/app/auth/api/authApi'
+import { useState } from 'react'
+import { Modal } from '@/shared/ui/Modal/Modal'
 
 type Input = {
   email: string
@@ -16,11 +18,14 @@ type Input = {
 }
 
 export default function LoginPage() {
+  const [linkModal, setLinkModal] = useState<string | null>(null)
+
   const {
     register,
     handleSubmit,
+    reset,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<Input>({
     defaultValues: { email: '', password: '', rememberMe: false, firstName: '' },
   })
@@ -34,7 +39,10 @@ export default function LoginPage() {
         password: data.password,
         userName: data.firstName,
       }).unwrap()
-      console.log('успешно')
+
+      reset()
+
+      setLinkModal(data.email)
     } catch (error) {
       console.log(error)
     }
@@ -108,6 +116,7 @@ export default function LoginPage() {
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <Controller
             name={'rememberMe'}
+            rules={{ required: true }}
             control={control}
             render={({ field: { value, ...rest } }) => <CheckBox {...rest} checked={value} />}
           />
@@ -123,12 +132,28 @@ export default function LoginPage() {
           </span>
         </div>
 
-        <Button title={'Sign Up'} fullWidth={true} type={'submit'} />
+        <Button title={'Sign Up'} fullWidth={true} type={'submit'} disabled={!isValid} />
 
         <p style={{ color: 'var(--light-100)', fontSize: '16px' }}>Do you have an account?</p>
 
         <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} />
       </form>
+      <Modal
+        open={!!linkModal}
+        modalTitle={'Подтверждение email'}
+        onClose={() => setLinkModal(null)}
+        style={{ zIndex: 999 }}
+      >
+        <p style={{ marginBottom: '20px' }}>
+          We have sent a link to confirm your email to {linkModal}
+        </p>
+        <Button
+          variant={'primary'}
+          title={'OK'}
+          onClick={() => setLinkModal(null)}
+          width={'96px'}
+        />
+      </Modal>
     </div>
   )
 }
