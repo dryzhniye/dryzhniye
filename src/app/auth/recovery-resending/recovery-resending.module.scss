@@ -24,3 +24,13 @@
 .button {
   margin-bottom: 31px;
 }
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.buttonGroupEnd {
+  justify-content: flex-end;
+}
