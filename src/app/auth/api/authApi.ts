@@ -4,8 +4,8 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://dryzhniye.ru'
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: build => ({
-    resetPassword: build.mutation<void, { email: string, recaptcha: string }>({
-      query: (args) => ({
+    resetPassword: build.mutation<void, { email: string; recaptcha: string }>({
+      query: args => ({
         url: 'auth/password-recovery',
         method: 'POST',
         body: {
@@ -16,7 +16,7 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
     checkRecoveryCode: build.mutation<void, string>({
-      query: (code) => ({
+      query: code => ({
         url: 'auth/check-recovery-code',
         method: 'POST',
         body: {
@@ -25,7 +25,7 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
     resendRecoveryCode: build.mutation<void, string>({
-      query: (email) => ({
+      query: email => ({
         url: 'auth/password-recovery-resending',
         method: 'POST',
         body: {
@@ -34,14 +34,25 @@ export const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    createNewPassword: build.mutation<void, {newPassword: string, recoveryCode: string}>({
-      query: (args) => ({
+    createNewPassword: build.mutation<void, { newPassword: string; recoveryCode: string }>({
+      query: args => ({
         url: 'auth/new-password',
         method: 'POST',
-        body: args
-      })
-    })
+        body: args,
+      }),
+    }),
+    logout: build.mutation({
+      query: () => ({
+        url: 'auth/logout',
+        method: 'POST',
+      }),
+    }),
   }),
 })
 
-export const { useResetPasswordMutation, useCheckRecoveryCodeMutation, useResendRecoveryCodeMutation, useCreateNewPasswordMutation } = authApi
+export const {
+  useResetPasswordMutation,
+  useCheckRecoveryCodeMutation,
+  useResendRecoveryCodeMutation,
+  useCreateNewPasswordMutation,
+} = authApi
