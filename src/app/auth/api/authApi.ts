@@ -54,6 +54,13 @@ export const authApi = baseApi.injectEndpoints({
         method: 'POST',
       }),
     }),
+    confirmation: build.mutation<void, { confirmationCode: string }>({
+      query: args => ({
+        url: 'auth/registration-confirmation',
+        method: 'POST',
+        body: { ...args },
+      }),
+    }),
   }),
 })
 
@@ -62,4 +69,6 @@ export const {
   useCheckRecoveryCodeMutation,
   useResendRecoveryCodeMutation,
   useCreateNewPasswordMutation,
+  useRegistrationMutation,
+  useConfirmationMutation,
 } = authApi
