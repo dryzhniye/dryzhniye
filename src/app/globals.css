@@ -61,25 +61,3 @@ html {
   padding: 0;
   font-family: var(--font-inter), var(--font-roboto), sans-serif;
 }
-
-/* Базовый класс */
-.button-group {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-/* Модификаторы */
-.button-group--center {
-  justify-content: center;
-}
-
-.button-group--end {
-  justify-content: flex-end;
-}
-
-/* Элементы внутри растянутой группы */
-.button-group--stretch > * {
-  flex: 1;
-  min-width: 0;
-}

@@ -135,7 +135,7 @@ export const Sidebar = ({ disabledIcon }: Props) => {
         <Modal open={showModal} onClose={() => setShowModal(false)} modalTitle={'Log Out'}>
           <p>Are you sure you want to log out?</p>
           <div className={s.Description}>
-            <div className={'button-group button-group--end'}>
+            <div className={s.buttonGroup + ' ' + s.buttonGroupEnd}>
               <Button variant={'outlined'} title={'Yes'} onClick={() => {}} />
               <Button variant={'primary'} title={'No'} onClick={() => setShowModal(false)} />
             </div>
