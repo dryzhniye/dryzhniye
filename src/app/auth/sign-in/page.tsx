@@ -7,6 +7,7 @@ import { Typography } from '@/shared/ui/Typography'
 import Link from 'next/link'
 import s from './sign-in.module.scss'
 import { useForm } from 'react-hook-form'
+import { useLoginMutation } from '../api/authApi'
 
 type LoginArgs = {
   email: string
@@ -14,8 +15,7 @@ type LoginArgs = {
 }
 
 export default function LoginPage() {
-
-    // const [logIn] = useResetPasswordMutation()
+  const [login] = useLoginMutation()
 
   const {
     register,
@@ -38,20 +38,20 @@ export default function LoginPage() {
     }
 
     try {
-      // await logIn({
-      //   email: data.email,
-      //   password: data.password,
-      // }).unwrap()
-
-
+      await login({
+        email: data.email,
+        password: data.password,
+      }).unwrap()
     } catch (error) {
-      const apiError = (error as {
-        data?: {
-          statusCode: number;
-          messages: Array<{ message: string; field: string }>;
-          error: string;
+      const apiError = (
+        error as {
+          data?: {
+            statusCode: number
+            messages: Array<{ message: string; field: string }>
+            error: string
+          }
         }
-      }).data
+      ).data
 
       setError('email', {
         type: 'manual',
@@ -82,7 +82,7 @@ export default function LoginPage() {
           width="100%"
           error={errors.email?.message}
           {...register('email', {
-            required: 'Email is required',
+            // required: 'Email is required',
             pattern: {
               value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
               message: 'Incorrect email address',
@@ -98,15 +98,9 @@ export default function LoginPage() {
           className={s.input}
           error={errors.password?.message}
           {...register('password', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Password must be at least 6 characters long',
-            },
-            maxLength: {
-              value: 20,
-              message: 'Password must be at most 20 characters long',
-            },
+            // required: 'Password is required',
+            minLength: 6,
+            maxLength: 20,
           })}
         />
 
