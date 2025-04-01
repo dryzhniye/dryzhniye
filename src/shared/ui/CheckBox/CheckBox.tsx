@@ -3,10 +3,11 @@ import React, { useState } from 'react'
 import styles from './CheckBox.module.scss'
 
 type Props = {
-  title?: string,
-  defaultChecked?: boolean,
-  disabled?: boolean,
+  title?: string
+  defaultChecked?: boolean
+  disabled?: boolean
   onChange?: (value: boolean) => void
+  checked?: boolean
 }
 
 export const CheckBox = ({ title, defaultChecked, disabled, onChange }: Props) => {
