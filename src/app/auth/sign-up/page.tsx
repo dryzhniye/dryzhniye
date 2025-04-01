@@ -5,7 +5,8 @@ import s from './signUp.module.scss'
 import Input from '@/shared/ui/Input/Input'
 import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
 import { Button } from '@/shared/ui/Button/Button'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { useRegistrationMutation } from '@/app/auth/api/authApi'
 
 type Input = {
   email: string
@@ -18,16 +19,26 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<Input>({
     defaultValues: { email: '', password: '', rememberMe: false, firstName: '' },
   })
 
-  const onSubmit: SubmitHandler<Input> = data => {
-    console.log(data)
-  }
+  const [registration] = useRegistrationMutation()
 
-  console.log(errors.email)
+  const onSubmit: SubmitHandler<Input> = async data => {
+    try {
+      await registration({
+        email: data.email,
+        password: data.password,
+        userName: data.firstName,
+      }).unwrap()
+      console.log('успешно')
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div>
@@ -50,8 +61,8 @@ export default function LoginPage() {
           width={'330px'}
           error={errors.firstName?.message}
           {...register('firstName', {
-            required: 'Имя обязательно',
-            minLength: { value: 2, message: 'Минимум 2 символа' },
+            required: 'FirstName is required',
+            minLength: { value: 6, message: 'Минимум 6 символа' },
             maxLength: { value: 20, message: 'Максимум 20 символов' },
             pattern: { value: /^[A-Za-zА-Яа-я]+$/, message: 'Только буквы' },
           })}
@@ -60,7 +71,7 @@ export default function LoginPage() {
           label={'Email'}
           placeholder={'email'}
           width={'330px'}
-          error={errors.firstName?.message}
+          error={errors.email?.message}
           {...register('email', {
             required: 'Email is required',
             pattern: {
@@ -71,21 +82,35 @@ export default function LoginPage() {
         />
         <Input
           label={'Password'}
+          type={'password'}
           placeholder={'Password'}
+          error={errors.password?.message}
           width={'330px'}
           {...register('password', {
-            required: 'Пароль обязателен',
-            minLength: { value: 8, message: 'Минимум 8 символов' },
-            maxLength: { value: 32, message: 'Максимум 32 символа' },
+            required: 'Password is required',
+            minLength: {
+              value: 6,
+              message: 'Min 6 characters',
+            },
+            maxLength: {
+              value: 20,
+              message: 'Max 20 characters',
+            },
             pattern: {
-              value: /^(?=.*[A-Za-z])(?=.*\d).+$/,
-              message: 'Должен содержать букву и цифру',
+              value:
+                /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
+              message:
+                'Must contain: 1 uppercase letter, Latin characters, numbers, or special symbols',
             },
           })}
         />
 
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <CheckBox />
+          <Controller
+            name={'rememberMe'}
+            control={control}
+            render={({ field: { value, ...rest } }) => <CheckBox {...rest} checked={value} />}
+          />
           <span style={{ color: 'var(--light-100)', fontSize: '12px' }}>
             I agree to the{' '}
             <a href={'#'} style={{ color: 'var(--accent-700)' }}>
