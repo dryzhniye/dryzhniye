@@ -5,9 +5,10 @@ import { Header } from '@/shared/ui/Header/Header'
 import Input from '@/shared/ui/Input/Input'
 import { Typography } from '@/shared/ui/Typography'
 import Link from 'next/link'
-import s from './sign-in.module.scss'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useLoginMutation } from '../api/authApi'
+import s from './sign-in.module.scss'
 
 type LoginArgs = {
   email: string
@@ -16,6 +17,7 @@ type LoginArgs = {
 
 export default function LoginPage() {
   const [login] = useLoginMutation()
+  const router = useRouter()
 
   const {
     register,
@@ -34,29 +36,32 @@ export default function LoginPage() {
         message: 'The email or password are incorrect. Try again please',
       })
     } else {
-      console.log('Form submitted', data)
-    }
-
-    try {
-      await login({
-        email: data.email,
-        password: data.password,
-      }).unwrap()
-    } catch (error) {
-      const apiError = (
-        error as {
-          data?: {
-            statusCode: number
-            messages: Array<{ message: string; field: string }>
-            error: string
+      try {
+        await login({
+          email: data.email,
+          password: data.password,
+        }).unwrap()
+      } catch (error) {
+        const apiError = (
+          error as {
+            data?: {
+              statusCode: number
+              messages: Array<{ message: string; field: string }>
+              error: string
+            }
           }
-        }
-      ).data
+        ).data
 
-      setError('email', {
-        type: 'manual',
-        message: apiError?.messages[0].message,
-      })
+        if (apiError?.statusCode === 401) {
+          router.push('/sign-up')
+          return
+        }
+
+        setError('password', {
+          type: 'manual',
+          message: apiError?.messages[0].message,
+        })
+      }
     }
   }
 
