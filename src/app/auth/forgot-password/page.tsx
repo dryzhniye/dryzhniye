@@ -7,17 +7,26 @@ import { Recaptcha } from '@/shared/ui/Recaptcha/Recaptcha'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useResetPasswordMutation } from '@/app/auth/api/authApi'
+import { Modal } from '@/shared/ui/Modal/Modal'
 
 type ResetPasswordArgs = {
   email: string
 }
 
 export default function ForgotPassword() {
-  const { register, handleSubmit, reset, setError, formState: { errors, isValid, isDirty } } = useForm<ResetPasswordArgs>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors, isValid, isDirty },
+  } = useForm<ResetPasswordArgs>({
     mode: 'onChange',
     defaultValues: { email: '' },
   })
 
+  const [isMailSent, setIsMailSent] = useState<boolean>(false)
+  const [showModal, setShowModal] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   const [resetPassword] = useResetPasswordMutation()
@@ -35,8 +44,9 @@ export default function ForgotPassword() {
 
       reset()
 
-      alert('Инструкции по сбросу пароля отправлены на ваш email!')//todo use modal window
+      setIsMailSent(true)
 
+      setShowModal(data.email)
     } catch (error) {
       const apiError = (error as {
         data?: {
@@ -71,15 +81,25 @@ export default function ForgotPassword() {
           },
         })} />
         <p className={s.label}>Enter your email address and we will send you further instructions</p>
+        {isMailSent && <p className={s.paragraph}>The link has been sent by email.
+          If you don’t receive an email send link again</p>}
         <Button title={'Send Link'} width={'100%'} disabled={!captchaToken || !isValid || !isDirty} />
         <Button title={'Back to Sign In'} variant={'link'} asChild={'a'} width={'100%'}
                 className={s.button + ' ' + s.link} href={'/sign-in'} />
-        <Recaptcha
+        {!isMailSent && <Recaptcha
           sitekey="6Lckav8qAAAAAIr3zUA1Z8DTqPe8ZQgbjU3khpAI"
           onChange={handleCaptchaChange}
           theme="dark"
-        />
+        />}
       </form>
+      <Modal open={!!showModal} onClose={() => setShowModal(null)} modalTitle={'Email sent'} width={'378px'} height={'228px'}>
+        <p>We have sent a link to confirm your email to {showModal}</p>
+        <div className={s.Description}>
+          <div className={s.buttonGroup + ' ' + s.buttonGroupEnd}>
+            <Button variant={'primary'} title={'OK'} onClick={() => setShowModal(null)} width={'96px'}/>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
