@@ -8,8 +8,22 @@ import Link from 'next/link'
 import s from './sign-in.module.scss'
 import { useForm } from 'react-hook-form'
 
+type LoginArgs = {
+  email: string
+  password: string
+}
+
 export default function LoginPage() {
-  const { register } = useForm()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors, isValid, isDirty },
+  } = useForm<LoginArgs>({
+    mode: 'onChange',
+    defaultValues: { email: '', password: '' },
+  })
 
   return (
     <>
@@ -40,8 +54,8 @@ export default function LoginPage() {
           })}
         />
         <Input
-          label="Password"
-          placeholder="**********"
+          label={'Password'}
+          placeholder={'**********'}
           type={'password'}
           width={'100%'}
           className={s.input}
