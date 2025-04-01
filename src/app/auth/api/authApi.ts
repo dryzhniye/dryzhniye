@@ -41,6 +41,13 @@ export const authApi = baseApi.injectEndpoints({
         body: args,
       }),
     }),
+    login: build.mutation<void, { email: string; password: string }>({
+      query: args => ({
+        url: 'auth/login',
+        method: 'POST',
+        body: args,
+      }),
+    }),
     logout: build.mutation({
       query: () => ({
         url: 'auth/logout',
@@ -55,4 +62,5 @@ export const {
   useCheckRecoveryCodeMutation,
   useResendRecoveryCodeMutation,
   useCreateNewPasswordMutation,
+  useLoginMutation
 } = authApi
