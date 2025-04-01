@@ -1,4 +1,104 @@
 'use client'
+// import React, { useState, InputHTMLAttributes, KeyboardEvent, ChangeEvent } from 'react'
+// import s from './Input.module.scss'
+//
+// type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+//   type?: 'text' | 'search' | 'password'
+//   label?: string
+//   placeholder?: string
+//   value?: string
+//   disabled?: boolean
+//   error?: string
+//   icon?: React.ReactNode
+//   toggleIcon?: React.ReactNode
+//   iconPosition?: 'start' | 'end'
+//   width?: string
+//   onEnterPress?: (value: string) => void
+//   onIconClick?: () => void
+// }
+//
+// const Input: React.FC<InputProps> = ({
+//   type = 'text',
+//   label,
+//   error,
+//   disabled,
+//   className,
+//   placeholder,
+//   icon,
+//   iconPosition,
+//   toggleIcon,
+//   onEnterPress,
+//   onIconClick,
+//   onChange,
+//   value,
+//   width,
+//   ...res
+// }) => {
+//   const [inputValue, setInputValue] = useState(value || '')
+//   const [showPassword, setShowPassword] = useState(false)
+//
+//   const onPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+//     if (e.key === 'Enter' && onEnterPress) {
+//       onEnterPress(inputValue)
+//       setInputValue('')
+//     }
+//   }
+//
+//   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+//     setInputValue(e.target.value)
+//     onChange?.(e)
+//   }
+//
+//   const handleIconClick = () => {
+//     if (type === 'password') {
+//       setShowPassword(prev => !prev)
+//     }
+//     onIconClick?.()
+//   }
+//
+//   return (
+//     <div
+//       className={`${s.inputContainer} ${className || ''} ${disabled ? s.disabled : ''} ${
+//         error ? s.error : ''
+//       }`} style={{width: width}}
+//     >
+//       {label && <label className={s.label}>{label}</label>}
+//
+//       <div className={s.inputWrapper}>
+//         {icon && iconPosition === 'start' && (
+//           <button type="button" className={`${s.icon} ${s.iconStart}`} onClick={handleIconClick}>
+//             {icon}
+//           </button>
+//         )}
+//
+//         <input
+//           {...res}
+//           type={type === 'search' ? 'search' : showPassword ? 'text' : type}
+//           placeholder={placeholder}
+//           disabled={disabled}
+//           onKeyDown={onPressHandler}
+//           onChange={onChangeHandler}
+//           className={`${s.input}
+//             ${error ? s.inputError : ''}
+//             ${disabled ? s.inputDisabled : ''}
+//             ${icon && iconPosition === 'start' ? s.withIconStart : ''}
+//             ${icon && iconPosition === 'end' ? s.withIconEnd : ''}`}
+//         />
+//
+//         {icon && iconPosition === 'end' && (
+//           <button type="button" className={`${s.icon} ${s.iconEnd}`} onClick={handleIconClick}>
+//             {showPassword && toggleIcon ? toggleIcon : icon}
+//           </button>
+//         )}
+//       </div>
+//       {error && <span className={s.errorText}>{error}</span>}
+//     </div>
+//   )
+// }
+//
+// export default Input
+
+import Image from 'next/image'
 import React, { useState, InputHTMLAttributes, KeyboardEvent, ChangeEvent } from 'react'
 import s from './Input.module.scss'
 
@@ -9,12 +109,9 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   value?: string
   disabled?: boolean
   error?: string
-  icon?: React.ReactNode
-  toggleIcon?: React.ReactNode
   iconPosition?: 'start' | 'end'
   width?: string
   onEnterPress?: (value: string) => void
-  onIconClick?: () => void
 }
 
 const Input: React.FC<InputProps> = ({
@@ -24,11 +121,8 @@ const Input: React.FC<InputProps> = ({
   disabled,
   className,
   placeholder,
-  icon,
   iconPosition,
-  toggleIcon,
   onEnterPress,
-  onIconClick,
   onChange,
   value,
   width,
@@ -36,6 +130,15 @@ const Input: React.FC<InputProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState(value || '')
   const [showPassword, setShowPassword] = useState(false)
+
+  const getIconSrc = (): string | null => {
+    if (type === 'password') {
+      return showPassword ? '/eye-off-outline.svg' : '/eye-outline.svg'
+    } else if (type === 'search') {
+      return '/search-outline.svg'
+    }
+    return null
+  }
 
   const onPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && onEnterPress) {
@@ -53,21 +156,21 @@ const Input: React.FC<InputProps> = ({
     if (type === 'password') {
       setShowPassword(prev => !prev)
     }
-    onIconClick?.()
   }
 
   return (
     <div
       className={`${s.inputContainer} ${className || ''} ${disabled ? s.disabled : ''} ${
         error ? s.error : ''
-      }`} style={{width: width}}
+      }`}
+      style={{ width }}
     >
       {label && <label className={s.label}>{label}</label>}
 
       <div className={s.inputWrapper}>
-        {icon && iconPosition === 'start' && (
+        {type === 'search' && getIconSrc() && (
           <button type="button" className={`${s.icon} ${s.iconStart}`} onClick={handleIconClick}>
-            {icon}
+            <Image src={getIconSrc()!} alt="icon" width={24} height={24} />
           </button>
         )}
 
@@ -81,13 +184,14 @@ const Input: React.FC<InputProps> = ({
           className={`${s.input} 
             ${error ? s.inputError : ''} 
             ${disabled ? s.inputDisabled : ''} 
-            ${icon && iconPosition === 'start' ? s.withIconStart : ''} 
-            ${icon && iconPosition === 'end' ? s.withIconEnd : ''}`}
+            ${getIconSrc() && iconPosition === 'start' ? s.withIconStart : ''} 
+            ${getIconSrc() && iconPosition === 'end' ? s.withIconEnd : ''}`}
+          style={{ backgroundColor: 'inherit' }}
         />
 
-        {icon && iconPosition === 'end' && (
+        {type === 'password' && getIconSrc() && (
           <button type="button" className={`${s.icon} ${s.iconEnd}`} onClick={handleIconClick}>
-            {showPassword && toggleIcon ? toggleIcon : icon}
+            <Image src={getIconSrc()!} alt="icon" width={24} height={24} />
           </button>
         )}
       </div>
