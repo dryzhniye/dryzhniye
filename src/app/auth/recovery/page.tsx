@@ -1,21 +1,20 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import s from '@/app/auth/forgot-password/forgot-password.module.scss'
 import { Header } from '@/shared/ui/Header/Header'
 import Input from '@/shared/ui/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import Image from 'next/image'
 import { Button } from '@/shared/ui/Button/Button'
-import { redirect, useSearchParams } from 'next/navigation'
+import { redirect, useRouter, useSearchParams } from 'next/navigation'
 import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/app/auth/api/authApi'
-import { useRouter } from 'next/navigation'
+import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
 
 type createPasswordArgs = {
   password1: string
   password2: string
 }
 
-export default function Page() {
+export default function Recovery() {
   const {
     register,
     handleSubmit,
@@ -30,6 +29,8 @@ export default function Page() {
 
   const router = useRouter()
 
+  const [isInitialized, setIsInitialized] = useState(false)
+
   const [checkRecoveryCode] = useCheckRecoveryCodeMutation()
   const [createNewPassword] = useCreateNewPasswordMutation()
 
@@ -38,14 +39,24 @@ export default function Page() {
   const email = searchParams.get('email')
 
   useEffect(() => {
-    if (code) {
-      checkRecoveryCode(code).unwrap().catch(() => {
-        redirect('/auth/recovery-resending?email=' + email)
-      })
-    } else {
-      redirect('/auth/sign-in')
+    if (!code) {
+      router.push('/auth/sign-in')
+      return
     }
+
+    const checkCode = async () => {
+      try {
+        await checkRecoveryCode(code).unwrap()
+        setIsInitialized(true)
+      } catch (error) {
+        router.push('/auth/recovery-resending?email=' + email)
+      }
+    }
+
+    checkCode()
   }, [])
+
+  if (!isInitialized) return <RecoverySkeleton />
 
   const onSubmit: SubmitHandler<createPasswordArgs> = async (data) => {
     if (code) {
@@ -66,15 +77,10 @@ export default function Page() {
           message: apiError?.messages[0].message,
         })
       }
-    }
-    else {
+    } else {
       redirect('/auth/sign-in')
     }
   }
-
-  //todo fix images issues
-  //todo fix load content before initialize
-  //todo add ssr for 2 todo
 
   return (
     <div>
@@ -82,8 +88,6 @@ export default function Page() {
       <form className={s.block} onSubmit={handleSubmit(onSubmit)}>
         <h1 className={s.title}>Create New Password</h1>
         <Input label={'New password'} type={'password'}
-               icon={<Image src="/eye-off-outline.svg" alt={'eye'} width={20} height={20} />}
-               toggleIcon={<Image src="/eye-outline.svg" alt={'eye'} width={20} height={20} />}
                iconPosition="end" placeholder={'Password'} width={'100%'}
                error={errors.password1?.message} {...register('password1', {
           required: 'Password is required',
@@ -101,8 +105,6 @@ export default function Page() {
           },
         })} />
         <Input label={'Password confirmation'} type={'password'} className={s.input}
-               icon={<Image src="/eye-off-outline.svg" alt={'eye'} width={20} height={20} />}
-               toggleIcon={<Image src="/eye-outline.svg" alt={'eye'} width={20} height={20} />}
                iconPosition="end" placeholder={'Password'} width={'100%'}
                error={errors.password2?.message} {...register('password2', {
           required: 'Password is required',
