@@ -5,18 +5,17 @@ import { Button } from '@/shared/ui/Button/Button'
 import { Header } from '@/shared/ui/Header/Header'
 import Image from 'next/image'
 import { useConfirmationMutation } from '@/app/auth/api/authApi'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Modal } from '@/shared/ui/Modal/Modal'
-import { Error } from '@/app/auth/sign-up/page'
+import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
 
 const Page = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
-  const [error, setError] = useState<string>('')
-  const [modal, setModal] = useState<boolean>(false)
+  const email = searchParams.get('email')
+  const [isInitialized, setIsInitialized] = useState(false)
 
   const [confirmRegistration] = useConfirmationMutation()
 
@@ -25,14 +24,15 @@ const Page = () => {
 
     confirmRegistration({ confirmationCode: code })
       .unwrap()
-      .then(() => {})
-      .catch(error => {
-        const err = error as Error
-        setError(err.data.messages[0].message)
-        setModal(true)
-        console.log('error', err)
+      .then(() => {
+        setIsInitialized(true)
       })
-  }, [code, confirmRegistration, router, error])
+      .catch(error => {
+        router.push('/auth/registration-email-resending?email=' + email)
+      })
+  }, [code, confirmRegistration, router])
+
+  if (!isInitialized) return <RecoverySkeleton />
 
   return (
     <div>
@@ -51,24 +51,6 @@ const Page = () => {
           style={{ marginTop: '72px' }}
         />
       </div>
-      <Modal
-        open={modal}
-        modalTitle={'УПС!'}
-        onClose={() => setModal(false)}
-        style={{ zIndex: 999 }}
-      >
-        <p style={{ marginBottom: '20px' }}>
-          Looks like the verification link has expired. Not to worry, we can send the link again
-        </p>
-        <Link href={'/auth/registration-email-resending'}>
-          <Button
-            variant={'primary'}
-            title={'Resend verefication link'}
-            onClick={() => setModal(false)}
-            width={'250px'}
-          />
-        </Link>
-      </Modal>
     </div>
   )
 }

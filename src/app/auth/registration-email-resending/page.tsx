@@ -2,18 +2,21 @@
 
 import { Header } from '@/shared/ui/Header/Header'
 import s from '@/app/auth/registration-confirmation/registration-confirmation.module.scss'
-import Link from 'next/link'
 import { Button } from '@/shared/ui/Button/Button'
 import Image from 'next/image'
 import Input from '@/shared/ui/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useResetEmailMutation } from '@/app/auth/api/authApi'
+import { Modal } from '@/shared/ui/Modal/Modal'
+import { useState } from 'react'
 
 type Input = {
   email: string
 }
 
 const ResetEmailPage = () => {
+  const [modal, setModal] = useState<string | boolean>(false)
+
   const {
     register,
     handleSubmit,
@@ -32,7 +35,8 @@ const ResetEmailPage = () => {
     console.log(data)
     try {
       await resetEmail({ email: data.email }).unwrap()
-
+      setModal(!modal)
+      setModal(data.email)
       reset()
 
       console.log('успешный рэзет')
@@ -81,6 +85,10 @@ const ResetEmailPage = () => {
           style={{ marginTop: '72px' }}
         />
       </div>
+      <Modal open={modal} modalTitle={'Email sent'} onClose={() => setModal(false)}>
+        <p style={{ marginBottom: '24px' }}>Confirmation link sent to email {modal}</p>
+        <Button title={'OK'} onClick={() => setModal(false)} />
+      </Modal>
     </div>
   )
 }
