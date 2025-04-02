@@ -61,6 +61,13 @@ export const authApi = baseApi.injectEndpoints({
         body: { ...args },
       }),
     }),
+    resetEmail: build.mutation<void, { email: string }>({
+      query: args => ({
+        url: 'auth/registration-email-resending',
+        method: 'POST',
+        body: { ...args, baseUrl },
+      }),
+    }),
   }),
 })
 
@@ -71,4 +78,5 @@ export const {
   useCreateNewPasswordMutation,
   useRegistrationMutation,
   useConfirmationMutation,
+  useResetEmailMutation,
 } = authApi

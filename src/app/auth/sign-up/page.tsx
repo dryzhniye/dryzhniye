@@ -9,25 +9,46 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { useRegistrationMutation } from '@/app/auth/api/authApi'
 import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
+import Image from 'next/image'
+import Link from 'next/link'
 
 type Input = {
   email: string
   password: string
   rememberMe: boolean
   firstName: string
+  confirmPassword: string
+}
+
+export type Error = {
+  data: {
+    error: string
+    messages: [{ message: string }]
+    statusCode: number
+    status: number
+  }
 }
 
 export default function LoginPage() {
-  const [linkModal, setLinkModal] = useState<string | null>(null)
+  const [linkModal, setLinkModal] = useState<string | boolean>(false)
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     control,
+    setError,
     formState: { errors, isValid },
   } = useForm<Input>({
-    defaultValues: { email: '', password: '', rememberMe: false, firstName: '' },
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+      firstName: '',
+      confirmPassword: '',
+    },
   })
 
   const [registration] = useRegistrationMutation()
@@ -41,10 +62,15 @@ export default function LoginPage() {
       }).unwrap()
 
       reset()
-
+      setLinkModal(false)
       setLinkModal(data.email)
     } catch (error) {
-      console.log(error)
+      const err = error as Error
+      if (err.data.statusCode === 400 && err.data.messages.length > 0) {
+        setError('email', { type: 'manual', message: err.data.messages[0].message })
+      } else {
+        console.log('ошибка')
+      }
     }
   }
 
@@ -55,12 +81,12 @@ export default function LoginPage() {
         <h1 style={{ color: 'var(--light-100)', fontSize: '20px' }}>Sign Up</h1>
 
         <div className={s.autorizationIcon}>
-          <a href="#">
-            <img src="/google.svg" alt="" />
-          </a>
-          <a href="#">
-            <img src="/github.svg" alt="" />
-          </a>
+          <Link href="#">
+            <Image src="/google.svg" alt="" width={34} height={34} />
+          </Link>
+          <Link href="#">
+            <Image src="/github.svg" alt="" width={34} height={34} />
+          </Link>
         </div>
 
         <Input
@@ -70,9 +96,9 @@ export default function LoginPage() {
           error={errors.firstName?.message}
           {...register('firstName', {
             required: 'FirstName is required',
-            minLength: { value: 6, message: 'Минимум 6 символа' },
-            maxLength: { value: 20, message: 'Максимум 20 символов' },
-            pattern: { value: /^[A-Za-zА-Яа-я]+$/, message: 'Только буквы' },
+            minLength: { value: 6, message: 'Min 6 characters ' },
+            maxLength: { value: 20, message: 'Max 20 characters' },
+            pattern: { value: /^[A-Za-zА-Яа-я]+$/, message: 'only letters' },
           })}
         />
         <Input
@@ -113,6 +139,31 @@ export default function LoginPage() {
           })}
         />
 
+        <Input
+          label={'Password confirmation'}
+          type={'password'}
+          placeholder={'Password'}
+          error={errors.confirmPassword?.message}
+          width={'330px'}
+          {...register('confirmPassword', {
+            required: 'Password is required',
+            minLength: {
+              value: 6,
+              message: 'Min 6 characters',
+            },
+            maxLength: {
+              value: 20,
+              message: 'Max 20 characters',
+            },
+            pattern: {
+              value:
+                /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
+              message: 'Passwords do not match',
+            },
+            validate: value => value === watch('password') || 'Passwords do not match',
+          })}
+        />
+
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <Controller
             name={'rememberMe'}
@@ -122,13 +173,13 @@ export default function LoginPage() {
           />
           <span style={{ color: 'var(--light-100)', fontSize: '12px' }}>
             I agree to the{' '}
-            <a href={'#'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={'#'} style={{ color: 'var(--accent-700)' }}>
               Terms of Service
-            </a>{' '}
+            </Link>{' '}
             and{' '}
-            <a href={'#'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={'#'} style={{ color: 'var(--accent-700)' }}>
               Privacy Policy
-            </a>
+            </Link>
           </span>
         </div>
 
@@ -139,9 +190,9 @@ export default function LoginPage() {
         <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} />
       </form>
       <Modal
-        open={!!linkModal}
-        modalTitle={'Подтверждение email'}
-        onClose={() => setLinkModal(null)}
+        open={!linkModal}
+        modalTitle={'Email sent'}
+        onClose={() => setLinkModal(true)}
         style={{ zIndex: 999 }}
       >
         <p style={{ marginBottom: '20px' }}>
@@ -150,7 +201,7 @@ export default function LoginPage() {
         <Button
           variant={'primary'}
           title={'OK'}
-          onClick={() => setLinkModal(null)}
+          onClick={() => setLinkModal(true)}
           width={'96px'}
         />
       </Modal>
