@@ -1,4 +1,5 @@
 import { baseApi } from '@/app/baseApi'
+import { BaseQueryArg } from '@reduxjs/toolkit/query'
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://dryzhniye.ru'
 
@@ -48,11 +49,20 @@ export const authApi = baseApi.injectEndpoints({
         body: { ...args, baseUrl },
       }),
     }),
-    login: build.mutation<void, { email: string; password: string }>({
+    login: build.mutation<{ accessToken: string }, { email: string; password: string }>({
       query: args => ({
         url: 'auth/login',
         method: 'POST',
         body: args,
+      }),
+    }),
+    me: build.query<any, void>({
+      query: () => ({
+        url: 'auth/me',
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       }),
     }),
     logout: build.mutation({
@@ -87,4 +97,5 @@ export const {
   useRegistrationMutation,
   useConfirmationMutation,
   useResetEmailMutation,
+  useMeQuery,
 } = authApi

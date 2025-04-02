@@ -1,16 +1,16 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps, FormEvent, ReactNode } from 'react'
 import s from './Cards.module.scss'
 
-type Type = ComponentProps<'div'>
+type Type = {
+  children: ReactNode
+  className?: string
+  onSubmit: (value: FormEvent<HTMLFormElement>) => void
+} & ComponentProps<'form'>
 
-/**
- * universal cards component, принимает в виде пропсов:
- * className для стилизации и children для внутренней структуры
- */
-export default function Cards({ className, children, ...rest }: Type) {
+export default function Cards({ children, className, onSubmit }: Type) {
   return (
-    <div className={className ? className + ' ' + s.card : s.card} {...rest}>
+    <form className={`${className} ${s.card}`} onSubmit={event => onSubmit(event)}>
       {children}
-    </div>
+    </form>
   )
 }
