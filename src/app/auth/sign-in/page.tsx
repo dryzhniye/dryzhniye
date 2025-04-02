@@ -136,7 +136,7 @@ export default function LoginPage() {
           title="Sign In"
           width={'100%'}
           onClick={handleSubmit(onSubmit)}
-          disabled={isValid}
+          disabled={!isValid}
         />
         <Typography className={s.account}>Don’t have an account?</Typography>
         <Button title={'Sign Up'} variant={'link'} asChild={'a'} width={'100%'} href={'/sign-up'} />
