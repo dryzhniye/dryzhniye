@@ -7,7 +7,7 @@ import { Typography } from '@/shared/ui/Typography'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { useLoginMutation } from '../api/authApi'
+import { useLoginMutation, useMeQuery } from '../api/authApi'
 import s from './sign-in.module.scss'
 
 type LoginArgs = {
@@ -17,6 +17,7 @@ type LoginArgs = {
 
 export default function LoginPage() {
   const [login] = useLoginMutation()
+  const { data: userData, isLoading: isLoadingUser } = useMeQuery()
   const router = useRouter()
 
   const {
@@ -37,14 +38,18 @@ export default function LoginPage() {
       })
     } else {
       try {
-        await login({
+        const response = await login({
           email: data.email,
           password: data.password,
         }).unwrap()
 
-        console.log('login success')
+        localStorage.setItem('token', response.accessToken)
+
+        if (userData && !isLoadingUser) {
+          debugger
+          router.push('/auth/profile')
+        }
       } catch (error) {
-        debugger
         const apiError = (
           error as {
             data?: {
@@ -72,7 +77,7 @@ export default function LoginPage() {
     <>
       <Header isLoggedIn={true} />
 
-      <Cards className={s.card}>
+      <Cards className={s.card} onSubmit={handleSubmit(onSubmit)}>
         <Typography className={s.sign}>Sign In</Typography>
 
         <div className={s.alternativeAuthorisations}>
@@ -120,7 +125,7 @@ export default function LoginPage() {
               message:
                 'Password must contain 0-9, a-z, A-Z, ! "\n' +
                 "# $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n" +
-                '_` { | } ~',
+                '_ { | } ~',
             },
           })}
         />
@@ -132,12 +137,9 @@ export default function LoginPage() {
           title="Forgot Password"
           href={'/forgot-password'}
         />
-        <Button
-          title="Sign In"
-          width={'100%'}
-          onClick={handleSubmit(onSubmit)}
-          disabled={isValid}
-        />
+
+        <Button title="Sign In" width={'100%'} disabled={!isValid} type="submit" />
+
         <Typography className={s.account}>Don’t have an account?</Typography>
         <Button title={'Sign Up'} variant={'link'} asChild={'a'} width={'100%'} href={'/sign-up'} />
       </Cards>

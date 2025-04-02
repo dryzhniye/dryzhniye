@@ -61,7 +61,14 @@ export default function LoginPage() {
         userName: data.firstName,
       }).unwrap()
 
-      reset()
+      reset({
+        email: '',
+        password: '',
+        rememberMe: false,
+        firstName: '',
+        confirmPassword: '',
+      })
+
       setLinkModal(false)
       setLinkModal(data.email)
     } catch (error) {
@@ -176,10 +183,11 @@ export default function LoginPage() {
 
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <Controller
-            name={'rememberMe'}
-            rules={{ required: true }}
+            name="rememberMe"
             control={control}
-            render={({ field: { value, ...rest } }) => <CheckBox {...rest} checked={value} />}
+            render={({ field }) => (
+              <CheckBox checked={field.value} onChange={checked => field.onChange(checked)} />
+            )}
           />
           <span style={{ color: 'var(--light-100)', fontSize: '12px' }}>
             I agree to the{' '}
@@ -199,19 +207,14 @@ export default function LoginPage() {
 
         <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} />
       </form>
-      <Modal
-        open={!!linkModal}
-        modalTitle={'Email sent'}
-        onClose={() => setLinkModal(true)}
-        style={{ zIndex: 999 }}
-      >
+      <Modal open={!!linkModal} modalTitle={'Email sent'} onClose={() => setLinkModal(false)}>
         <p style={{ marginBottom: '20px' }}>
           We have sent a link to confirm your email to {linkModal}
         </p>
         <Button
           variant={'primary'}
           title={'OK'}
-          onClick={() => setLinkModal(true)}
+          onClick={() => setLinkModal(false)}
           width={'96px'}
         />
       </Modal>

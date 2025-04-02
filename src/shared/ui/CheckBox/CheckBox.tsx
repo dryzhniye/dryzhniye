@@ -1,24 +1,18 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './CheckBox.module.scss'
 
 type Props = {
   title?: string
-  defaultChecked?: boolean
   disabled?: boolean
   onChange?: (value: boolean) => void
   checked?: boolean
 }
 
-export const CheckBox = ({ title, defaultChecked, disabled, onChange }: Props) => {
-  const [checked, setChecked] = useState(defaultChecked)
-
+export const CheckBox = ({ title, disabled, onChange, checked }: Props) => {
   const handleClick = () => {
-    if (!disabled) {
-      setChecked(!checked)
-      if (onChange) {
-        onChange(!checked)
-      }
+    if (!disabled && onChange) {
+      onChange(!checked)
     }
   }
 
