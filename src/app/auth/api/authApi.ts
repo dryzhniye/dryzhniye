@@ -1,5 +1,4 @@
 import { baseApi } from '@/app/baseApi'
-import { BaseQueryArg } from '@reduxjs/toolkit/query'
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://dryzhniye.ru'
 
@@ -56,7 +55,7 @@ export const authApi = baseApi.injectEndpoints({
         body: args,
       }),
     }),
-    me: build.query<any, void>({
+    me: build.query<{ userId: number; userName: string; email: string; isBlocked: boolean }, void>({
       query: () => ({
         url: 'auth/me',
         method: 'GET',
@@ -85,12 +84,6 @@ export const authApi = baseApi.injectEndpoints({
         body: { ...args, baseUrl },
       }),
     }),
-    // queryProfile: build.query<any, string>({
-    //   query: userId => ({
-    //     url: `users/profile/${userId}`,
-    //     method: 'GET',
-    //   }),
-    // }),
   }),
 })
 
