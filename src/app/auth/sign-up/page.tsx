@@ -183,10 +183,11 @@ export default function LoginPage() {
 
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <Controller
-            name={'rememberMe'}
-            rules={{ required: true }}
+            name="rememberMe"
             control={control}
-            render={({ field }) => <CheckBox {...field} checked={field.value} />}
+            render={({ field }) => (
+              <CheckBox checked={field.value} onChange={checked => field.onChange(checked)} />
+            )}
           />
           <span style={{ color: 'var(--light-100)', fontSize: '12px' }}>
             I agree to the{' '}
