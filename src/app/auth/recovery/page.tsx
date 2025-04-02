@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import Image from 'next/image'
 import { Button } from '@/shared/ui/Button/Button'
 import { redirect, useSearchParams } from 'next/navigation'
-import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/app/(auth)/api/authApi'
+import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/app/auth/api/authApi'
 import { useRouter } from 'next/navigation'
 
 type createPasswordArgs = {
