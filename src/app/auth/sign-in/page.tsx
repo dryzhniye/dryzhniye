@@ -23,7 +23,7 @@ export default function LoginPage() {
     register,
     handleSubmit,
     setError,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<LoginArgs>({
     mode: 'onChange',
     defaultValues: { email: '', password: '' },
@@ -41,7 +41,10 @@ export default function LoginPage() {
           email: data.email,
           password: data.password,
         }).unwrap()
+
+        console.log('login success')
       } catch (error) {
+        debugger
         const apiError = (
           error as {
             data?: {
@@ -82,30 +85,43 @@ export default function LoginPage() {
         </div>
 
         <Input
-          label="Email"
-          placeholder="Epam@epam.com"
-          width="100%"
+          label={'Email'}
+          placeholder={'Epam@epam.com'}
+          width={'330px'}
           error={errors.email?.message}
           {...register('email', {
-            // required: 'Email is required',
+            required: 'Email is required',
             pattern: {
               value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: 'Incorrect email address',
+              message: 'The email must match the format example@example.com',
             },
           })}
         />
 
         <Input
-          label="Password"
-          placeholder="**********"
-          type="password"
-          width="100%"
-          className={s.input}
+          label={'Password'}
+          type={'password'}
+          placeholder={'******************'}
           error={errors.password?.message}
+          width={'330px'}
           {...register('password', {
-            // required: 'Password is required',
-            minLength: 6,
-            maxLength: 20,
+            required: 'Password is required',
+            minLength: {
+              value: 6,
+              message: 'Min 6 characters',
+            },
+            maxLength: {
+              value: 20,
+              message: 'Max 20 characters',
+            },
+            pattern: {
+              value:
+                /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
+              message:
+                'Password must contain 0-9, a-z, A-Z, ! "\n' +
+                "# $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n" +
+                '_` { | } ~',
+            },
           })}
         />
 
@@ -116,7 +132,12 @@ export default function LoginPage() {
           title="Forgot Password"
           href={'/forgot-password'}
         />
-        <Button title="Sign In" width={'100%'} onClick={handleSubmit(onSubmit)} />
+        <Button
+          title="Sign In"
+          width={'100%'}
+          onClick={handleSubmit(onSubmit)}
+          disabled={isValid}
+        />
         <Typography className={s.account}>Don’t have an account?</Typography>
         <Button title={'Sign Up'} variant={'link'} asChild={'a'} width={'100%'} href={'/sign-up'} />
       </Cards>

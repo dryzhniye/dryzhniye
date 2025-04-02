@@ -67,9 +67,17 @@ export default function LoginPage() {
     } catch (error) {
       const err = error as Error
       if (err.data.statusCode === 400 && err.data.messages.length > 0) {
-        setError('email', { type: 'manual', message: err.data.messages[0].message })
+        const message = err.data.messages[0].message.toLowerCase()
+
+        if (message.includes('username')) {
+          setError('firstName', { type: 'manual', message: err.data.messages[0].message })
+        } else if (message.includes('email')) {
+          setError('email', { type: 'manual', message: err.data.messages[0].message })
+        } else {
+          console.log('Неизвестная ошибка:', err.data.messages[0].message)
+        }
       } else {
-        console.log('ошибка')
+        console.log('Ошибка сервера:', error)
       }
     }
   }
@@ -91,33 +99,33 @@ export default function LoginPage() {
 
         <Input
           label={'Username'}
-          placeholder={'Username'}
+          placeholder={'Epam11'}
           width={'330px'}
           error={errors.firstName?.message}
           {...register('firstName', {
             required: 'FirstName is required',
             minLength: { value: 6, message: 'Min 6 characters ' },
             maxLength: { value: 20, message: 'Max 20 characters' },
-            pattern: { value: /^[A-Za-zА-Яа-я]+$/, message: 'only letters' },
+            pattern: { value: /^[a-zA-Z0-9_-]+$/, message: 'only letters' },
           })}
         />
         <Input
           label={'Email'}
-          placeholder={'email'}
+          placeholder={'Epam@epam.com'}
           width={'330px'}
           error={errors.email?.message}
           {...register('email', {
             required: 'Email is required',
             pattern: {
               value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: 'Incorrect email address',
+              message: 'The email must match the format example@example.com',
             },
           })}
         />
         <Input
           label={'Password'}
           type={'password'}
-          placeholder={'Password'}
+          placeholder={'******************'}
           error={errors.password?.message}
           width={'330px'}
           {...register('password', {
@@ -134,7 +142,9 @@ export default function LoginPage() {
               value:
                 /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
               message:
-                'Must contain: 1 uppercase letter, Latin characters, numbers, or special symbols',
+                'Password must contain 0-9, a-z, A-Z, ! "\n' +
+                "# $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n" +
+                '_` { | } ~',
             },
           })}
         />
@@ -142,7 +152,7 @@ export default function LoginPage() {
         <Input
           label={'Password confirmation'}
           type={'password'}
-          placeholder={'Password'}
+          placeholder={'******************'}
           error={errors.confirmPassword?.message}
           width={'330px'}
           {...register('confirmPassword', {
@@ -190,7 +200,7 @@ export default function LoginPage() {
         <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} />
       </form>
       <Modal
-        open={!linkModal}
+        open={!!linkModal}
         modalTitle={'Email sent'}
         onClose={() => setLinkModal(true)}
         style={{ zIndex: 999 }}
