@@ -41,10 +41,38 @@ export const authApi = baseApi.injectEndpoints({
         body: args,
       }),
     }),
+    registration: build.mutation<void, { userName: string; email: string; password: string }>({
+      query: args => ({
+        url: 'auth/registration',
+        method: 'POST',
+        body: { ...args, baseUrl },
+      }),
+    }),
+    login: build.mutation<void, { email: string; password: string }>({
+      query: args => ({
+        url: 'auth/login',
+        method: 'POST',
+        body: args,
+      }),
+    }),
     logout: build.mutation({
       query: () => ({
         url: 'auth/logout',
         method: 'POST',
+      }),
+    }),
+    confirmation: build.mutation<void, { confirmationCode: string }>({
+      query: args => ({
+        url: 'auth/registration-confirmation',
+        method: 'POST',
+        body: { ...args },
+      }),
+    }),
+    resetEmail: build.mutation<void, { email: string }>({
+      query: args => ({
+        url: 'auth/registration-email-resending',
+        method: 'POST',
+        body: { ...args, baseUrl },
       }),
     }),
   }),
@@ -55,4 +83,8 @@ export const {
   useCheckRecoveryCodeMutation,
   useResendRecoveryCodeMutation,
   useCreateNewPasswordMutation,
+  useLoginMutation,
+  useRegistrationMutation,
+  useConfirmationMutation,
+  useResetEmailMutation,
 } = authApi

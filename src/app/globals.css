@@ -45,7 +45,7 @@
 html {
   scroll-behavior: smooth;
 
-  /* color: #fff; */
+  color: var(--light-100);
   background-color: black;
 }
 

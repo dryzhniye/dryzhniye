@@ -28,7 +28,5 @@ export const Button = <T extends ElementType = 'button'>(props: Props<T>) => {
     >
       {title}
     </Component>
-
-    // todo: ссылка должна быть на всю ширину
   )
 }
