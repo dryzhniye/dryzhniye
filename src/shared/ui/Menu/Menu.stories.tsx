@@ -17,30 +17,30 @@ type Story = StoryObj<typeof meta>
 
 export const HomeActive: Story = {
   args: {
-    pathname: "/home",
+    pathname: '/home',
   },
-};
+}
 
 export const AddPostActive: Story = {
   args: {
-    pathname: "/addPost",
+    pathname: '/addPost',
   },
-};
+}
 
 export const CommentsActive: Story = {
   args: {
-    pathname: "/comments",
+    pathname: '/comments',
   },
-};
+}
 
 export const SearchActive: Story = {
   args: {
-    pathname: "/search",
+    pathname: '/search',
   },
-};
+}
 
 export const ProfileActive: Story = {
   args: {
-    pathname: "/profile",
+    pathname: '/profiles',
   },
-};
+}

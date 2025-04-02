@@ -5,10 +5,10 @@ import { Header } from '@/shared/ui/Header/Header'
 import Input from '@/shared/ui/Input/Input'
 import { Typography } from '@/shared/ui/Typography'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useLoginMutation, useMeQuery } from '../api/authApi'
 import s from './sign-in.module.scss'
+import { useRouter } from 'next/navigation'
 
 type LoginArgs = {
   email: string
@@ -17,7 +17,7 @@ type LoginArgs = {
 
 export default function LoginPage() {
   const [login] = useLoginMutation()
-  const { data: userData, isLoading: isLoadingUser } = useMeQuery()
+  const { data: userData, refetch } = useMeQuery()
   const router = useRouter()
 
   const {
@@ -45,9 +45,10 @@ export default function LoginPage() {
 
         localStorage.setItem('token', response.accessToken)
 
-        if (userData && !isLoadingUser) {
-          debugger
-          router.push('/auth/profile')
+        const { data: freshUserData } = await refetch()
+
+        if (freshUserData?.userId) {
+          router.push(`users/profile/${freshUserData.userId}`)
         }
       } catch (error) {
         const apiError = (

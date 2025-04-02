@@ -22,7 +22,7 @@ const menuItems = [
   {
     id: 'profile',
     name: 'My Profile',
-    iconDefault: '/profile.svg',
+    iconDefault: '/profileIcon.svg',
     iconActive: '/profileActive.svg',
     PATH: '',
   },

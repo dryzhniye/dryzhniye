@@ -85,6 +85,12 @@ export const authApi = baseApi.injectEndpoints({
         body: { ...args, baseUrl },
       }),
     }),
+    // queryProfile: build.query<any, string>({
+    //   query: userId => ({
+    //     url: `users/profile/${userId}`,
+    //     method: 'GET',
+    //   }),
+    // }),
   }),
 })
 
