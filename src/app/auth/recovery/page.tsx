@@ -72,7 +72,6 @@ export default function Page() {
     }
   }
 
-  //todo fix images issues
   //todo fix load content before initialize
   //todo add ssr for 2 todo
 
@@ -82,8 +81,6 @@ export default function Page() {
       <form className={s.block} onSubmit={handleSubmit(onSubmit)}>
         <h1 className={s.title}>Create New Password</h1>
         <Input label={'New password'} type={'password'}
-               icon={<Image src="/eye-off-outline.svg" alt={'eye'} width={20} height={20} />}
-               toggleIcon={<Image src="/eye-outline.svg" alt={'eye'} width={20} height={20} />}
                iconPosition="end" placeholder={'Password'} width={'100%'}
                error={errors.password1?.message} {...register('password1', {
           required: 'Password is required',
@@ -101,8 +98,6 @@ export default function Page() {
           },
         })} />
         <Input label={'Password confirmation'} type={'password'} className={s.input}
-               icon={<Image src="/eye-off-outline.svg" alt={'eye'} width={20} height={20} />}
-               toggleIcon={<Image src="/eye-outline.svg" alt={'eye'} width={20} height={20} />}
                iconPosition="end" placeholder={'Password'} width={'100%'}
                error={errors.password2?.message} {...register('password2', {
           required: 'Password is required',
