@@ -1,6 +1,6 @@
-import React from 'react';
-import { Slot } from '@radix-ui/react-slot';
-import s from './Typography.module.scss';
+import React from 'react'
+import { Slot } from '@radix-ui/react-slot'
+import s from './Typography.module.scss'
 
 export type TypographyVariant =
   | 'large'
@@ -15,37 +15,33 @@ export type TypographyVariant =
   | 'small-text'
   | 'semi-bold-small-text'
   | 'regular-link'
-  | 'small-link';
+  | 'small-link'
 
 export type TypographyProps = {
-  variant?: TypographyVariant;
-  asChild?: boolean;
-  className?: string;
-  children: React.ReactNode;
-  as?: React.ElementType;
-  font?: 'roboto';
-};
+  variant?: TypographyVariant
+  asChild?: boolean
+  className?: string
+  children: React.ReactNode
+  as?: React.ElementType
+  font?: 'roboto'
+}
 
 export const Typography = ({
-                             variant = 'regular-text-16',
-                             asChild,
-                             className,
-                             children,
-                             as: Component = 'span',
-                             font,
-                             ...props
-                           }: TypographyProps) => {
-
-  const Comp = asChild ? Slot : Component;
-  const variantClass = s[`typography--${variant}`] || '';
-  const fontClass = font === 'roboto' ? s['typography--roboto'] : '';
+  variant = 'regular-text-16',
+  asChild,
+  className,
+  children,
+  as: Component = 'span',
+  font,
+  ...props
+}: TypographyProps) => {
+  const Comp = asChild ? Slot : Component
+  const variantClass = s[`typography--${variant}`] || ''
+  const fontClass = font === 'roboto' ? s['typography--roboto'] : ''
 
   return (
-    <Comp
-      className={`${s.typography} ${variantClass} ${fontClass} ${className}`}
-      {...props}
-    >
+    <Comp className={`${s.typography} ${variantClass} ${fontClass} ${className}`} {...props}>
       {children}
     </Comp>
-  );
-};
+  )
+}
