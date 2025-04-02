@@ -1,17 +1,22 @@
 'use client'
 
+import s from './registration-confirmation.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
 import { Header } from '@/shared/ui/Header/Header'
-import s from './registration-confirmation.module.scss'
 import Image from 'next/image'
 import { useConfirmationMutation } from '@/app/auth/api/authApi'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Modal } from '@/shared/ui/Modal/Modal'
+import { Error } from '@/app/auth/sign-up/page'
 
 const Page = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
+  const [error, setError] = useState<string>('')
+  const [modal, setModal] = useState<boolean>(false)
 
   const [confirmRegistration] = useConfirmationMutation()
 
@@ -20,13 +25,14 @@ const Page = () => {
 
     confirmRegistration({ confirmationCode: code })
       .unwrap()
-      .then(() => {
-        // setTimeout(() => router.push('/sign-in'), 10000) // редирект через 10 сек, если пользователь неактивен
-      })
+      .then(() => {})
       .catch(error => {
-        console.log('error:', error)
+        const err = error as Error
+        setError(err.data.messages[0].message)
+        setModal(true)
+        console.log('error', err)
       })
-  }, [code, confirmRegistration, router])
+  }, [code, confirmRegistration, router, error])
 
   return (
     <div>
@@ -34,7 +40,9 @@ const Page = () => {
       <div className={s.container}>
         <h1>Congratulations!</h1>
         <p className={s.text}>Your email has been confirmed</p>
-        <Button title={'Sign In'} />
+        <Link href={'/auth/sign-in'}>
+          <Button title={'Sign In'} />
+        </Link>
         <Image
           src={'/congratulations.png'}
           alt={''}
@@ -43,6 +51,24 @@ const Page = () => {
           style={{ marginTop: '72px' }}
         />
       </div>
+      <Modal
+        open={modal}
+        modalTitle={'УПС!'}
+        onClose={() => setModal(false)}
+        style={{ zIndex: 999 }}
+      >
+        <p style={{ marginBottom: '20px' }}>
+          Looks like the verification link has expired. Not to worry, we can send the link again
+        </p>
+        <Link href={'/auth/registration-email-resending'}>
+          <Button
+            variant={'primary'}
+            title={'Resend verefication link'}
+            onClick={() => setModal(false)}
+            width={'250px'}
+          />
+        </Link>
+      </Modal>
     </div>
   )
 }
