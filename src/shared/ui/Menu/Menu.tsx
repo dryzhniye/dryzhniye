@@ -13,9 +13,9 @@ type ImagesType = {
 }
 
 type MenuProps = {
-    /**
-     * пропсы для демонстрации работы компоненты
-     */
+  /**
+   * пропсы для демонстрации работы компоненты
+   */
   pathname?: string
 }
 
@@ -39,16 +39,13 @@ const images: ImagesType = {
     inactive: '/search-outline.svg',
     description: 'search',
   },
-  '/profile': {
-    active: '/profile-active.svg',
-    inactive: '/profile-outline.svg',
+  '/profiles': {
+    active: '/profiles-active.svg',
+    inactive: '/profiles-outline.svg',
     description: 'profile',
   },
 }
 
-/**
- * mobile menu component
- */
 export default function Menu({ pathname }: MenuProps) {
   const router = useRouter()
   // нужно для демо пропсов в дальнейшем значения будут браться из useRouter
