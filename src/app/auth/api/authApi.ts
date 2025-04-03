@@ -55,6 +55,15 @@ export const authApi = baseApi.injectEndpoints({
         body: args,
       }),
     }),
+    me: build.query<{ userId: number; userName: string; email: string; isBlocked: boolean }, void>({
+      query: () => ({
+        url: 'auth/me',
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
     logout: build.mutation<void, void>({
       query: () => ({
         url: 'auth/logout',
@@ -88,4 +97,5 @@ export const {
   useRegistrationMutation,
   useConfirmationMutation,
   useResetEmailMutation,
+  useMeQuery,
 } = authApi
