@@ -76,30 +76,17 @@ export const Sidebar = ({ disabledIcon }: Props) => {
   }
 
   const logoutHandler = async () => {
-    // try {
-    //   await logout().unwrap()
-    //   localStorage.removeItem('token')
-    //   dispatch(setIsLoggedIn(false))
-    //   dispatch(setAppEmail(null))
-    //   router.push('/sign-in')
-    // } catch (error) {
-    //   console.error('Logout failed:', error)
-    // } finally {
-    //   setShowModal(false)
-    // }
-    // try {
-    //   await fetch('https://dryzhniye.ru/api/v1/auth/logout', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    //     },
-    //   })
-    //   // localStorage.removeItem('token')
-    //   dispatch(setIsLoggedIn(false))
-    //   router.push('/sign-in')
-    // } catch (err) {
-    //   console.error('Logout error:', err)
-    // }
+    try {
+      await logout().unwrap()
+      localStorage.removeItem('token')
+      dispatch(setIsLoggedIn(false))
+      dispatch(setAppEmail(null))
+      router.push('/auth/sign-in')
+    } catch (error) {
+      console.error('Logout failed:', error)
+    } finally {
+      setShowModal(false)
+    }
   }
 
   return (
