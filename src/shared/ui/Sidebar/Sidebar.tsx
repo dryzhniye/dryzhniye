@@ -1,5 +1,5 @@
 'use client'
-import { useLogoutMutation, useMeQuery } from '@/app/auth/api/authApi'
+import { useLogoutMutation } from '@/app/auth/api/authApi'
 import { Button } from '@/shared/ui/Button/Button'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useRouter } from 'next/navigation'
@@ -7,6 +7,8 @@ import s from './Sidebar.module.scss'
 import Image from 'next/image'
 import { useState } from 'react'
 import Link from 'next/link'
+import { selectAppEmail, setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
+import { useAppDispatch, useAppSelector } from '@/app/appHooks'
 
 type Props = {
   disabledIcon?: boolean
@@ -65,8 +67,9 @@ export const Sidebar = ({ disabledIcon }: Props) => {
   const [activeItem, setActiveItem] = useState('home')
   const [showModal, setShowModal] = useState(false)
   const [logout] = useLogoutMutation()
-  const { data: userData } = useMeQuery()
+  const email = useAppSelector(selectAppEmail)
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   const activeItems = (value: string) => {
     setActiveItem(value)
@@ -75,8 +78,10 @@ export const Sidebar = ({ disabledIcon }: Props) => {
   const logoutHandler = async () => {
     try {
       await logout().unwrap()
-      router.push('/sign-in')
       localStorage.removeItem('token')
+      dispatch(setIsLoggedIn(false))
+      dispatch(setAppEmail(null))
+      router.push('/auth/sign-in')
     } catch (error) {
       console.error('Logout failed:', error)
     } finally {
@@ -150,7 +155,7 @@ export const Sidebar = ({ disabledIcon }: Props) => {
       </button>
       {showModal && (
         <Modal open={showModal} onClose={() => setShowModal(false)} modalTitle={'Log Out'}>
-          <p>Are you sure you want to log out {userData?.email}?</p>
+          <p>Are you sure you want to log out {email}?</p>
           <div className={s.Description}>
             <div className={`${s.buttonGroup} ${s.buttonGroup_end}`}>
               <Button variant={'outlined'} title={'Yes'} onClick={logoutHandler} />
