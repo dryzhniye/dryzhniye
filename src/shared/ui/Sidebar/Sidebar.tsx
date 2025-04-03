@@ -1,6 +1,9 @@
 'use client'
+// import { useAppSelector } from '@/app/appHooks'
+import { useLogoutMutation } from '@/app/auth/api/authApi'
 import { Button } from '@/shared/ui/Button/Button'
 import { Modal } from '@/shared/ui/Modal/Modal'
+import { useRouter } from 'next/navigation'
 import s from './Sidebar.module.scss'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -62,12 +65,23 @@ const menuItems2 = [
 export const Sidebar = ({ disabledIcon }: Props) => {
   const [activeItem, setActiveItem] = useState('home')
   const [showModal, setShowModal] = useState(false)
+  const [logout] = useLogoutMutation()
+  // const email = useAppSelector(state => state)
+  const router = useRouter()
 
   const activeItems = (value: string) => {
     setActiveItem(value)
   }
 
-  const logoutHandler = () => {}
+  const logoutHandler = async () => {
+    try {
+      await logout().unwrap()
+      router.push('/sign-in')
+      // localStorage.removeItem(AUTH_TOKEN)
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
 
   return (
     <aside className={s.wrapperSidebar}>
@@ -135,18 +149,10 @@ export const Sidebar = ({ disabledIcon }: Props) => {
       </button>
       {showModal && (
         <Modal open={showModal} onClose={() => setShowModal(false)} modalTitle={'Log Out'}>
-          <p>Are you sure you want to log out?</p>
+          <p>Are you sure you want to log out {'email'}?</p>
           <div className={s.Description}>
-            <div className={'button-group button-group--end'}>
-              <Button
-                asChild={'a'}
-                variant={'outlined'}
-                title={'Yes'}
-                onClick={logoutHandler}
-                href={'https://inctagram.work/api/v1/swagger#/Auth/AuthController_logout'}
-              />
-              {/*  <a href={'#'}>YES</a>*/}
-              {/*</Button>*/}
+            <div className={`${s.buttonGroup} ${s.buttonGroup_end}`}>
+              <Button variant={'outlined'} title={'Yes'} onClick={logoutHandler} />
               <Button variant={'primary'} title={'No'} onClick={() => setShowModal(false)} />
             </div>
           </div>

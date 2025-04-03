@@ -31,7 +31,7 @@ const ModalWrapper = (args: Props) => {
 export const Default: Story = {
   render: args => <ModalWrapper {...args} />,
   args: {
-    open: false,
+    open: true,
     children: 'Содержимое модального окна',
   },
 }
