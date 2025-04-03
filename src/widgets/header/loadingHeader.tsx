@@ -1,7 +1,7 @@
 'use client'
 import { useSelector } from 'react-redux'
 import { Header } from '@/shared/ui/Header/Header'
-import { selectAppStatus } from '@/app/redux/loadingSlice'
+import { selectAppStatus } from '@/app/redux/appSlice'
 import LinearProgres from '@/shared/ui/Linear/LinearProgres'
 
 const LoadingHeader = () => {

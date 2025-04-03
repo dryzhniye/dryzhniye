@@ -9,7 +9,7 @@ import { useLoginMutation, useMeQuery } from '../api/authApi'
 import s from './sign-in.module.scss'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
-import { setAppStatus } from '@/app/redux/loadingSlice'
+import { setAppStatus } from '@/app/redux/appSlice'
 import { useEffect } from 'react'
 
 type LoginArgs = {
@@ -17,9 +17,9 @@ type LoginArgs = {
   password: string
 }
 
-export default function LoginPage() {
+export default function Page() {
   const [login] = useLoginMutation()
-  const { data: userData, refetch } = useMeQuery()
+  const { data: userData, refetch } = useMeQuery() // todo не входит с непр паролем
   const router = useRouter()
   const dispatch = useDispatch()
 
@@ -37,7 +37,7 @@ export default function LoginPage() {
     dispatch(setAppStatus('loading'))
 
     refetch().then(() => {
-      dispatch(setAppStatus('succeeded'))
+      dispatch(setAppStatus('succeeded'))//todo чо эта
     })
   }, [])
 
@@ -63,7 +63,7 @@ export default function LoginPage() {
         const { data: freshUserData } = await refetch()
 
         if (freshUserData?.userId) {
-          router.push(`users/profile/${freshUserData.userId}`)
+          router.push(`/users/profile/${freshUserData.userId}`)
           dispatch(setAppStatus('succeeded'))
         }
       } catch (error) {
@@ -150,7 +150,7 @@ export default function LoginPage() {
           variant={'link'}
           asChild={'a'}
           title="Forgot Password"
-          href={'/forgot-password'}
+          href={'/auth/forgot-password'}
         />
 
         <Button title="Sign In" width={'100%'} disabled={!isValid} type="submit" />

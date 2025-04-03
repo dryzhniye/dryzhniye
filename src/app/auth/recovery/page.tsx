@@ -1,7 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import s from '@/app/auth/forgot-password/forgot-password.module.scss'
-import { Header } from '@/shared/ui/Header/Header'
 import Input from '@/shared/ui/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '@/shared/ui/Button/Button'

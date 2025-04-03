@@ -11,7 +11,7 @@ import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
-import { setAppStatus } from '@/app/redux/loadingSlice'
+import { setAppStatus } from '@/app/redux/appSlice'
 
 type Input = {
   email: string
@@ -30,7 +30,7 @@ export type Error = {
   }
 }
 
-export default function LoginPage() {
+export default function Page() {
   const [linkModal, setLinkModal] = useState<string | boolean>(false)
 
   const {
