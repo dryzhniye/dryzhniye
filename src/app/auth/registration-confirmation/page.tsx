@@ -2,11 +2,10 @@
 
 import s from './registration-confirmation.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
-import { Header } from '@/shared/ui/Header/Header'
 import Image from 'next/image'
 import { useConfirmationMutation } from '@/app/auth/api/authApi'
 import React, { useEffect, useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
 

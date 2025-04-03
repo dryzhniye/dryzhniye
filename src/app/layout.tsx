@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Roboto } from 'next/font/google'
 import './globals.css'
 import StoreProvider from '@/app/StoreProvider'
-import LoadingHeader from '@/app/auth/loading/loadingHeader'
+import LoadingHeader from '@/widgets/header/loadingHeader'
 
 const inter = Inter({
   variable: '--font-inter',
