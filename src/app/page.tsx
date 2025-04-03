@@ -1,3 +1,4 @@
+import LoginPage from '@/app/auth/sign-up/page'
 import { DatePicker } from '@/shared/ui/DatePicker'
 import { Scrollbar } from '@/shared/ui/Scrollbar/Scrollbar'
 import { Sidebar } from '@/shared/ui/Sidebar/Sidebar'
@@ -46,6 +47,7 @@ export default function Home() {
           </div>
         </Scrollbar>
       </div>
+      <LoginPage />
       <Sidebar />
     </>
   )
