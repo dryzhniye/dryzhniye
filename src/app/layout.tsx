@@ -3,6 +3,7 @@ import { Inter, Roboto } from 'next/font/google'
 import './globals.css'
 import StoreProvider from '@/app/StoreProvider'
 import LoadingHeader from '@/widgets/header/loadingHeader'
+import { AppInitializer } from '@/app/AppInitializer'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -22,18 +23,20 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
     <html lang="ru">
-      <body className={`${inter.variable} ${roboto.variable}`}>
-        <StoreProvider>
-          <LoadingHeader />
-          {children}
-        </StoreProvider>
-      </body>
+    <body className={`${inter.variable} ${roboto.variable}`}>
+    <StoreProvider>
+      <AppInitializer>
+        <LoadingHeader />
+        {children}
+      </AppInitializer>
+    </StoreProvider>
+    </body>
     </html>
   )
 }

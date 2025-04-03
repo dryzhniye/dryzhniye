@@ -5,7 +5,7 @@ export const baseApi = createApi({
     const result = await fetchBaseQuery({
       baseUrl: 'https://dryzhniye.ru/api/v1/',
       prepareHeaders: headers => {
-        // добавить токен
+        headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`)
       },
 
     })(args, api, extraOptions)
