@@ -1,5 +1,4 @@
 'use client'
-import { Header } from '@/shared/ui/Header/Header'
 import s from './forgot-password.module.scss'
 import Input from '@/shared/ui/Input/Input'
 import { Button } from '@/shared/ui/Button/Button'
@@ -8,6 +7,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useResetPasswordMutation } from '@/app/auth/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
+import { useDispatch } from 'react-redux'
+import { setAppStatus } from '@/app/redux/loadingSlice'
 
 type ResetPasswordArgs = {
   email: string
@@ -28,13 +29,16 @@ export default function ForgotPassword() {
   const [isMailSent, setIsMailSent] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const dispatch = useDispatch()
 
   const [resetPassword] = useResetPasswordMutation()
 
-  const onSubmit: SubmitHandler<ResetPasswordArgs> = async (data) => {
+  const onSubmit: SubmitHandler<ResetPasswordArgs> = async data => {
     if (!captchaToken) {
       return
     }
+
+    dispatch(setAppStatus('loading'))
 
     try {
       await resetPassword({
@@ -48,13 +52,16 @@ export default function ForgotPassword() {
 
       setShowModal(data.email)
     } catch (error) {
-      const apiError = (error as {
-        data?: {
-          statusCode: number;
-          messages: Array<{ message: string; field: string }>;
-          error: string;
+      dispatch(setAppStatus('failed'))
+      const apiError = (
+        error as {
+          data?: {
+            statusCode: number
+            messages: Array<{ message: string; field: string }>
+            error: string
+          }
         }
-      }).data
+      ).data
 
       setError('email', {
         type: 'manual',
@@ -69,34 +76,66 @@ export default function ForgotPassword() {
 
   return (
     <div>
-      <Header isLoggedIn={true} />
       <form onSubmit={handleSubmit(onSubmit)} className={s.block}>
         <h1 className={s.title}>Forgot Password</h1>
-        <Input label={'Email'} placeholder={'Epam@epam.com'} width={'100%'}
-               error={errors.email?.message} {...register('email', {
-          required: 'Email is required',
-          pattern: {
-            value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-            message: 'Incorrect email address',
-          },
-        })} />
-        <p className={s.label}>Enter your email address and we will send you further instructions</p>
-        {isMailSent && <p className={s.paragraph}>The link has been sent by email.
-          If you don’t receive an email send link again</p>}
-        <Button title={'Send Link'} width={'100%'} disabled={!captchaToken || !isValid || !isDirty} />
-        <Button title={'Back to Sign In'} variant={'link'} asChild={'a'} width={'100%'}
-                className={s.button + ' ' + s.link} href={'/sign-in'} />
-        {!isMailSent && <Recaptcha
-          sitekey="6Lckav8qAAAAAIr3zUA1Z8DTqPe8ZQgbjU3khpAI"
-          onChange={handleCaptchaChange}
-          theme="dark"
-        />}
+        <Input
+          label={'Email'}
+          placeholder={'Epam@epam.com'}
+          width={'100%'}
+          error={errors.email?.message}
+          {...register('email', {
+            required: 'Email is required',
+            pattern: {
+              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: 'Incorrect email address',
+            },
+          })}
+        />
+        <p className={s.label}>
+          Enter your email address and we will send you further instructions
+        </p>
+        {isMailSent && (
+          <p className={s.paragraph}>
+            The link has been sent by email. If you don’t receive an email send link again
+          </p>
+        )}
+        <Button
+          title={'Send Link'}
+          width={'100%'}
+          disabled={!captchaToken || !isValid || !isDirty}
+        />
+        <Button
+          title={'Back to Sign In'}
+          variant={'link'}
+          asChild={'a'}
+          width={'100%'}
+          className={s.button + ' ' + s.link}
+          href={'/sign-in'}
+        />
+        {!isMailSent && (
+          <Recaptcha
+            sitekey="6Lckav8qAAAAAIr3zUA1Z8DTqPe8ZQgbjU3khpAI"
+            onChange={handleCaptchaChange}
+            theme="dark"
+          />
+        )}
       </form>
-      <Modal open={!!showModal} onClose={() => setShowModal(null)} modalTitle={'Email sent'} width={'378px'} height={'228px'}>
+      <Modal
+        open={!!showModal}
+        onClose={() => setShowModal(null)}
+        modalTitle={'Email sent'}
+        width={'378px'}
+        height={'228px'}
+      >
         <p>We have sent a link to confirm your email to {showModal}</p>
         <div className={s.Description}>
           <div className={s.buttonGroup + ' ' + s.buttonGroupEnd}>
-            <Button variant={'primary'} title={'OK'} onClick={() => setShowModal(null)} width={'96px'}/>
+            <Button
+              variant={'primary'}
+              title={'OK'}
+              onClick={() => setShowModal(null)}
+              width={'96px'}
+            />
           </div>
         </div>
       </Modal>
