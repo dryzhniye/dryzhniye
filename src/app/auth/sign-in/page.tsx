@@ -1,7 +1,6 @@
 'use client'
 import { Button } from '@/shared/ui/Button/Button'
 import Cards from '@/shared/ui/Cards/Cards'
-import { Header } from '@/shared/ui/Header/Header'
 import Input from '@/shared/ui/Input/Input'
 import { Typography } from '@/shared/ui/Typography'
 import Link from 'next/link'
@@ -9,6 +8,9 @@ import { useForm } from 'react-hook-form'
 import { useLoginMutation, useMeQuery } from '../api/authApi'
 import s from './sign-in.module.scss'
 import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
+import { setAppStatus } from '@/app/redux/loadingSlice'
+import { useEffect } from 'react'
 
 type LoginArgs = {
   email: string
@@ -19,6 +21,7 @@ export default function LoginPage() {
   const [login] = useLoginMutation()
   const { data: userData, refetch } = useMeQuery()
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const {
     register,
@@ -30,7 +33,17 @@ export default function LoginPage() {
     defaultValues: { email: '', password: '' },
   })
 
+  useEffect(() => {
+    dispatch(setAppStatus('loading'))
+
+    refetch().then(() => {
+      dispatch(setAppStatus('succeeded'))
+    })
+  }, [])
+
   const onSubmit = async (data: LoginArgs) => {
+    dispatch(setAppStatus('loading'))
+
     if (!data.email || !data.password) {
       setError('password', {
         type: 'manual',
@@ -38,6 +51,8 @@ export default function LoginPage() {
       })
     } else {
       try {
+        dispatch(setAppStatus('loading'))
+
         const response = await login({
           email: data.email,
           password: data.password,
@@ -49,6 +64,7 @@ export default function LoginPage() {
 
         if (freshUserData?.userId) {
           router.push(`users/profile/${freshUserData.userId}`)
+          dispatch(setAppStatus('succeeded'))
         }
       } catch (error) {
         const apiError = (
@@ -76,8 +92,6 @@ export default function LoginPage() {
 
   return (
     <>
-      <Header isLoggedIn={true} />
-
       <Cards className={s.card} onSubmit={handleSubmit(onSubmit)}>
         <Typography className={s.sign}>Sign In</Typography>
 

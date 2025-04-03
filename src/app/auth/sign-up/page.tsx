@@ -1,16 +1,17 @@
 'use client'
 
-import { Header } from '@/shared/ui/Header/Header'
 import s from './signUp.module.scss'
 import Input from '@/shared/ui/Input/Input'
 import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
 import { Button } from '@/shared/ui/Button/Button'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useRegistrationMutation } from '@/app/auth/api/authApi'
 import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useDispatch } from 'react-redux'
+import { setAppStatus } from '@/app/redux/loadingSlice'
 
 type Input = {
   email: string
@@ -52,9 +53,12 @@ export default function LoginPage() {
   })
 
   const [registration] = useRegistrationMutation()
+  const dispatch = useDispatch()
 
   const onSubmit: SubmitHandler<Input> = async data => {
     try {
+      dispatch(setAppStatus('loading'))
+
       await registration({
         email: data.email,
         password: data.password,
@@ -70,8 +74,10 @@ export default function LoginPage() {
       })
 
       setLinkModal(false)
+      dispatch(setAppStatus('succeeded'))
       setLinkModal(data.email)
     } catch (error) {
+      dispatch(setAppStatus('succeeded'))
       const err = error as Error
       if (err.data.statusCode === 400 && err.data.messages.length > 0) {
         const message = err.data.messages[0].message.toLowerCase()
@@ -91,7 +97,6 @@ export default function LoginPage() {
 
   return (
     <div>
-      <Header isLoggedIn={false} />
       <form className={s.block} onSubmit={handleSubmit(onSubmit)}>
         <h1 style={{ color: 'var(--light-100)', fontSize: '20px' }}>Sign Up</h1>
 

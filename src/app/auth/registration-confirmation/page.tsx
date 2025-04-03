@@ -36,7 +36,6 @@ const Page = () => {
 
   return (
     <div>
-      <Header isLoggedIn={true} />
       <div className={s.container}>
         <h1>Congratulations!</h1>
         <p className={s.text}>Your email has been confirmed</p>
