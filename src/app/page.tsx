@@ -2,7 +2,6 @@ import { DatePicker } from '@/shared/ui/DatePicker'
 import { Scrollbar } from '@/shared/ui/Scrollbar/Scrollbar'
 import { Sidebar } from '@/shared/ui/Sidebar/Sidebar'
 import { Typography } from '@/shared/ui/Typography/Typography'
-import Input from '@/shared/ui/Input/Input'
 import s from './page.module.scss'
 
 export default function Home() {
@@ -46,11 +45,6 @@ export default function Home() {
             </div>
           </div>
         </Scrollbar>
-      </div>
-      <div>
-        <Input type="text" label="Имя" placeholder="Введите имя" />
-        <Input type="search" label="Поиск" placeholder="Найти..." iconPosition="start" />
-        <Input type="password" label="Пароль" placeholder="Введите пароль" />
       </div>
       <Sidebar />
     </>

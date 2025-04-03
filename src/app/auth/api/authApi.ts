@@ -55,16 +55,7 @@ export const authApi = baseApi.injectEndpoints({
         body: args,
       }),
     }),
-    me: build.query<{ userId: number; userName: string; email: string; isBlocked: boolean }, void>({
-      query: () => ({
-        url: 'auth/me',
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      }),
-    }),
-    logout: build.mutation({
+    logout: build.mutation<void, void>({
       query: () => ({
         url: 'auth/logout',
         method: 'POST',
@@ -92,9 +83,9 @@ export const {
   useCheckRecoveryCodeMutation,
   useResendRecoveryCodeMutation,
   useCreateNewPasswordMutation,
+  useLogoutMutation,
   useLoginMutation,
   useRegistrationMutation,
   useConfirmationMutation,
   useResetEmailMutation,
-  useMeQuery,
 } = authApi
