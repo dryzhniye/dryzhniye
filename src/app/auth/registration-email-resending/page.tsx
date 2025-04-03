@@ -47,7 +47,6 @@ const ResetEmailPage = () => {
 
   return (
     <div>
-      <Header isLoggedIn={true} />
       <div className={s.container}>
         <h1>Email verification link expired</h1>
         <p className={s.text}>
@@ -85,7 +84,7 @@ const ResetEmailPage = () => {
           style={{ marginTop: '72px' }}
         />
       </div>
-      <Modal open={modal} modalTitle={'Email sent'} onClose={() => setModal(false)}>
+      <Modal open={!!modal} modalTitle={'Email sent'} onClose={() => setModal(false)}>
         <p style={{ marginBottom: '24px' }}>Confirmation link sent to email {modal}</p>
         <Button title={'OK'} onClick={() => setModal(false)} />
       </Modal>
