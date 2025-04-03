@@ -188,8 +188,8 @@ export default function LoginPage() {
 
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <Controller
-            name="rememberMe"
             control={control}
+            {...register('rememberMe', { required: true })}
             render={({ field }) => (
               <CheckBox checked={field.value} onChange={checked => field.onChange(checked)} />
             )}
