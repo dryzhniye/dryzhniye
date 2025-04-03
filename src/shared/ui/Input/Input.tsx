@@ -83,10 +83,10 @@ const Input: React.FC<InputProps> = ({
           disabled={disabled}
           onKeyDown={onPressHandler}
           onChange={onChangeHandler}
-          className={`${s.input} 
-            ${error ? s.inputError : ''} 
-            ${disabled ? s.inputDisabled : ''} 
-            ${getIconSrc() && iconPosition === 'start' ? s.withIconStart : ''} 
+          className={`${s.input}
+            ${error ? s.inputError : ''}
+            ${disabled ? s.inputDisabled : ''}
+            ${getIconSrc() && iconPosition === 'start' ? s.withIconStart : ''}
             ${getIconSrc() && iconPosition === 'end' ? s.withIconEnd : ''}`}
           style={{ backgroundColor: 'inherit' }}
         />
