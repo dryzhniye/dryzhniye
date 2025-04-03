@@ -63,7 +63,7 @@ export default function Page() {
         const { data: freshUserData } = await refetch()
 
         if (freshUserData?.userId) {
-          router.push(`users/profile/${freshUserData.userId}`)
+          router.push(`/users/profile/${freshUserData.userId}`)
           dispatch(setAppStatus('succeeded'))
         }
       } catch (error) {
