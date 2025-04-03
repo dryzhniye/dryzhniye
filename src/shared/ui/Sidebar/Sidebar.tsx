@@ -1,6 +1,5 @@
 'use client'
-// import { useAppSelector } from '@/app/appHooks'
-import { useLogoutMutation } from '@/app/auth/api/authApi'
+import { useLogoutMutation, useMeQuery } from '@/app/auth/api/authApi'
 import { Button } from '@/shared/ui/Button/Button'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useRouter } from 'next/navigation'
@@ -66,7 +65,7 @@ export const Sidebar = ({ disabledIcon }: Props) => {
   const [activeItem, setActiveItem] = useState('home')
   const [showModal, setShowModal] = useState(false)
   const [logout] = useLogoutMutation()
-  // const email = useAppSelector(state => state)
+  const { data: userData } = useMeQuery()
   const router = useRouter()
 
   const activeItems = (value: string) => {
@@ -77,9 +76,11 @@ export const Sidebar = ({ disabledIcon }: Props) => {
     try {
       await logout().unwrap()
       router.push('/sign-in')
-      // localStorage.removeItem(AUTH_TOKEN)
+      localStorage.removeItem('token')
     } catch (error) {
       console.error('Logout failed:', error)
+    } finally {
+      setShowModal(false)
     }
   }
 
@@ -149,7 +150,7 @@ export const Sidebar = ({ disabledIcon }: Props) => {
       </button>
       {showModal && (
         <Modal open={showModal} onClose={() => setShowModal(false)} modalTitle={'Log Out'}>
-          <p>Are you sure you want to log out {'email'}?</p>
+          <p>Are you sure you want to log out {userData?.email}?</p>
           <div className={s.Description}>
             <div className={`${s.buttonGroup} ${s.buttonGroup_end}`}>
               <Button variant={'outlined'} title={'Yes'} onClick={logoutHandler} />
