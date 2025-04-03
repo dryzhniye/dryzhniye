@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { useResetPasswordMutation } from '@/app/auth/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useDispatch } from 'react-redux'
-import { setAppStatus } from '@/app/redux/loadingSlice'
+import { setAppStatus } from '@/app/redux/appSlice'
 
 type ResetPasswordArgs = {
   email: string
