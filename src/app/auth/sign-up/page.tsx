@@ -196,11 +196,11 @@ export default function LoginPage() {
           />
           <span style={{ color: 'var(--light-100)', fontSize: '12px' }}>
             I agree to the{' '}
-            <Link href={'#'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={'/auth/terms-of-service'} style={{ color: 'var(--accent-700)' }}>
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href={'#'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={'/auth/privacy-policy'} style={{ color: 'var(--accent-700)' }}>
               Privacy Policy
             </Link>
           </span>
