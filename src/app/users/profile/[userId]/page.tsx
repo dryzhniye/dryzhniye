@@ -1,6 +1,6 @@
 import { Sidebar } from '@/shared/ui/Sidebar/Sidebar'
 
-const Profile = () => { //todo why users in auth?
+const Profile = () => {
   return (
     <>
       <Sidebar />

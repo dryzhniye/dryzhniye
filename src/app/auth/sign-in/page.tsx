@@ -19,7 +19,7 @@ type LoginArgs = {
 
 export default function Page() {
   const [login] = useLoginMutation()
-  const { data: userData, refetch } = useMeQuery() // todo не входит с непр паролем и logout not working
+  const { data: userData, refetch } = useMeQuery() // todo не входит с непр паролем
   const router = useRouter()
   const dispatch = useDispatch()
 
