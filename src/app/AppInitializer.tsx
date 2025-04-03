@@ -10,8 +10,6 @@ export const AppInitializer = ({ children }: { children: React.ReactNode }) => {
 
   const { data, isLoading } = useMeQuery()
 
-  console.log(data)
-
   const dispatch = useAppDispatch()
 
   useEffect(() => {
