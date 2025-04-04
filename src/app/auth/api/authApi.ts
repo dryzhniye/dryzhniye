@@ -68,7 +68,9 @@ export const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: 'auth/logout',
         method: 'POST',
+        credentials: 'include',
       }),
+      invalidatesTags: ['Auth'],
     }),
     confirmation: build.mutation<void, { confirmationCode: string }>({
       query: args => ({

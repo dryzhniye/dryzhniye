@@ -7,13 +7,14 @@ import { Button } from '@/shared/ui/Button/Button'
 import { redirect, useRouter, useSearchParams } from 'next/navigation'
 import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/app/auth/api/authApi'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
+import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
 
 type createPasswordArgs = {
   password1: string
   password2: string
 }
 
-export default function Recovery() {
+function Recovery() {
   const {
     register,
     handleSubmit,
@@ -139,3 +140,4 @@ export default function Recovery() {
     </div>
   )
 }
+export default withAuthRedirect(Recovery)

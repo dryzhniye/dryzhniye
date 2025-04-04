@@ -6,8 +6,9 @@ import s from './recovery-resending.module.scss'
 import { useSearchParams } from 'next/navigation'
 import { useResendRecoveryCodeMutation } from '@/app/auth/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
+import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
 
-export default function RecoveryResending() {
+function RecoveryResending() {
   const searchParams = useSearchParams()
   const email = searchParams.get('email')
 
@@ -59,3 +60,4 @@ export default function RecoveryResending() {
     </div>
   )
 }
+export default withAuthRedirect(RecoveryResending)

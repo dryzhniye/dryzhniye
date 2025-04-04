@@ -8,27 +8,29 @@ import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
+import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
 
 const Page = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
-  const email = searchParams.get('email')
   const [isInitialized, setIsInitialized] = useState(false)
 
   const [confirmRegistration] = useConfirmationMutation()
 
   useEffect(() => {
-    if (!code) return
-
-    confirmRegistration({ confirmationCode: code })
-      .unwrap()
-      .then(() => {
-        setIsInitialized(true)
-      })
-      .catch(error => {
-        router.push('/auth/registration-email-resending?email=' + email)
-      })
+    if (!code) {
+      router.push('auth/sign-in')
+    } else {
+      confirmRegistration({ confirmationCode: code })
+        .unwrap()
+        .then(() => {
+          setIsInitialized(true)
+        })
+        .catch(error => {
+          router.push('/auth/registration-email-resending?email=')
+        })
+    }
   }, [code, confirmRegistration, router])
 
   if (!isInitialized) return <RecoverySkeleton />
@@ -53,4 +55,4 @@ const Page = () => {
   )
 }
 
-export default Page
+export default withAuthRedirect(Page)

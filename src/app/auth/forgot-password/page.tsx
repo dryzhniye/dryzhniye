@@ -7,14 +7,13 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useResetPasswordMutation } from '@/app/auth/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
-import { useDispatch } from 'react-redux'
-import { setAppStatus } from '@/app/redux/appSlice'
+import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
 
 type ResetPasswordArgs = {
   email: string
 }
 
-export default function ForgotPassword() {
+function ForgotPassword() {
   const {
     register,
     handleSubmit,
@@ -29,7 +28,6 @@ export default function ForgotPassword() {
   const [isMailSent, setIsMailSent] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const dispatch = useDispatch()
 
   const [resetPassword] = useResetPasswordMutation()
 
@@ -37,8 +35,6 @@ export default function ForgotPassword() {
     if (!captchaToken) {
       return
     }
-
-    dispatch(setAppStatus('loading'))
 
     try {
       await resetPassword({
@@ -52,7 +48,6 @@ export default function ForgotPassword() {
 
       setShowModal(data.email)
     } catch (error) {
-      dispatch(setAppStatus('failed'))
       const apiError = (
         error as {
           data?: {
@@ -142,3 +137,4 @@ export default function ForgotPassword() {
     </div>
   )
 }
+export default withAuthRedirect(ForgotPassword)
