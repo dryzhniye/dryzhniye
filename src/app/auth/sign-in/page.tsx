@@ -5,14 +5,14 @@ import Input from '@/shared/ui/Input/Input'
 import { Typography } from '@/shared/ui/Typography'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { useLoginMutation, useMeQuery } from '../api/authApi'
+import { useLoginMutation } from '@/lib/api/authApi'
 import s from './sign-in.module.scss'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { ErrorType } from '../sign-up/page'
-import { setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
-import { useAppDispatch } from '@/app/appHooks'
-import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
+import { selectAppEmail } from '@/app/redux/appSlice'
+import { useAppSelector } from '@/lib/hooks/appHooks'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 type LoginArgs = {
   email: string
@@ -21,9 +21,9 @@ type LoginArgs = {
 
 function Page() {
   const [login] = useLoginMutation()
-  const { data: userData, refetch } = useMeQuery()
   const router = useRouter()
-  const dispatch = useAppDispatch()
+  const email = useAppSelector(selectAppEmail)
+  useRedirectIfAuthorized()
 
   const {
     register,
@@ -43,24 +43,13 @@ function Page() {
       })
     } else {
       try {
-        const response = await login({
+        await login({
           email: data.email,
           password: data.password,
         }).unwrap()
 
-        if (userData) {
-          debugger
-          dispatch(setIsLoggedIn(true))
-          dispatch(setAppEmail(userData.email))
-        }
+        router.push(`../users/profile/${email}`)
 
-        localStorage.setItem('token', response.accessToken)
-
-        const { data: freshUserData } = await refetch()
-
-        if (freshUserData?.userId) {
-          router.push(`../users/profile/${freshUserData.userId}`)
-        }
       } catch (error) {
         const err = error as ErrorType<string>
 
@@ -130,7 +119,7 @@ function Page() {
                 /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
               message:
                 'Password must contain 0-9, a-z, A-Z, ! "\n' +
-                "# $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n" +
+                '# $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n' +
                 '_ { | } ~',
             },
           })}
@@ -160,4 +149,5 @@ function Page() {
     </>
   )
 }
-export default withAuthRedirect(Page)
+
+export default Page

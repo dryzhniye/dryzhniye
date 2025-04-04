@@ -5,9 +5,9 @@ import { Button } from '@/shared/ui/Button/Button'
 import { Recaptcha } from '@/shared/ui/Recaptcha/Recaptcha'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
-import { useResetPasswordMutation } from '@/app/auth/api/authApi'
+import { useResetPasswordMutation } from '@/lib/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
-import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 type ResetPasswordArgs = {
   email: string
@@ -28,6 +28,8 @@ function ForgotPassword() {
   const [isMailSent, setIsMailSent] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+
+  useRedirectIfAuthorized()
 
   const [resetPassword] = useResetPasswordMutation()
 
@@ -137,4 +139,4 @@ function ForgotPassword() {
     </div>
   )
 }
-export default withAuthRedirect(ForgotPassword)
+export default ForgotPassword

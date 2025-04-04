@@ -2,8 +2,8 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useMeQuery } from '@/app/auth/api/authApi'
-import { useAppDispatch } from '@/app/appHooks'
+import { useMeQuery } from '@/lib/api/authApi'
+import { useAppDispatch } from '@/lib/hooks/appHooks'
 import { setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
 
 export const AppInitializer = ({ children }: { children: React.ReactNode }) => {
