@@ -1,16 +1,15 @@
 'use client'
-
 import s from './signUp.module.scss'
 import Input from '@/shared/ui/Input/Input'
 import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
 import { Button } from '@/shared/ui/Button/Button'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { useRegistrationMutation } from '@/app/auth/api/authApi'
+import { useRegistrationMutation } from '@/lib/api/authApi'
 import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
-import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 type Input = {
   email: string
@@ -31,6 +30,8 @@ export type ErrorType<T = [{ message: string }]> = {
 
 function Page() {
   const [linkModal, setLinkModal] = useState<string | boolean>(false)
+
+  useRedirectIfAuthorized()
 
   const {
     register,
@@ -204,7 +205,7 @@ function Page() {
 
         <p style={{ color: 'var(--light-100)', fontSize: '16px' }}>Do you have an account?</p>
 
-        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} />
+        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} href={'/auth/sign-in'}/>
       </form>
       <Modal open={!!linkModal} modalTitle={'Email sent'} onClose={() => setLinkModal(false)}>
         <p style={{ marginBottom: '20px' }}>
@@ -220,4 +221,4 @@ function Page() {
     </div>
   )
 }
-export default withAuthRedirect(Page)
+export default Page

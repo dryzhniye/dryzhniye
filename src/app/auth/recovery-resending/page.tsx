@@ -4,13 +4,15 @@ import Image from 'next/image'
 import { Button } from '@/shared/ui/Button/Button'
 import s from './recovery-resending.module.scss'
 import { useSearchParams } from 'next/navigation'
-import { useResendRecoveryCodeMutation } from '@/app/auth/api/authApi'
+import { useResendRecoveryCodeMutation } from '@/lib/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
-import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 function RecoveryResending() {
   const searchParams = useSearchParams()
   const email = searchParams.get('email')
+
+  useRedirectIfAuthorized()
 
   const [resendRecoveryCode] = useResendRecoveryCodeMutation()
   const [showModal, setShowModal] = useState<string | null>(null)
@@ -60,4 +62,4 @@ function RecoveryResending() {
     </div>
   )
 }
-export default withAuthRedirect(RecoveryResending)
+export default RecoveryResending

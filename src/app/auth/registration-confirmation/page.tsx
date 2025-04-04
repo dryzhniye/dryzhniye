@@ -1,14 +1,13 @@
 'use client'
-
 import s from './registration-confirmation.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
 import Image from 'next/image'
-import { useConfirmationMutation } from '@/app/auth/api/authApi'
+import { useConfirmationMutation } from '@/lib/api/authApi'
 import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
-import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 const Page = () => {
   const router = useRouter()
@@ -17,6 +16,7 @@ const Page = () => {
   const [isInitialized, setIsInitialized] = useState(false)
 
   const [confirmRegistration] = useConfirmationMutation()
+  useRedirectIfAuthorized()
 
   useEffect(() => {
     if (!code) {
@@ -27,7 +27,7 @@ const Page = () => {
         .then(() => {
           setIsInitialized(true)
         })
-        .catch(error => {
+        .catch(() => {
           router.push('/auth/registration-email-resending?email=')
         })
     }
@@ -55,4 +55,4 @@ const Page = () => {
   )
 }
 
-export default withAuthRedirect(Page)
+export default Page

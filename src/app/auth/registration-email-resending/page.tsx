@@ -1,14 +1,13 @@
 'use client'
-
 import s from '@/app/auth/registration-confirmation/registration-confirmation.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
 import Image from 'next/image'
 import Input from '@/shared/ui/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useResetEmailMutation } from '@/app/auth/api/authApi'
+import { useResetEmailMutation } from '@/lib/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useState } from 'react'
-import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 type Input = {
   email: string
@@ -28,6 +27,7 @@ const ResetEmailPage = () => {
       email: '',
     },
   })
+  useRedirectIfAuthorized()
 
   const [resetEmail] = useResetEmailMutation()
 
@@ -90,4 +90,4 @@ const ResetEmailPage = () => {
   )
 }
 
-export default withAuthRedirect(ResetEmailPage)
+export default ResetEmailPage
