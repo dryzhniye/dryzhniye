@@ -23,20 +23,20 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-                                     children,
-                                   }: Readonly<{
+  children,
+}: Readonly<{
   children: React.ReactNode
 }>) {
   return (
     <html lang="ru">
-    <body className={`${inter.variable} ${roboto.variable}`}>
-    <StoreProvider>
-      <AppInitializer>
-        <LoadingHeader />
-        {children}
-      </AppInitializer>
-    </StoreProvider>
-    </body>
+      <body className={`${inter.variable} ${roboto.variable}`}>
+        <StoreProvider>
+          <AppInitializer>
+            <LoadingHeader />
+            {children}
+          </AppInitializer>
+        </StoreProvider>
+      </body>
     </html>
   )
 }

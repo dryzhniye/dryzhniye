@@ -8,20 +8,22 @@ import { useForm } from 'react-hook-form'
 import { useLoginMutation, useMeQuery } from '../api/authApi'
 import s from './sign-in.module.scss'
 import { useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
-import { setAppStatus } from '@/app/redux/appSlice'
-import { useEffect } from 'react'
+import Image from 'next/image'
+import { ErrorType } from '../sign-up/page'
+import { setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
+import { useAppDispatch } from '@/app/appHooks'
+import { withAuthRedirect } from '@/lib/hooks/hoc/withAuthRedirect'
 
 type LoginArgs = {
   email: string
   password: string
 }
 
-export default function Page() {
+function Page() {
   const [login] = useLoginMutation()
-  const { data: userData, refetch } = useMeQuery() // todo не входит с непр паролем
+  const { data: userData, refetch } = useMeQuery()
   const router = useRouter()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const {
     register,
@@ -33,17 +35,7 @@ export default function Page() {
     defaultValues: { email: '', password: '' },
   })
 
-  useEffect(() => {
-    dispatch(setAppStatus('loading'))
-
-    refetch().then(() => {
-      dispatch(setAppStatus('succeeded'))//todo чо эта
-    })
-  }, [])
-
   const onSubmit = async (data: LoginArgs) => {
-    dispatch(setAppStatus('loading'))
-
     if (!data.email || !data.password) {
       setError('password', {
         type: 'manual',
@@ -51,41 +43,38 @@ export default function Page() {
       })
     } else {
       try {
-        dispatch(setAppStatus('loading'))
-
         const response = await login({
           email: data.email,
           password: data.password,
         }).unwrap()
+
+        if (userData) {
+          debugger
+          dispatch(setIsLoggedIn(true))
+          dispatch(setAppEmail(userData.email))
+        }
 
         localStorage.setItem('token', response.accessToken)
 
         const { data: freshUserData } = await refetch()
 
         if (freshUserData?.userId) {
-          router.push(`/users/profile/${freshUserData.userId}`)
-          dispatch(setAppStatus('succeeded'))
+          router.push(`../users/profile/${freshUserData.userId}`)
         }
       } catch (error) {
-        const apiError = (
-          error as {
-            data?: {
-              statusCode: number
-              messages: Array<{ message: string; field: string }>
-              error: string
-            }
-          }
-        ).data
+        const err = error as ErrorType<string>
 
-        if (apiError?.statusCode === 401) {
+        if (err.data.statusCode === 400) {
+          const errorMessage = err.data.messages
+          if (errorMessage.includes('password or email')) {
+            setError('email', { type: 'manual', message: errorMessage })
+          }
+        }
+
+        if (err.data.statusCode === 401) {
           router.push('/sign-up')
           return
         }
-
-        setError('password', {
-          type: 'manual',
-          message: apiError?.messages[0].message,
-        })
       }
     }
   }
@@ -93,14 +82,16 @@ export default function Page() {
   return (
     <>
       <Cards className={s.card} onSubmit={handleSubmit(onSubmit)}>
-        <Typography className={s.sign}>Sign In</Typography>
+        <Typography className={s.sign} variant={'h1'}>
+          Sign In
+        </Typography>
 
         <div className={s.alternativeAuthorisations}>
           <Link href="https://www.google.com" passHref>
-            <img src="/google.svg" alt="Google" width={36} height={36} />
+            <Image src="/google.svg" alt="Google" width={36} height={36} />
           </Link>
           <Link href="https://www.github.com" passHref>
-            <img src="/gitHub.svg" alt="Git Hub" width={36} height={36} />
+            <Image src="/gitHub.svg" alt="Git Hub" width={36} height={36} />
           </Link>
         </div>
 
@@ -156,8 +147,17 @@ export default function Page() {
         <Button title="Sign In" width={'100%'} disabled={!isValid} type="submit" />
 
         <Typography className={s.account}>Don’t have an account?</Typography>
-        <Button title={'Sign Up'} variant={'link'} asChild={'a'} width={'100%'} href={'/sign-up'} />
+        <Link href={'/auth/sign-up'}>
+          <Button
+            title={'Sign Up'}
+            variant={'link'}
+            asChild={'a'}
+            width={'100%'}
+            href={'/sign-up'}
+          />
+        </Link>
       </Cards>
     </>
   )
 }
+export default withAuthRedirect(Page)
