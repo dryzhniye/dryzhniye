@@ -3,7 +3,6 @@ import { Button } from '@/shared/ui/Button/Button'
 import Cards from '@/shared/ui/Cards/Cards'
 import Input from '@/shared/ui/Input/Input'
 import { Typography } from '@/shared/ui/Typography'
-import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { useLoginMutation, useMeQuery } from '../api/authApi'
 import s from './sign-in.module.scss'
@@ -11,6 +10,8 @@ import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { setAppStatus } from '@/app/redux/appSlice'
 import { useEffect } from 'react'
+import Image from 'next/image'
+import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
 
 type LoginArgs = {
   email: string
@@ -96,12 +97,12 @@ export default function Page() {
         <Typography className={s.sign}>Sign In</Typography>
 
         <div className={s.alternativeAuthorisations}>
-          <Link href="https://www.google.com" passHref>
-            <img src="/google.svg" alt="Google" width={36} height={36} />
-          </Link>
-          <Link href="https://www.github.com" passHref>
-            <img src="/gitHub.svg" alt="Git Hub" width={36} height={36} />
-          </Link>
+          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }} type="button" onClick={handleGoogleAuth}>
+            <Image src="/google.svg" alt="" width={34} height={34} />
+          </button>
+          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }} type="button" onClick={handleGithubAuth}>
+            <Image src="/github.svg" alt="" width={34} height={34} />
+          </button>
         </div>
 
         <Input

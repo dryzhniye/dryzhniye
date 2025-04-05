@@ -84,7 +84,7 @@ export const authApi = baseApi.injectEndpoints({
         body: { ...args, baseUrl },
       }),
     }),
-    googleLogin: build.mutation<any, { redirectUrl: string; code: string }>({
+    googleLogin: build.mutation<{ accessToken: string; email: string }, { redirectUrl: string; code: string }>({
       query: ({ redirectUrl, code }) => ({
         url: 'auth/google/login',
         method: 'POST',
@@ -94,18 +94,10 @@ export const authApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    githubAuth: build.query<void, string>({
-      query: (redirectUrl) => ({
-        url: `auth/github/login?redirect_url=${encodeURIComponent(redirectUrl)}`,
-        method: 'GET',
-      }),
-    }),
     updateTokens: build.mutation<{ accessToken: string }, void>({
       query: () => ({
         url: 'auth/update-tokens',
         method: 'POST',
-        // If the endpoint requires the refresh token in a cookie,
-        // make sure your baseApi includes credentials: 'include'
       }),
     }),
   }),
@@ -123,6 +115,5 @@ export const {
   useResetEmailMutation,
   useMeQuery,
   useGoogleLoginMutation,
-  useGithubAuthQuery,
   useUpdateTokensMutation,
 } = authApi

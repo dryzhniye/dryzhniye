@@ -5,17 +5,14 @@ import Input from '@/shared/ui/Input/Input'
 import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
 import { Button } from '@/shared/ui/Button/Button'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { useGithubAuthQuery, useGoogleAuthMutation, useRegistrationMutation } from '@/app/auth/api/authApi'
+import { useRegistrationMutation } from '@/app/auth/api/authApi'
 import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
 import { setAppStatus } from '@/app/redux/appSlice'
-import { initiateGithubAuth } from '@/constants/oauthHelpers'
-import { signIn } from 'next-auth/react'
-// import { useGoogleLogin } from '@react-oauth/google'
-
+import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
 
 type Input = {
   email: string
@@ -35,63 +32,9 @@ export type Error = {
 }
 
 export default function Page() {
+
+
   const [linkModal, setLinkModal] = useState<string | boolean>(false)
-  // const [googleAuth] = useGoogleAuthMutation()
-
-  // const {data, isLoading} = useGithubAuthQuery('http://localhost:3000/auth/callback')
-  // console.log(data)
-
-  const handleGithubSignUp = () => {
-    const redirectUrl = 'http://localhost:3000/auth/callback/github' // 👈 this is your frontend callback route
-    const loginUrl = `https://dryzhniye.ru/api/v1/auth/github/login?redirect_url=${encodeURIComponent(redirectUrl)}`
-    // const loginUrl = `https://inctagram.work/api/v1/auth/github/login?redirect_url=${encodeURIComponent(redirectUrl)}`
-    // const loginUrl = `https://google.com`
-
-    window.location.href = loginUrl
-  }
-
-  const handleGoogleLogin = () => {
-    const clientId = '478190863440-sjqn3mq5hkaddloe1s98p4812f2rv8qv.apps.googleusercontent.com'
-    const redirectUri = 'http://localhost:3000/auth/callback/google'
-    const scope = 'email profile'
-    const responseType = 'code'
-
-    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(
-      redirectUri
-    )}&response_type=${responseType}&scope=${encodeURIComponent(scope)}`
-
-    window.location.href = googleAuthUrl
-  }
-
-  // const handleGoogleLogin = useGoogleLogin({
-  //   onSuccess: async tokenResponse => {
-  //     try {
-  //       dispatch(setAppStatus('loading'))
-  //       const response = await googleAuth({ token: tokenResponse.access_token }).unwrap()
-  //
-  //       // Store token
-  //       localStorage.setItem('token', response.accessToken)
-  //
-  //       // Navigate to dashboard or home page after successful login
-  //       window.location.href = '/'
-  //       dispatch(setAppStatus('succeeded'))
-  //     } catch (error) {
-  //       console.error('Google authentication error:', error)
-  //       dispatch(setAppStatus('succeeded'))
-  //       alert('Failed to login with Google')
-  //     }
-  //   },
-  //   onError: errorResponse => {
-  //     console.error('Google login error:', errorResponse)
-  //     alert('Google login failed')
-  //   },
-  // })
-  const handleGithubClick = () => {
-    // The current URL will be our redirect URL
-    const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/auth/github-callback` : '';
-   window.location.href = `https://dryzhniye.ru/api/v1/auth/github/login?redirect_url=${encodeURIComponent(redirectUrl)}`;
-    initiateGithubAuth(redirectUrl)
-  }
 
   const {
     register,
@@ -155,6 +98,7 @@ export default function Page() {
       }
     }
   }
+  console.log(process.env.GOOGLE_CLIENT_ID, `${process.env.GOOGLE_CLIENT_ID}`)
 
   return (
     <div>
@@ -162,10 +106,10 @@ export default function Page() {
         <h1 style={{ color: 'var(--light-100)', fontSize: '20px' }}>Sign Up</h1>
 
         <div className={s.autorizationIcon}>
-          <button type="button" onClick={handleGoogleLogin}>
-            <Image src="/google.svg" alt="" width={34} height={34} />
+          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGoogleAuth}>
+            <Image  src="/google.svg" alt="" width={34} height={34} />
           </button>
-          <button type="button" onClick={handleGithubSignUp}>
+          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGithubAuth}>
             <Image src="/github.svg" alt="" width={34} height={34} />
           </button>
         </div>
