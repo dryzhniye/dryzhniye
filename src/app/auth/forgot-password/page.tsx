@@ -110,7 +110,7 @@ export default function ForgotPassword() {
           asChild={'a'}
           width={'100%'}
           className={s.button + ' ' + s.link}
-          href={'/sign-in'}
+          href={'/auth/sign-in'}
         />
         {!isMailSent && (
           <Recaptcha
