@@ -12,6 +12,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
 import { setAppStatus } from '@/app/redux/appSlice'
+import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
 
 type Input = {
   email: string
@@ -31,6 +32,8 @@ export type Error = {
 }
 
 export default function Page() {
+
+
   const [linkModal, setLinkModal] = useState<string | boolean>(false)
 
   const {
@@ -56,6 +59,7 @@ export default function Page() {
   const dispatch = useDispatch()
 
   const onSubmit: SubmitHandler<Input> = async data => {
+
     try {
       dispatch(setAppStatus('loading'))
 
@@ -94,6 +98,7 @@ export default function Page() {
       }
     }
   }
+  console.log(process.env.GOOGLE_CLIENT_ID, `${process.env.GOOGLE_CLIENT_ID}`)
 
   return (
     <div>
@@ -101,12 +106,12 @@ export default function Page() {
         <h1 style={{ color: 'var(--light-100)', fontSize: '20px' }}>Sign Up</h1>
 
         <div className={s.autorizationIcon}>
-          <Link href="#">
-            <Image src="/google.svg" alt="" width={34} height={34} />
-          </Link>
-          <Link href="#">
+          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGoogleAuth}>
+            <Image  src="/google.svg" alt="" width={34} height={34} />
+          </button>
+          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGithubAuth}>
             <Image src="/github.svg" alt="" width={34} height={34} />
-          </Link>
+          </button>
         </div>
 
         <Input

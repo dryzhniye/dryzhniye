@@ -84,6 +84,22 @@ export const authApi = baseApi.injectEndpoints({
         body: { ...args, baseUrl },
       }),
     }),
+    googleLogin: build.mutation<{ accessToken: string; email: string }, { redirectUrl: string; code: string }>({
+      query: ({ redirectUrl, code }) => ({
+        url: 'auth/google/login',
+        method: 'POST',
+        body: {
+          redirectUrl,
+          code,
+        },
+      }),
+    }),
+    updateTokens: build.mutation<{ accessToken: string }, void>({
+      query: () => ({
+        url: 'auth/update-tokens',
+        method: 'POST',
+      }),
+    }),
   }),
 })
 
@@ -98,4 +114,6 @@ export const {
   useConfirmationMutation,
   useResetEmailMutation,
   useMeQuery,
+  useGoogleLoginMutation,
+  useUpdateTokensMutation,
 } = authApi

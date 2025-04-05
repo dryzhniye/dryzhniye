@@ -28,7 +28,7 @@ export default function Home() {
       <div style={{ display: 'flex', alignItems: 'center', marginLeft: '500px' }}>
         <Scrollbar>
           <div style={{ width: '300px', height: '300px' }}>
-            <div style={{ width: '1000px', height: '1000px', background: 'lightgray' }}>
+            <div style={{ width: '1000px', height: '1000px', background: '#666A6E' }}>
               Scrollable content
               <br />
               Scrollable content
