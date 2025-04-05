@@ -4,37 +4,39 @@ import { useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useGoogleLoginMutation } from '@/app/auth/api/authApi'
 
-const GoogleCallbackPage = () => {
+interface Error {
+  statusCode: number,
+  messages: [{ message: string, field: string }],
+  error: string
+}
+
+const GoogleCallback = () => {
   const [googleLogin, { isLoading, isSuccess, error }] = useGoogleLoginMutation()
   const searchParams = useSearchParams()
   const router = useRouter()
 
   useEffect(() => {
     const code = searchParams.get('code')
-    console.log(JSON.stringify({
-      redirectUrl: 'http://localhost:3000/auth/callback/google',
-      code,
-    }))
-debugger
+
     if (code) {
       googleLogin({
         redirectUrl: 'http://localhost:3000/auth/callback/google',
         code: decodeURIComponent(code),
       })
         .unwrap()
-        .then((data: any) => {
+        .then((data: { accessToken: string, email: string}) => {
           if (data?.accessToken) {
             localStorage.setItem('token', data.accessToken)
             router.replace('/')
           }
         })
-        .catch((err: any) => {
-          console.error('Login failed:', err)
+        .catch((err: Error) => {
+          console.error('Login failed:', err.messages[0].message)
         })
     }
-  }, [ googleLogin])
+  }, [router, searchParams, googleLogin])
 
   return <p>{isLoading ? 'Logging you in with Google...' : 'Google login failed'}</p>
 }
 
-export default GoogleCallbackPage
+export default GoogleCallback

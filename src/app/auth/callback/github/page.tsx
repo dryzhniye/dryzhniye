@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-const GithubCallbackPage = () => {
+const GithubCallback = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -15,16 +15,16 @@ const GithubCallbackPage = () => {
       localStorage.setItem('token', accessToken)
       // Optionally set user/email in your store
 
-      router.replace('/') // 👈 redirect to home or dashboard
+      router.replace('/')
     } else {
-      // handle error or fallback
+      console.error('Missing access token or email in the URL')
     }
   }, [searchParams, router])
 
   return <p>Logging you in via GitHub...</p>
 }
 
-export default GithubCallbackPage
+export default GithubCallback
 
 
 

@@ -20,6 +20,7 @@
     "@types/react-custom-scrollbars": "^4.0.13",
     "@types/react-google-recaptcha": "^2.1.9",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
     "lucide-react": "^0.483.0",
     "next": "15.2.3",
     "next-auth": "^4.24.11",
