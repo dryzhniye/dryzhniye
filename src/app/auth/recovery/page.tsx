@@ -5,15 +5,16 @@ import Input from '@/shared/ui/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '@/shared/ui/Button/Button'
 import { redirect, useRouter, useSearchParams } from 'next/navigation'
-import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/app/auth/api/authApi'
+import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/lib/api/authApi'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 type createPasswordArgs = {
   password1: string
   password2: string
 }
 
-export default function Recovery() {
+function Recovery() {
   const {
     register,
     handleSubmit,
@@ -27,6 +28,8 @@ export default function Recovery() {
   })
 
   const router = useRouter()
+
+  useRedirectIfAuthorized()
 
   const [isInitialized, setIsInitialized] = useState(false)
 
@@ -139,3 +142,4 @@ export default function Recovery() {
     </div>
   )
 }
+export default Recovery

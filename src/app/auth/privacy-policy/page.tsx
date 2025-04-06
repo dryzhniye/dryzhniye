@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import s from '@/app/auth/terms-of-service/terms-of-service.module.scss'
 import Image from 'next/image'

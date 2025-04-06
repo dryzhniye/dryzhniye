@@ -1,14 +1,13 @@
 'use client'
-
-import { Header } from '@/shared/ui/Header/Header'
 import s from '@/app/auth/registration-confirmation/registration-confirmation.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
 import Image from 'next/image'
 import Input from '@/shared/ui/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useResetEmailMutation } from '@/app/auth/api/authApi'
+import { useResetEmailMutation } from '@/lib/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useState } from 'react'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 type Input = {
   email: string
@@ -28,6 +27,7 @@ const ResetEmailPage = () => {
       email: '',
     },
   })
+  useRedirectIfAuthorized()
 
   const [resetEmail] = useResetEmailMutation()
 
@@ -38,8 +38,6 @@ const ResetEmailPage = () => {
       setModal(!modal)
       setModal(data.email)
       reset()
-
-      console.log('успешный рэзет')
     } catch (error) {
       console.log('error', error)
     }
@@ -58,7 +56,7 @@ const ResetEmailPage = () => {
         >
           <Input
             label={'Email'}
-            placeholder={'email'}
+            placeholder={'Epam@epam.com'}
             width={'230px'}
             error={errors.email?.message}
             {...register('email', {

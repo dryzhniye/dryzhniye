@@ -1,5 +1,5 @@
 'use client'
-import { useLogoutMutation } from '@/app/auth/api/authApi'
+import { authApi, useLogoutMutation } from '@/lib/api/authApi'
 import { Button } from '@/shared/ui/Button/Button'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useRouter } from 'next/navigation'
@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import Link from 'next/link'
 import { selectAppEmail, setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
-import { useAppDispatch, useAppSelector } from '@/app/appHooks'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/appHooks'
 
 type Props = {
   disabledIcon?: boolean
@@ -81,6 +81,7 @@ export const Sidebar = ({ disabledIcon }: Props) => {
       localStorage.removeItem('token')
       dispatch(setIsLoggedIn(false))
       dispatch(setAppEmail(null))
+      dispatch(authApi.util.resetApiState())
       router.push('/auth/sign-in')
     } catch (error) {
       console.error('Logout failed:', error)
