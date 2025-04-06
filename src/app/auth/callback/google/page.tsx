@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useGoogleLoginMutation } from '@/app/auth/api/authApi'
+import { useGoogleLoginMutation } from '@/lib/api/authApi'
 
 interface Error {
   statusCode: number,
