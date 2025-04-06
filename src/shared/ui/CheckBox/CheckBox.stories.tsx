@@ -29,7 +29,7 @@ export const Disabled: Story = {
 export const DisabledSelected: Story = {
   args: {
     disabled: true,
-    defaultChecked: true
+    checked: true
   },
 }
 
