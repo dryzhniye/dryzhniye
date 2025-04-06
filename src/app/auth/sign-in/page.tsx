@@ -6,7 +6,6 @@ import { Typography } from '@/shared/ui/Typography'
 import { useForm } from 'react-hook-form'
 import { useLoginMutation } from '@/lib/api/authApi'
 import s from './sign-in.module.scss'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
@@ -77,10 +76,12 @@ function Page() {
         </Typography>
 
         <div className={s.alternativeAuthorisations}>
-          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }} type="button" onClick={handleGoogleAuth}>
+          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }} type="button"
+                  onClick={handleGoogleAuth}>
             <Image src="/google.svg" alt="" width={34} height={34} />
           </button>
-          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }} type="button" onClick={handleGithubAuth}>
+          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }} type="button"
+                  onClick={handleGithubAuth}>
             <Image src="/github.svg" alt="" width={34} height={34} />
           </button>
         </div>
@@ -137,15 +138,13 @@ function Page() {
         <Button title="Sign In" width={'100%'} disabled={!isValid} type="submit" />
 
         <Typography className={s.account}>Don’t have an account?</Typography>
-        <Link href={'/auth/sign-up'}>
-          <Button
-            title={'Sign Up'}
-            variant={'link'}
-            asChild={'a'}
-            width={'100%'}
-            href={'/sign-up'}
-          />
-        </Link>
+        <Button
+          title={'Sign Up'}
+          variant={'link'}
+          asChild={'a'}
+          width={'100%'}
+          href={'/auth/sign-up'}
+        />
       </Cards>
     </>
   )
