@@ -136,15 +136,13 @@ function Page() {
         <Button title="Sign In" width={'100%'} disabled={!isValid} type="submit" />
 
         <Typography className={s.account}>Don’t have an account?</Typography>
-        <Link href={'/auth/sign-up'}>
-          <Button
-            title={'Sign Up'}
-            variant={'link'}
-            asChild={'a'}
-            width={'100%'}
-            href={'/sign-up'}
-          />
-        </Link>
+        <Button
+          title={'Sign Up'}
+          variant={'link'}
+          asChild={'a'}
+          width={'100%'}
+          href={'/auth/sign-up'}
+        />
       </Cards>
     </>
   )
