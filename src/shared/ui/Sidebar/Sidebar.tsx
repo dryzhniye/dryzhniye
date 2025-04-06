@@ -7,7 +7,7 @@ import s from './Sidebar.module.scss'
 import Image from 'next/image'
 import { useState } from 'react'
 import Link from 'next/link'
-import { selectAppEmail } from '@/app/redux/appSlice'
+import { selectAppEmail, setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/appHooks'
 
 type Props = {
@@ -79,6 +79,8 @@ export const Sidebar = ({ disabledIcon }: Props) => {
     try {
       await logout().unwrap()
       localStorage.removeItem('token')
+      dispatch(setIsLoggedIn(false))
+      dispatch(setAppEmail(null))
       dispatch(authApi.util.resetApiState())
       router.push('/auth/sign-in')
     } catch (error) {
