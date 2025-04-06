@@ -1,34 +1,36 @@
 'use client'
-
 import s from './registration-confirmation.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
 import Image from 'next/image'
-import { useConfirmationMutation } from '@/app/auth/api/authApi'
+import { useConfirmationMutation } from '@/lib/api/authApi'
 import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 const Page = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
-  const email = searchParams.get('email')
   const [isInitialized, setIsInitialized] = useState(false)
 
   const [confirmRegistration] = useConfirmationMutation()
+  useRedirectIfAuthorized()
 
   useEffect(() => {
-    if (!code) return
-
-    confirmRegistration({ confirmationCode: code })
-      .unwrap()
-      .then(() => {
-        setIsInitialized(true)
-      })
-      .catch(error => {
-        router.push('/auth/registration-email-resending?email=' + email)
-      })
+    if (!code) {
+      router.push('auth/sign-in')
+    } else {
+      confirmRegistration({ confirmationCode: code })
+        .unwrap()
+        .then(() => {
+          setIsInitialized(true)
+        })
+        .catch(() => {
+          router.push('/auth/registration-email-resending?email=')
+        })
+    }
   }, [code, confirmRegistration, router])
 
   if (!isInitialized) return <RecoverySkeleton />

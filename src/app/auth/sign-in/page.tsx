@@ -4,25 +4,27 @@ import Cards from '@/shared/ui/Cards/Cards'
 import Input from '@/shared/ui/Input/Input'
 import { Typography } from '@/shared/ui/Typography'
 import { useForm } from 'react-hook-form'
-import { useLoginMutation, useMeQuery } from '../api/authApi'
+import { useLoginMutation } from '@/lib/api/authApi'
 import s from './sign-in.module.scss'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
-import { setAppStatus } from '@/app/redux/appSlice'
-import { useEffect } from 'react'
 import Image from 'next/image'
 import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
+import { ErrorType } from '../sign-up/page'
+import { selectAppEmail } from '@/app/redux/appSlice'
+import { useAppSelector } from '@/lib/hooks/appHooks'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 type LoginArgs = {
   email: string
   password: string
 }
 
-export default function Page() {
+function Page() {
   const [login] = useLoginMutation()
-  const { data: userData, refetch } = useMeQuery() // todo не входит с непр паролем
   const router = useRouter()
-  const dispatch = useDispatch()
+  const email = useAppSelector(selectAppEmail)
+  useRedirectIfAuthorized()
 
   const {
     register,
@@ -34,17 +36,7 @@ export default function Page() {
     defaultValues: { email: '', password: '' },
   })
 
-  useEffect(() => {
-    dispatch(setAppStatus('loading'))
-
-    refetch().then(() => {
-      dispatch(setAppStatus('succeeded'))//todo чо эта
-    })
-  }, [])
-
   const onSubmit = async (data: LoginArgs) => {
-    dispatch(setAppStatus('loading'))
-
     if (!data.email || !data.password) {
       setError('password', {
         type: 'manual',
@@ -52,41 +44,27 @@ export default function Page() {
       })
     } else {
       try {
-        dispatch(setAppStatus('loading'))
-
-        const response = await login({
+        await login({
           email: data.email,
           password: data.password,
         }).unwrap()
 
-        localStorage.setItem('token', response.accessToken)
+        router.push(`../users/profile/${email}`)
 
-        const { data: freshUserData } = await refetch()
-
-        if (freshUserData?.userId) {
-          router.push(`/users/profile/${freshUserData.userId}`)
-          dispatch(setAppStatus('succeeded'))
-        }
       } catch (error) {
-        const apiError = (
-          error as {
-            data?: {
-              statusCode: number
-              messages: Array<{ message: string; field: string }>
-              error: string
-            }
-          }
-        ).data
+        const err = error as ErrorType<string>
 
-        if (apiError?.statusCode === 401) {
+        if (err.data.statusCode === 400) {
+          const errorMessage = err.data.messages
+          if (errorMessage.includes('password or email')) {
+            setError('email', { type: 'manual', message: errorMessage })
+          }
+        }
+
+        if (err.data.statusCode === 401) {
           router.push('/sign-up')
           return
         }
-
-        setError('password', {
-          type: 'manual',
-          message: apiError?.messages[0].message,
-        })
       }
     }
   }
@@ -94,7 +72,9 @@ export default function Page() {
   return (
     <>
       <Cards className={s.card} onSubmit={handleSubmit(onSubmit)}>
-        <Typography className={s.sign}>Sign In</Typography>
+        <Typography className={s.sign} variant={'h1'}>
+          Sign In
+        </Typography>
 
         <div className={s.alternativeAuthorisations}>
           <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }} type="button" onClick={handleGoogleAuth}>
@@ -140,7 +120,7 @@ export default function Page() {
                 /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
               message:
                 'Password must contain 0-9, a-z, A-Z, ! "\n' +
-                "# $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n" +
+                '# $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n' +
                 '_ { | } ~',
             },
           })}
@@ -157,8 +137,18 @@ export default function Page() {
         <Button title="Sign In" width={'100%'} disabled={!isValid} type="submit" />
 
         <Typography className={s.account}>Don’t have an account?</Typography>
-        <Button title={'Sign Up'} variant={'link'} asChild={'a'} width={'100%'} href={'/sign-up'} />
+        <Link href={'/auth/sign-up'}>
+          <Button
+            title={'Sign Up'}
+            variant={'link'}
+            asChild={'a'}
+            width={'100%'}
+            href={'/sign-up'}
+          />
+        </Link>
       </Cards>
     </>
   )
 }
+
+export default Page

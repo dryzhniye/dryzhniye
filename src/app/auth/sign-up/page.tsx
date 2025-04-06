@@ -5,13 +5,12 @@ import Input from '@/shared/ui/Input/Input'
 import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
 import { Button } from '@/shared/ui/Button/Button'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { useRegistrationMutation } from '@/app/auth/api/authApi'
+import { useRegistrationMutation } from '@/lib/api/authApi'
 import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useDispatch } from 'react-redux'
-import { setAppStatus } from '@/app/redux/appSlice'
+import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
 
 type Input = {
@@ -22,19 +21,19 @@ type Input = {
   confirmPassword: string
 }
 
-export type Error = {
+export type ErrorType<T = [{ message: string }]> = {
   data: {
     error: string
-    messages: [{ message: string }]
+    messages: T
     statusCode: number
-    status: number
   }
+  status: number
 }
 
-export default function Page() {
-
-
+function Page() {
   const [linkModal, setLinkModal] = useState<string | boolean>(false)
+
+  useRedirectIfAuthorized()
 
   const {
     register,
@@ -56,13 +55,10 @@ export default function Page() {
   })
 
   const [registration] = useRegistrationMutation()
-  const dispatch = useDispatch()
 
   const onSubmit: SubmitHandler<Input> = async data => {
 
     try {
-      dispatch(setAppStatus('loading'))
-
       await registration({
         email: data.email,
         password: data.password,
@@ -78,11 +74,9 @@ export default function Page() {
       })
 
       setLinkModal(false)
-      dispatch(setAppStatus('succeeded'))
       setLinkModal(data.email)
     } catch (error) {
-      dispatch(setAppStatus('succeeded'))
-      const err = error as Error
+      const err = error as ErrorType
       if (err.data.statusCode === 400 && err.data.messages.length > 0) {
         const message = err.data.messages[0].message.toLowerCase()
 
@@ -215,7 +209,7 @@ export default function Page() {
 
         <p style={{ color: 'var(--light-100)', fontSize: '16px' }}>Do you have an account?</p>
 
-        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} />
+        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} href={'/auth/sign-in'}/>
       </form>
       <Modal open={!!linkModal} modalTitle={'Email sent'} onClose={() => setLinkModal(false)}>
         <p style={{ marginBottom: '20px' }}>
@@ -231,3 +225,4 @@ export default function Page() {
     </div>
   )
 }
+export default Page

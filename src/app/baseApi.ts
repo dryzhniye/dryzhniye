@@ -8,7 +8,6 @@ export const baseApi = createApi({
       prepareHeaders: headers => {
         headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`)
       },
-
     })(args, api, extraOptions)
 
     //handleError(api, result) добавить обработчик ошибок
@@ -16,5 +15,5 @@ export const baseApi = createApi({
     return result
   },
   endpoints: () => ({}),
-  tagTypes: []
+  tagTypes: ['Auth'],
 })

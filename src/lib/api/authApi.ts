@@ -54,6 +54,16 @@ export const authApi = baseApi.injectEndpoints({
         method: 'POST',
         body: args,
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const response = await queryFulfilled
+          localStorage.setItem('token', response.data.accessToken)
+
+          await dispatch(authApi.endpoints.me.initiate())
+        } catch (error) {
+          throw error
+        }
+      },
     }),
     me: build.query<{ userId: number; userName: string; email: string; isBlocked: boolean }, void>({
       query: () => ({
@@ -68,7 +78,9 @@ export const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: 'auth/logout',
         method: 'POST',
+        credentials: 'include',
       }),
+      invalidatesTags: ['Auth'],
     }),
     confirmation: build.mutation<void, { confirmationCode: string }>({
       query: args => ({

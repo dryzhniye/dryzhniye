@@ -1,3 +1,4 @@
+'use client'
 import s from './terms-of-service.module.scss'
 import Link from 'next/link'
 import Image from 'next/image'
