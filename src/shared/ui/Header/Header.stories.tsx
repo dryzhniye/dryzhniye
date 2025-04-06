@@ -16,8 +16,7 @@ export const Auth: Story = {
     args: {
         isLoggedIn: true,
         notifications: false,
-        countNotifications: 5,
-        title: 'Inctagram'
+        countNotifications: 5
     },
 
     render: (args) => (
@@ -29,8 +28,7 @@ export const Auth: Story = {
 
 export const Guest: Story = {
     args: {
-        isLoggedIn: false,
-        title: 'Inctagram'
+        isLoggedIn: false
     },
     render: (args) => (
         <Theme>
