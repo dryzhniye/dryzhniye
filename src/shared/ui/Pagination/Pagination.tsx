@@ -70,7 +70,7 @@ export const Pagination = (props: Type) => {
   const onChangeHandler = (value: string) => {
     onPageSizeChange(value)
   }
-  let lastPage = paginationRange[paginationRange.length - 1]
+  //const lastPage = paginationRange[paginationRange.length - 1]
 
   return (
     <div className={className ? `${className} ${s.wrapper}` : s.wrapper}>
@@ -86,19 +86,19 @@ export const Pagination = (props: Type) => {
               height={16}
             />
           ) : (
-            <img src="/Arrow_left_active.svg" alt="Arrow left active" />
+            <Image src="/Arrow_left_active.svg" alt="Arrow left active" width="16" height="16"/>
           )}
         </div>
 
-        {paginationRange.map(pageNumber => {
+        {paginationRange.map((pageNumber, index) => {
           // убираем cursor: pointer с точек '...'
           if (pageNumber === DOTS) {
-            return <div className={`${s.paginationItem} ${s.dots}`}>{DOTS}</div>
+            return <div key={index} className={`${s.paginationItem} ${s.dots}`}>{DOTS}</div>
           }
           // репндерим страницы пагинации
           return (
-            <div
-              className={
+            <div key={index}
+                 className={
                 pageNumber === currentPage ? `${s.paginationItem} ${s.selected}` : s.paginationItem
               }
               onClick={() => onPageChange(Number(pageNumber))}

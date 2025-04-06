@@ -11,7 +11,7 @@ interface Error {
 }
 
 const GoogleCallback = () => {
-  const [googleLogin, { isLoading, isSuccess, error }] = useGoogleLoginMutation()
+  const [googleLogin, { isLoading }] = useGoogleLoginMutation()
   const searchParams = useSearchParams()
   const router = useRouter()
 

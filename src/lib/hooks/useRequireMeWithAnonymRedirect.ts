@@ -14,7 +14,7 @@ export const useRequireMeWithAnonymRedirect = () => {
     if (!data && !isFetching) {
       router.push('/auth/sign-in')
     }
-  }, [data, isFetching])
+  }, [data, isFetching, router])
 
   return data
 }

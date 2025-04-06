@@ -175,7 +175,7 @@ export const DatePicker = ({mode= 'range', error, disabled=false}: DatePickerInp
               // required={undefined}
               locale={enGB}
               onMonthChange={setMonth}
-              mode={mode as any}
+              mode={mode as never}
               fixedWeeks
               selected={mode === 'single' ? selectedDate : selectedRange}
               onSelect={handleDayPickerSelect}

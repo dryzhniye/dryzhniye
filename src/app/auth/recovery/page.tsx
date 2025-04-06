@@ -42,21 +42,18 @@ function Recovery() {
 
   useEffect(() => {
     if (!code) {
-      router.push('/auth/sign-in')
-      return
+      router.push('auth/sign-in')
+    } else {
+      checkRecoveryCode(code)
+        .unwrap()
+        .then(() => {
+          setIsInitialized(true)
+        })
+        .catch(() => {
+          router.push('/auth/recovery-resending?email=' + email)
+        })
     }
-
-    const checkCode = async () => {
-      try {
-        await checkRecoveryCode(code).unwrap()
-        setIsInitialized(true)
-      } catch (error) {
-        router.push('/auth/recovery-resending?email=' + email)
-      }
-    }
-
-    checkCode()
-  }, [])
+  }, [code, checkRecoveryCode, router, email])
 
   if (!isInitialized) return <RecoverySkeleton />
 

@@ -11,7 +11,7 @@ export const useRedirectIfAuthorized = () => {
     if (data && !isFetching) {
       router.push(`/users/profile/${data.userId}`)
     }
-  }, [data, isFetching])
+  }, [data, isFetching, router])
 
   return { isLoading }
 }
