@@ -11,7 +11,9 @@ import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
-import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
+import { handleGithubAuth, handleGoogleAuth } from '@/lib/constants'
+import { formRegisterSchema, type TFormRegisterValues } from '@/lib/schemas/schemas'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 type Input = {
   email: string
@@ -39,24 +41,20 @@ function Page() {
     register,
     handleSubmit,
     reset,
-    watch,
     control,
     setError,
     formState: { errors, isValid },
-  } = useForm<Input>({
+  } = useForm<TFormRegisterValues>({
     mode: 'onChange',
-    defaultValues: {
-      email: '',
-      password: '',
-      rememberMe: false,
-      firstName: '',
-      confirmPassword: '',
-    },
+    resolver: zodResolver(formRegisterSchema)
   })
 
   const [registration] = useRegistrationMutation()
 
   const onSubmit: SubmitHandler<Input> = async data => {
+    debugger
+
+    console.log(data)
 
     try {
       await registration({
@@ -92,7 +90,6 @@ function Page() {
       }
     }
   }
-  console.log(process.env.GOOGLE_CLIENT_ID, `${process.env.GOOGLE_CLIENT_ID}`)
 
   return (
     <div>
@@ -113,25 +110,14 @@ function Page() {
           placeholder={'Epam11'}
           width={'330px'}
           error={errors.firstName?.message}
-          {...register('firstName', {
-            required: 'FirstName is required',
-            minLength: { value: 6, message: 'Min 6 characters ' },
-            maxLength: { value: 20, message: 'Max 20 characters' },
-            pattern: { value: /^[a-zA-Z0-9_-]+$/, message: 'only letters' },
-          })}
+          {...register('firstName')}
         />
         <Input
           label={'Email'}
           placeholder={'Epam@epam.com'}
           width={'330px'}
           error={errors.email?.message}
-          {...register('email', {
-            required: 'Email is required',
-            pattern: {
-              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: 'The email must match the format example@example.com',
-            },
-          })}
+          {...register('email')}
         />
         <Input
           label={'Password'}
@@ -139,25 +125,7 @@ function Page() {
           placeholder={'******************'}
           error={errors.password?.message}
           width={'330px'}
-          {...register('password', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Min 6 characters',
-            },
-            maxLength: {
-              value: 20,
-              message: 'Max 20 characters',
-            },
-            pattern: {
-              value:
-                /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
-              message:
-                'Password must contain 0-9, a-z, A-Z, ! "\n' +
-                "# $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n" +
-                '_` { | } ~',
-            },
-          })}
+          {...register('password')}
         />
 
         <Input
@@ -166,29 +134,13 @@ function Page() {
           placeholder={'******************'}
           error={errors.confirmPassword?.message}
           width={'330px'}
-          {...register('confirmPassword', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Min 6 characters',
-            },
-            maxLength: {
-              value: 20,
-              message: 'Max 20 characters',
-            },
-            pattern: {
-              value:
-                /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
-              message: 'Passwords do not match',
-            },
-            validate: value => value === watch('password') || 'Passwords do not match',
-          })}
+          {...register('confirmPassword')}
         />
 
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <Controller
             control={control}
-            {...register('rememberMe', { required: true })}
+            {...register('rememberMe')}
             render={({ field }) => (
               <CheckBox checked={field.value} onChange={checked => field.onChange(checked)} />
             )}
