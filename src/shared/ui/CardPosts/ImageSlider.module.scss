@@ -1,0 +1,59 @@
+// @/shared/ui/CardPosts/ImageSlider.module.scss
+.slider {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.sliderButton {
+  cursor: pointer;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+
+  background: rgb(0 0 0 / 50%);
+}
+
+.prevButton {
+  left: 10px;
+}
+
+.nextButton {
+  right: 10px;
+}
+
+.dots {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.dot {
+  cursor: pointer;
+
+  display: inline-block;
+
+  width: 8px;
+  height: 8px;
+  margin: 0 5px;
+  border-radius: 50%;
+
+  background: #ccc;
+}
+
+.activeDot {
+  background: #000;
+}
