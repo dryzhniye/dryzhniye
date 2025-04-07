@@ -1,0 +1,38 @@
+// @/components/Post.module.scss
+.postContent {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.content {
+  padding: 10px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.actions button {
+  cursor: pointer;
+
+  display: flex;
+  gap: 5px;
+  align-items: center;
+
+  border: none;
+
+  background: none;
+}
+
+.timestamp {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #666;
+}
