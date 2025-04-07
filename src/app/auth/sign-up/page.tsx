@@ -52,6 +52,9 @@ function Page() {
   const [registration] = useRegistrationMutation()
 
   const onSubmit: SubmitHandler<Input> = async data => {
+    debugger
+
+    console.log(data)
 
     try {
       await registration({
