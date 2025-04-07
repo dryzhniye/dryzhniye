@@ -1,0 +1,31 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 380px;
+  margin: 24px auto;
+  padding: 24px;
+  background-color: var(--dark-500);
+  border: 1px solid var(--dark-300)
+}
+
+.button {
+  text-align: center;
+}
+
+.autorizationIcon {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  margin: 13px 0 4px 0;
+}
+
+.iconGithub img {
+  width: 34px;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 14px;
+}

@@ -1,0 +1,36 @@
+.mainBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 294px;
+  margin: 0 auto;
+
+  color: var(--light-100)
+}
+
+.title {
+  margin-top: 35px;
+  font-size: 20px;
+}
+
+.label {
+  margin: 19px 0 30px;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.button {
+  margin-bottom: 31px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.buttonGroupEnd {
+  justify-content: flex-end;
+}
