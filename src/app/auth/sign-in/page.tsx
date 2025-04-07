@@ -1,4 +1,5 @@
 'use client'
+
 import { Button } from '@/shared/ui/Button/Button'
 import Cards from '@/shared/ui/Cards/Cards'
 import Input from '@/shared/ui/Input/Input'
@@ -8,18 +9,20 @@ import { useLoginMutation } from '@/lib/api/authApi'
 import s from './sign-in.module.scss'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
+import { handleGithubAuth, handleGoogleAuth } from '@/lib/constants'
 import { ErrorType } from '../sign-up/page'
 import { selectAppEmail } from '@/app/redux/appSlice'
 import { useAppSelector } from '@/lib/hooks/appHooks'
 import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
+import { formLoginSchema, type TFormLoginValues } from '@/lib/schemas/schemas'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 type LoginArgs = {
   email: string
   password: string
 }
 
-function Page() {
+export default function Page() {
   const [login] = useLoginMutation()
   const router = useRouter()
   const email = useAppSelector(selectAppEmail)
@@ -27,12 +30,12 @@ function Page() {
 
   const {
     register,
-    handleSubmit,
     setError,
+    handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginArgs>({
+  } = useForm<TFormLoginValues>({
     mode: 'onChange',
-    defaultValues: { email: '', password: '' },
+    resolver: zodResolver(formLoginSchema),
   })
 
   const onSubmit = async (data: LoginArgs) => {
@@ -91,13 +94,7 @@ function Page() {
           placeholder={'Epam@epam.com'}
           width={'330px'}
           error={errors.email?.message}
-          {...register('email', {
-            required: 'Email is required',
-            pattern: {
-              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: 'The email must match the format example@example.com',
-            },
-          })}
+          {...register('email')}
         />
 
         <Input
@@ -106,25 +103,7 @@ function Page() {
           placeholder={'******************'}
           error={errors.password?.message}
           width={'330px'}
-          {...register('password', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Min 6 characters',
-            },
-            maxLength: {
-              value: 20,
-              message: 'Max 20 characters',
-            },
-            pattern: {
-              value:
-                /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
-              message:
-                'Password must contain 0-9, a-z, A-Z, ! "\n' +
-                '# $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n' +
-                '_ { | } ~',
-            },
-          })}
+          {...register('password')}
         />
 
         <Button
@@ -149,5 +128,3 @@ function Page() {
     </>
   )
 }
-
-export default Page

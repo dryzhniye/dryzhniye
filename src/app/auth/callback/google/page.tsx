@@ -36,7 +36,7 @@ const GoogleCallback = () => {
     }
   }, [router, searchParams, googleLogin])
 
-  return <p>{isLoading ? 'Logging you in with Google...' : 'Google login failed'}</p>
+  return <p>{isLoading && 'Logging you in with Google...'}</p>
 }
 
 export default GoogleCallback
