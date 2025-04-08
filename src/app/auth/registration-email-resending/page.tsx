@@ -7,7 +7,6 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useResetEmailMutation } from '@/lib/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useState } from 'react'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 
 type Input = {
   email: string
@@ -27,12 +26,10 @@ const ResetEmailPage = () => {
       email: '',
     },
   })
-  useRedirectIfAuthorized()
 
   const [resetEmail] = useResetEmailMutation()
 
   const onSubmit: SubmitHandler<Input> = async data => {
-    console.log(data)
     try {
       await resetEmail({ email: data.email }).unwrap()
       setModal(!modal)
