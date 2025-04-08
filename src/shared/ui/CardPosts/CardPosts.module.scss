@@ -1,0 +1,16 @@
+.myPost {
+  display: flex;
+  height: 500px;
+  color: white;
+  background-color: #1c1c1c;
+}
+
+.slider {
+  flex: 3;
+}
+
+.details {
+  overflow-y: auto;
+  flex: 2;
+  padding: 20px;
+}

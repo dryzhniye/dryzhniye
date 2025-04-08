@@ -1,0 +1,294 @@
+.postListWrapper {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  max-width: 480px;
+  height: 70vh;
+  min-height: 564px;
+  margin: 0 auto;
+
+  color: #fff;
+
+  background-color: var(--dark-300);
+}
+
+.header {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 24px;
+
+  text-align: center;
+
+  .name {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    h3 {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+
+  .image {
+    border-radius: 50%;
+  }
+
+  button {
+    cursor: pointer;
+
+    padding-bottom: 10px;
+    border: none;
+
+    font-size: 18px;
+    color: #fff;
+
+    background: none;
+  }
+}
+
+.separator {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--light-900);
+}
+
+.scrollableContent {
+  overflow-y: auto;
+  flex: 1;
+  padding: 10px 24px;
+}
+
+.comments {
+  padding: 10px 0;
+
+  .comment {
+    margin-bottom: 10px;
+
+    .commentHeader {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+
+      .commentImage {
+        border-radius: 50%;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+
+    p {
+      margin: 5px 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .commentMeta {
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+
+      button {
+        cursor: pointer;
+        border: none;
+        font-size: 12px;
+        background: none;
+      }
+    }
+  }
+
+  .answers {
+    margin-top: 10px;
+    margin-left: 20px;
+
+    .answer {
+      margin-bottom: 10px;
+
+      .answerHeader {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+
+        .answerImage {
+          border-radius: 50%;
+        }
+
+        span {
+          font-size: 14px;
+          font-weight: bold;
+        }
+      }
+
+      p {
+        margin: 5px 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.infoStories {
+  position: sticky;
+  z-index: 1;
+  bottom: 0;
+  padding: 10px 24px;
+
+  .infoStoriesIcone {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      gap: 10px;
+
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+      }
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+  }
+
+  .footerInfo {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 19px 0 5px;
+
+    .footerAva {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+
+      div {
+        display: flex;
+
+        .avatarSmall {
+          margin-left: -10px;
+          border-radius: 50%;
+        }
+
+        .avatarSmall:first-child {
+          margin-left: 0;
+        }
+      }
+
+      .likeCount {
+        font-size: 14px;
+
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.date {
+  font-size: 14px;
+  color: var(--light-900);
+}
+
+.commentInputWrapper {
+  position: sticky;
+  z-index: 1;
+  bottom: 0;
+
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  padding: 10px 24px;
+  border-top: 1px solid var(--light-900);
+
+  .commentInput {
+    flex: 1;
+
+    padding: 8px;
+    border: none;
+
+    font-size: 14px;
+    color: var(--light-900);
+
+    background: transparent;
+
+    &::placeholder {
+      color: var(--light-900);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .commentSubmit {
+    cursor: pointer;
+
+    border: none;
+
+    font-size: 14px;
+    color: var(--accent-500);
+
+    background: none;
+  }
+}
+
+.dropdownMenu {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  right: 24px;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 150px;
+  padding: 10px;
+
+  background-color: var(--dark-900);
+}
+
+.dropdownMenu button {
+  cursor: pointer;
+
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  padding: 10px 5px;
+  border: none;
+
+  font-size: 14px;
+  text-align: end;
+
+  background: none;
+
+  transition: background 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--dark-100);
+  }
+}
