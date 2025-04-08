@@ -1,7 +1,7 @@
 export const handleGoogleAuth = () => {
 
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
-  const redirectUri = 'https://dryzhniye.ru/auth/callback/google'
+  const redirectUri = 'http://localhost:3000/auth/callback/google'
   const scope = 'email profile'
   const responseType = 'code'
 
