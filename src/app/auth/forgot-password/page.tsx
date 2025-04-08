@@ -7,7 +7,6 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useResetPasswordMutation } from '@/lib/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 import { PATH } from '@/shared/const/PATH'
 
 type ResetPasswordArgs = {
@@ -29,8 +28,6 @@ function ForgotPassword() {
   const [isMailSent, setIsMailSent] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<string | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-
-  useRedirectIfAuthorized()
 
   const [resetPassword] = useResetPasswordMutation()
 

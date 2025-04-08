@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 import { PATH } from '@/shared/const/PATH'
 
 const Page = () => {
@@ -17,7 +16,6 @@ const Page = () => {
   const [isInitialized, setIsInitialized] = useState(false)
 
   const [confirmRegistration] = useConfirmationMutation()
-  useRedirectIfAuthorized()
 
   useEffect(() => {
     if (!code) {

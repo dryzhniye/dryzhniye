@@ -3,6 +3,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect } from 'react'
 import { getDecodedToken } from '@/shared/utils/getDecodedToken'
 import { PATH } from '@/shared/const/PATH'
+import { setCookie } from '@/shared/utils/cookieUtils'
 
 export default function GithubPage() {
   return (
@@ -22,10 +23,10 @@ const GithubPageContent = () => {
       window.location.assign('https://inctagram.work/api/v1/auth/github/login')
     } else {
       try {
-        localStorage.setItem('token', accessToken)
+        setCookie('accessToken', accessToken, 7);
         const userId = getDecodedToken(accessToken)
         if (userId) {
-          replace(`/users/profile/${userId}`)
+          replace(`/users/profile`)
         } else {
           replace(PATH.AUTH.LOGIN)
         }

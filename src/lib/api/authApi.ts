@@ -1,4 +1,6 @@
 import { baseApi } from '@/app/baseApi'
+import { deleteCookie, setCookie } from '@/shared/utils/cookieUtils'
+import { setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://dryzhniye.ru'
 
@@ -57,7 +59,7 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const response = await queryFulfilled
-          localStorage.setItem('token', response.data.accessToken)
+          setCookie('accessToken', response.data.accessToken.trim(), 7)
 
           await dispatch(authApi.endpoints.me.initiate())
         } catch (error) {
@@ -73,6 +75,18 @@ export const authApi = baseApi.injectEndpoints({
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const response = await queryFulfilled
+
+          if (response.data.email) {
+            dispatch(setAppEmail(response.data.email))
+            dispatch(setIsLoggedIn(true))
+          }
+        } catch (error) {
+          throw error
+        }
+      },
     }),
     logout: build.mutation<void, void>({
       query: () => ({
@@ -81,6 +95,13 @@ export const authApi = baseApi.injectEndpoints({
         credentials: 'include',
       }),
       invalidatesTags: ['Auth'],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        await queryFulfilled
+        deleteCookie('accessToken')
+        dispatch(setIsLoggedIn(false))
+        dispatch(setAppEmail(null))
+        dispatch(authApi.util.resetApiState())
+      },
     }),
     confirmation: build.mutation<void, { confirmationCode: string }>({
       query: args => ({

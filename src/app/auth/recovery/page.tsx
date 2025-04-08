@@ -7,7 +7,6 @@ import { Button } from '@/shared/ui/Button/Button'
 import { redirect, useRouter, useSearchParams } from 'next/navigation'
 import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/lib/api/authApi'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 import { PATH } from '@/shared/const/PATH'
 
 type createPasswordArgs = {
@@ -29,8 +28,6 @@ function Recovery() {
   })
 
   const router = useRouter()
-
-  useRedirectIfAuthorized()
 
   const [isInitialized, setIsInitialized] = useState(false)
 
