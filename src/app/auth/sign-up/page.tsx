@@ -1,5 +1,4 @@
 'use client'
-
 import s from './signUp.module.scss'
 import Input from '@/shared/ui/Input/Input'
 import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
@@ -11,7 +10,7 @@ import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
-import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
+import { handleGoogleAuth } from '@/app/constants'
 
 type Input = {
   email: string
@@ -103,9 +102,9 @@ function Page() {
           <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGoogleAuth}>
             <Image  src="/google.svg" alt="" width={34} height={34} />
           </button>
-          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGithubAuth}>
+          <Link href={'/github'}>
             <Image src="/github.svg" alt="" width={34} height={34} />
-          </button>
+          </Link>
         </div>
 
         <Input
