@@ -8,11 +8,12 @@ import { useLoginMutation } from '@/lib/api/authApi'
 import s from './sign-in.module.scss'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
+import { handleGoogleAuth } from '@/app/constants'
 import { ErrorType } from '../sign-up/page'
 import { selectAppEmail } from '@/app/redux/appSlice'
 import { useAppSelector } from '@/lib/hooks/appHooks'
 import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
+import Link from 'next/link'
 
 type LoginArgs = {
   email: string
@@ -80,10 +81,9 @@ function Page() {
                   onClick={handleGoogleAuth}>
             <Image src="/google.svg" alt="" width={34} height={34} />
           </button>
-          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }} type="button"
-                  onClick={handleGithubAuth}>
+          <Link href={'/github'}>
             <Image src="/github.svg" alt="" width={34} height={34} />
-          </button>
+          </Link>
         </div>
 
         <Input
