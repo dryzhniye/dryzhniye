@@ -1,7 +1,7 @@
 'use client'
 import { Sidebar } from '@/shared/ui/Sidebar/Sidebar'
 
-const UserProfile = () => {
+const Profile = () => {
   return (
     <>
       <Sidebar />
@@ -9,4 +9,4 @@ const UserProfile = () => {
   )
 }
 
-export default UserProfile
+export default Profile
