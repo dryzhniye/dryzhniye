@@ -12,7 +12,7 @@ import Link from 'next/link'
 import { PATH } from '@/shared/const/PATH'
 import { formRegisterSchema, type TFormRegisterValues } from '@/lib/schemas/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { handleGoogleAuth } from '@/shared/const/google-auth-handler'
+import { handleGoogleAuth } from '@/shared/utils/google-auth-handler'
 
 type Input = {
   email: string

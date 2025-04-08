@@ -11,7 +11,7 @@ import Image from 'next/image'
 import { ErrorType } from '../sign-up/page'
 import Link from 'next/link'
 import { PATH } from '@/shared/const/PATH'
-import { handleGoogleAuth } from '@/shared/const/google-auth-handler'
+import { handleGoogleAuth } from '@/shared/utils/google-auth-handler'
 import { formLoginSchema, type TFormLoginValues } from '@/lib/schemas/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 
