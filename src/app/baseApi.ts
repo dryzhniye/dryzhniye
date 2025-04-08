@@ -4,5 +4,5 @@ import { baseQueryWithReAuth } from '@/app/services/inctagram.fetch-base-query'
 export const baseApi = createApi({
   baseQuery: baseQueryWithReAuth,
   endpoints: () => ({}),
-  tagTypes: ['Auth'],
+  tagTypes: ['Auth', 'Posts'],
 })
