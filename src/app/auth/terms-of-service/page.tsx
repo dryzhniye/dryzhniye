@@ -3,11 +3,12 @@ import s from './terms-of-service.module.scss'
 import Link from 'next/link'
 import Image from 'next/image'
 import { TextExample } from '@/app/auth/terms-of-service/TextExample'
+import { PATH } from '@/shared/const/PATH'
 
 export default function Page() {
   return (
     <>
-      <Link href={'/auth/sign-up'} className={s.link}>
+      <Link href={PATH.AUTH.SIGNUP} className={s.link}>
         <Image src={'/arrow-left.svg'} alt="<-" width="24" height="24" />
         Back to Sign Up
       </Link>
