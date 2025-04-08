@@ -18,6 +18,7 @@ export function middleware(request: NextRequest) {
     PATH.USERS.PROFILE_USERID,
     PATH.PUBLIC.PUBLIC_PAGE,
     PATH.PUBLIC.PROFILE,
+    '/auth/callback/google'
   ]
   const { pathname } = request.nextUrl
   const encryptedToken = request.cookies.get('accessToken')?.value
