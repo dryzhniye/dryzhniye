@@ -126,6 +126,10 @@ export const authApi = baseApi.injectEndpoints({
           code,
         },
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        await queryFulfilled
+        await dispatch(authApi.endpoints.me.initiate())
+      }
     }),
     updateTokens: build.mutation<{ accessToken: string }, void>({
       query: () => ({
