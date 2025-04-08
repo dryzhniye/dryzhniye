@@ -8,12 +8,11 @@ import { useLoginMutation } from '@/lib/api/authApi'
 import s from './sign-in.module.scss'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { handleGoogleAuth } from '@/app/constants'
 import { ErrorType } from '../sign-up/page'
-import { selectAppEmail } from '@/app/redux/appSlice'
-import { useAppSelector } from '@/lib/hooks/appHooks'
 import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 import Link from 'next/link'
+import { PATH } from '@/shared/const/PATH'
+import { handleGoogleAuth } from '@/shared/const/google-auth-handler'
 
 type LoginArgs = {
   email: string
@@ -23,7 +22,6 @@ type LoginArgs = {
 function Page() {
   const [login] = useLoginMutation()
   const router = useRouter()
-  const email = useAppSelector(selectAppEmail)
   useRedirectIfAuthorized()
 
   const {
@@ -49,7 +47,7 @@ function Page() {
           password: data.password,
         }).unwrap()
 
-        router.push(`../users/profile/${email}`)
+        router.push(PATH.USERS.PROFILE)
 
       } catch (error) {
         const err = error as ErrorType<string>
@@ -62,7 +60,7 @@ function Page() {
         }
 
         if (err.data.statusCode === 401) {
-          router.push('/sign-up')
+          router.push(PATH.AUTH.SIGNUP)
           return
         }
       }
@@ -132,7 +130,7 @@ function Page() {
           variant={'link'}
           asChild={'a'}
           title="Forgot Password"
-          href={'/auth/forgot-password'}
+          href={PATH.AUTH.FORGOT_PASSWORD}
         />
 
         <Button title="Sign In" width={'100%'} disabled={!isValid} type="submit" />
@@ -143,7 +141,7 @@ function Page() {
           variant={'link'}
           asChild={'a'}
           width={'100%'}
-          href={'/auth/sign-up'}
+          href={PATH.AUTH.SIGNUP}
         />
       </Cards>
     </>

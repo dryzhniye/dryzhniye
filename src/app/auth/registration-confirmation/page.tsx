@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
 import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
+import { PATH } from '@/shared/const/PATH'
 
 const Page = () => {
   const router = useRouter()
@@ -20,7 +21,7 @@ const Page = () => {
 
   useEffect(() => {
     if (!code) {
-      router.push('auth/sign-in')
+      router.push(PATH.AUTH.LOGIN)
     } else {
       confirmRegistration({ confirmationCode: code })
         .unwrap()
@@ -28,7 +29,7 @@ const Page = () => {
           setIsInitialized(true)
         })
         .catch(() => {
-          router.push('/auth/registration-email-resending?email=')
+          router.push(PATH.AUTH.REGISTRATION_EMAIL_RESENDING)
         })
     }
   }, [code, confirmRegistration, router])
@@ -40,7 +41,7 @@ const Page = () => {
       <div className={s.container}>
         <h1>Congratulations!</h1>
         <p className={s.text}>Your email has been confirmed</p>
-        <Link href={'/auth/sign-in'}>
+        <Link href={PATH.AUTH.LOGIN}>
           <Button title={'Sign In'} />
         </Link>
         <Image

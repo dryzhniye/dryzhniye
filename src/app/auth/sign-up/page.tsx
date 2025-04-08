@@ -10,7 +10,8 @@ import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
-import { handleGoogleAuth } from '@/app/constants'
+import { PATH } from '@/shared/const/PATH'
+import { handleGoogleAuth } from '@/shared/const/google-auth-handler'
 
 type Input = {
   email: string
@@ -194,11 +195,11 @@ function Page() {
           />
           <span style={{ color: 'var(--light-100)', fontSize: '12px' }}>
             I agree to the{' '}
-            <Link href={'/auth/terms-of-service'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={PATH.AUTH.TERMS_OF_SERVICE} style={{ color: 'var(--accent-700)' }}>
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href={'/auth/privacy-policy'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={PATH.AUTH.PRIVACY_POLICY} style={{ color: 'var(--accent-700)' }}>
               Privacy Policy
             </Link>
           </span>
@@ -208,7 +209,7 @@ function Page() {
 
         <p style={{ color: 'var(--light-100)', fontSize: '16px' }}>Do you have an account?</p>
 
-        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} href={'/auth/sign-in'}/>
+        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} href={PATH.AUTH.LOGIN}/>
       </form>
       <Modal open={!!linkModal} modalTitle={'Email sent'} onClose={() => setLinkModal(false)}>
         <p style={{ marginBottom: '20px' }}>

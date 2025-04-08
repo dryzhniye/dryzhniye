@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useResetPasswordMutation } from '@/lib/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
+import { PATH } from '@/shared/const/PATH'
 
 type ResetPasswordArgs = {
   email: string
@@ -107,7 +108,7 @@ function ForgotPassword() {
           asChild={'a'}
           width={'100%'}
           className={s.button + ' ' + s.link}
-          href={'/auth/sign-in'}
+          href={PATH.AUTH.LOGIN}
         />
         {!isMailSent && (
           <Recaptcha
