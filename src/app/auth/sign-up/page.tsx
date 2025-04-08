@@ -1,5 +1,4 @@
 'use client'
-
 import s from './signUp.module.scss'
 import Input from '@/shared/ui/Input/Input'
 import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
@@ -10,10 +9,10 @@ import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
-import { handleGithubAuth, handleGoogleAuth } from '@/lib/constants'
+import { PATH } from '@/shared/const/PATH'
 import { formRegisterSchema, type TFormRegisterValues } from '@/lib/schemas/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { handleGoogleAuth } from '@/shared/const/google-auth-handler'
 
 type Input = {
   email: string
@@ -35,7 +34,6 @@ export type ErrorType<T = [{ message: string }]> = {
 function Page() {
   const [linkModal, setLinkModal] = useState<string | boolean>(false)
 
-  useRedirectIfAuthorized()
 
   const {
     register,
@@ -52,9 +50,6 @@ function Page() {
   const [registration] = useRegistrationMutation()
 
   const onSubmit: SubmitHandler<Input> = async data => {
-    debugger
-
-    console.log(data)
 
     try {
       await registration({
@@ -100,9 +95,9 @@ function Page() {
           <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGoogleAuth}>
             <Image  src="/google.svg" alt="" width={34} height={34} />
           </button>
-          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGithubAuth}>
+          <Link href={'/github'}>
             <Image src="/github.svg" alt="" width={34} height={34} />
-          </button>
+          </Link>
         </div>
 
         <Input
@@ -147,11 +142,11 @@ function Page() {
           />
           <span style={{ color: 'var(--light-100)', fontSize: '12px' }}>
             I agree to the{' '}
-            <Link href={'/auth/terms-of-service'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={PATH.AUTH.TERMS_OF_SERVICE} style={{ color: 'var(--accent-700)' }}>
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href={'/auth/privacy-policy'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={PATH.AUTH.PRIVACY_POLICY} style={{ color: 'var(--accent-700)' }}>
               Privacy Policy
             </Link>
           </span>
@@ -161,7 +156,7 @@ function Page() {
 
         <p style={{ color: 'var(--light-100)', fontSize: '16px' }}>Do you have an account?</p>
 
-        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} href={'/auth/sign-in'}/>
+        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} href={PATH.AUTH.LOGIN}/>
       </form>
       <Modal open={!!linkModal} modalTitle={'Email sent'} onClose={() => setLinkModal(false)}>
         <p style={{ marginBottom: '20px' }}>
