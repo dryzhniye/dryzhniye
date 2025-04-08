@@ -32,7 +32,6 @@ const ResetEmailPage = () => {
   const [resetEmail] = useResetEmailMutation()
 
   const onSubmit: SubmitHandler<Input> = async data => {
-    console.log(data)
     try {
       await resetEmail({ email: data.email }).unwrap()
       setModal(!modal)

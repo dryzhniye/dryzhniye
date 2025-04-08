@@ -2,6 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect } from 'react'
 import { getDecodedToken } from '@/shared/utils/getDecodedToken'
+import { PATH } from '@/shared/const/PATH'
 
 export default function GithubPage() {
   return (
@@ -9,12 +10,6 @@ export default function GithubPage() {
       <GithubPageContent />
     </Suspense>
   )
-}
-
-const PATH = {
-  AUTH: {
-    LOGIN: '/auth/sign-in',
-  },
 }
 
 const GithubPageContent = () => {

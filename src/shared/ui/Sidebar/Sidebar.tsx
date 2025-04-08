@@ -9,6 +9,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { selectAppEmail, setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/appHooks'
+import { PATH } from '@/shared/const/PATH'
 
 type Props = {
   disabledIcon?: boolean
@@ -82,7 +83,7 @@ export const Sidebar = ({ disabledIcon }: Props) => {
       dispatch(setIsLoggedIn(false))
       dispatch(setAppEmail(null))
       dispatch(authApi.util.resetApiState())
-      router.push('/auth/sign-in')
+      router.push(PATH.AUTH.LOGIN)
     } catch (error) {
       console.error('Logout failed:', error)
     } finally {
