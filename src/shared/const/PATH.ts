@@ -13,6 +13,11 @@ export const PATH = {
   },
   USERS: {
     PROFILE: '/users/profile',
+    PROFILE_USERID: /^\/profile\/[^/]+$/,
+  },
+  PUBLIC: {
+    PUBLIC_PAGE: '/public-page',
+    PROFILE: /^\/public-user\/profile\/\d+$/
   },
   GITHUB: '/github',
   HOME: '/home',

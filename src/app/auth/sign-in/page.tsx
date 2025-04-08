@@ -9,7 +9,6 @@ import s from './sign-in.module.scss'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { ErrorType } from '../sign-up/page'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 import Link from 'next/link'
 import { PATH } from '@/shared/const/PATH'
 import { handleGoogleAuth } from '@/shared/const/google-auth-handler'
@@ -22,7 +21,6 @@ type LoginArgs = {
 function Page() {
   const [login] = useLoginMutation()
   const router = useRouter()
-  useRedirectIfAuthorized()
 
   const {
     register,

@@ -9,7 +9,6 @@ import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
 import { PATH } from '@/shared/const/PATH'
 import { handleGoogleAuth } from '@/shared/const/google-auth-handler'
 
@@ -32,8 +31,6 @@ export type ErrorType<T = [{ message: string }]> = {
 
 function Page() {
   const [linkModal, setLinkModal] = useState<string | boolean>(false)
-
-  useRedirectIfAuthorized()
 
   const {
     register,

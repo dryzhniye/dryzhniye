@@ -1,7 +1,7 @@
 'use client'
-
 import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
+import { getCookie } from '@/shared/utils/cookieUtils'
 
 const mutex = new Mutex()
 
@@ -10,7 +10,7 @@ const baseQuery = fetchBaseQuery({
   credentials: 'include',
 
   prepareHeaders: (headers) => {
-    const token = localStorage.getItem('token')
+    const token = getCookie('accessToken')
 
     if (token) {
       headers.set('Authorization', `Bearer ${token}`)
