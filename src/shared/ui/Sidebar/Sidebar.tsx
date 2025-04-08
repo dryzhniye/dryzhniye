@@ -1,14 +1,14 @@
 'use client'
-import { authApi, useLogoutMutation } from '@/lib/api/authApi'
+import { useLogoutMutation } from '@/lib/api/authApi'
 import { Button } from '@/shared/ui/Button/Button'
 import { Modal } from '@/shared/ui/Modal/Modal'
-import { useRouter } from 'next/navigation'
 import s from './Sidebar.module.scss'
 import Image from 'next/image'
 import { useState } from 'react'
 import Link from 'next/link'
-import { selectAppEmail, setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/appHooks'
+import { selectAppEmail } from '@/app/redux/appSlice'
+import { useAppSelector } from '@/lib/hooks/appHooks'
+import { PATH } from '@/shared/const/PATH'
 
 type Props = {
   disabledIcon?: boolean
@@ -68,8 +68,6 @@ export const Sidebar = ({ disabledIcon }: Props) => {
   const [showModal, setShowModal] = useState(false)
   const [logout] = useLogoutMutation()
   const email = useAppSelector(selectAppEmail)
-  const router = useRouter()
-  const dispatch = useAppDispatch()
 
   const activeItems = (value: string) => {
     setActiveItem(value)
@@ -78,11 +76,7 @@ export const Sidebar = ({ disabledIcon }: Props) => {
   const logoutHandler = async () => {
     try {
       await logout().unwrap()
-      localStorage.removeItem('token')
-      dispatch(setIsLoggedIn(false))
-      dispatch(setAppEmail(null))
-      dispatch(authApi.util.resetApiState())
-      router.push('/auth/sign-in')
+      window.location.replace(PATH.AUTH.LOGIN)
     } catch (error) {
       console.error('Logout failed:', error)
     } finally {
