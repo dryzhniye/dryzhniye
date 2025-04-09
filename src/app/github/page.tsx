@@ -24,6 +24,7 @@ const GithubPageContent = () => {
     } else {
       try {
         setCookie('accessToken', accessToken, 7);
+        setCookie('oauthProvider', 'github', 7);
         const userId = getDecodedToken(accessToken)
         if (userId) {
           replace(`/users/profile`)

@@ -22,3 +22,4 @@ export const PATH = {
   GITHUB: '/github',
   HOME: '/home',
 }
+
