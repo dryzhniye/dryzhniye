@@ -1,9 +1,9 @@
-import PostList from '@/shared/ui/CardPosts/PostList/PostList'
+import CardPosts from '@/shared/ui/CardPosts/CaedPosts'
 
 export default function Home() {
   return (
     <>
-      <PostList />
+      <CardPosts />
     </>
   )
 }
