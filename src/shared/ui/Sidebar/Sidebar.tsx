@@ -4,73 +4,108 @@ import { Button } from '@/shared/ui/Button/Button'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import s from './Sidebar.module.scss'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { selectAppEmail } from '@/app/redux/appSlice'
-import { useAppSelector } from '@/lib/hooks/appHooks'
+import { selectAppEmail, selectUserId } from '@/app/redux/appSlice'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/appHooks'
 import { PATH } from '@/shared/const/PATH'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { selectActiveItem, setActiveItem } from '@/app/redux/sidebarSlice'
 
 type Props = {
   disabledIcon?: boolean
 }
 
-const menuItems = [
-  { id: 'home', name: 'Home', iconDefault: '/home.svg', iconActive: '/homeActive.svg', PATH: PATH.MAIN },
-  {
-    id: 'create',
-    name: 'Create',
-    iconDefault: '/create.svg',
-    iconActive: '/createActive.svg',
-    PATH: '',
-  },
-  {
-    id: 'profile',
-    name: 'My Profile',
-    iconDefault: '/profileIcon.svg',
-    iconActive: '/profileActive.svg',
-    PATH: PATH.USERS.PROFILE,
-  },
-  {
-    id: 'messenger',
-    name: 'Messenger',
-    iconDefault: '/message.svg',
-    iconActive: '/messageActive.svg',
-    PATH: '',
-  },
-  {
-    id: 'search',
-    name: 'Search',
-    iconDefault: '/search.svg',
-    iconActive: '/searchActive.svg',
-    PATH: '',
-  },
-]
-
-const menuItems2 = [
-  {
-    id: 'statistics',
-    name: 'Statistics',
-    iconDefault: '/statistics.svg',
-    iconActive: '/statistics.svg',
-    PATH: '',
-  },
-  {
-    id: 'favorites',
-    name: 'Favorites',
-    iconDefault: '/favorites.svg',
-    iconActive: '/favoritesActive.svg',
-    PATH: '',
-  },
-]
-
 export const Sidebar = ({ disabledIcon }: Props) => {
-  const [activeItem, setActiveItem] = useState('home')
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const dispatch = useAppDispatch()
+  const activeItem = useAppSelector(selectActiveItem)
   const [showModal, setShowModal] = useState(false)
   const [logout] = useLogoutMutation()
   const email = useAppSelector(selectAppEmail)
+  const userId = useAppSelector(selectUserId)
 
-  const activeItems = (value: string) => {
-    setActiveItem(value)
+  useEffect(() => {
+    const currentPath = pathname
+    const action = searchParams.get('action')
+
+    if (action === 'create' && currentPath.startsWith('/users/profile/')) {
+      dispatch(setActiveItem('create'))
+      return
+    }
+
+    if (currentPath.startsWith('/users/profile')) {
+      if (currentPath.match(/^\/users\/profile\/\d+$/)) {
+        dispatch(setActiveItem('profile'))
+        return
+      }
+      if (currentPath === PATH.USERS.PROFILE) {
+        dispatch(setActiveItem('profile'))
+        return
+      }
+    }
+
+    if (currentPath === PATH.MAIN) {
+      dispatch(setActiveItem('home'))
+    } else if (currentPath.startsWith('/messenger')) {
+      dispatch(setActiveItem('messenger'))
+    } else if (currentPath.startsWith('/search')) {
+      dispatch(setActiveItem('search'))
+    }
+  }, [pathname, searchParams, dispatch])
+
+  const menuItems = [
+    { id: 'home', name: 'Home', iconDefault: '/home.svg', iconActive: '/homeActive.svg', PATH: PATH.MAIN },
+    {
+      id: 'create',
+      name: 'Create',
+      iconDefault: '/create.svg',
+      iconActive: '/createActive.svg',
+      PATH: userId ? `${PATH.USERS.PROFILE_USERID(userId)}?action=create` : activeItem,
+    },
+    {
+      id: 'profile',
+      name: 'My Profile',
+      iconDefault: '/profileIcon.svg',
+      iconActive: '/profileActive.svg',
+      PATH: PATH.USERS.PROFILE,
+    },
+    {
+      id: 'messenger',
+      name: 'Messenger',
+      iconDefault: '/message.svg',
+      iconActive: '/messageActive.svg',
+      PATH: '',
+    },
+    {
+      id: 'search',
+      name: 'Search',
+      iconDefault: '/search.svg',
+      iconActive: '/searchActive.svg',
+      PATH: '',
+    },
+  ]
+
+  const menuItems2 = [
+    {
+      id: 'statistics',
+      name: 'Statistics',
+      iconDefault: '/statistics.svg',
+      iconActive: '/statistics.svg',
+      PATH: '',
+    },
+    {
+      id: 'favorites',
+      name: 'Favorites',
+      iconDefault: '/favorites.svg',
+      iconActive: '/favoritesActive.svg',
+      PATH: '',
+    },
+  ]
+
+  const handleItemClick = (id: string) => {
+    dispatch(setActiveItem(id))
   }
 
   const logoutHandler = async () => {
@@ -92,7 +127,7 @@ export const Sidebar = ({ disabledIcon }: Props) => {
             <li
               key={menuItem.id}
               className={`${s.wrapper} ${disabledIcon ? s.disabled : ''}`}
-              onClick={() => activeItems(menuItem.id)}
+              onClick={() => handleItemClick(menuItem.id)}
             >
               <Image
                 src={
@@ -120,7 +155,7 @@ export const Sidebar = ({ disabledIcon }: Props) => {
             <li
               key={menuItem.id}
               className={`${s.wrapper} ${disabledIcon ? s.disabled : ''}`}
-              onClick={() => activeItems(menuItem.id)}
+              onClick={() => handleItemClick(menuItem.id)}
             >
               <Image
                 src={
