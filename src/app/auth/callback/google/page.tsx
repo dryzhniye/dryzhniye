@@ -20,7 +20,7 @@ const GoogleCallback = () => {
 
     if (code) {
       googleLogin({
-        redirectUrl: 'http://localhost:3000/auth/callback/google',
+        redirectUrl: 'https://dryzhniye.ru/auth/callback/google',
         code: decodeURIComponent(code),
       })
         .unwrap()
