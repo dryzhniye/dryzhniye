@@ -3,9 +3,14 @@ import { NextResponse } from 'next/server'
 import { PATH } from '@/shared/const/PATH'
 
 export function middleware(request: NextRequest) {
-  const publicPaths = [
-    PATH.GITHUB,
+  const alwaysPublicPaths: (string | RegExp)[] = [
     PATH.MAIN,
+    PATH.USERS.PROFILE,
+    PATH.USERS.PROFILE_USERID_REGEX
+  ]
+
+  const publicPathsForGuestsOnly: (string | RegExp)[] = [
+    PATH.GITHUB,
     PATH.AUTH.LOGIN,
     PATH.AUTH.SIGNUP,
     PATH.AUTH.FORGOT_PASSWORD,
@@ -15,23 +20,25 @@ export function middleware(request: NextRequest) {
     PATH.AUTH.REGISTRATION_CONFIRMATION,
     PATH.AUTH.REGISTRATION_EMAIL_RESENDING,
     PATH.AUTH.TERMS_OF_SERVICE,
-    PATH.USERS.PROFILE_USERID,
-    PATH.PUBLIC.PUBLIC_PAGE,
-    PATH.PUBLIC.PROFILE,
-    '/auth/callback/google'
+    '/auth/callback/google',
   ]
+
   const { pathname } = request.nextUrl
   const encryptedToken = request.cookies.get('accessToken')?.value
 
-  if (encryptedToken && publicPaths.some(path =>
+  const isAlwaysPublic = alwaysPublicPaths.some(path =>
     typeof path === 'string' ? path === pathname : path.test(pathname),
-  )) {
-    return NextResponse.redirect(new URL(PATH.USERS.PROFILE, request.url)) // Перенаправляем на профиль
+  )
+
+  const isPublicForGuestsOnly = publicPathsForGuestsOnly.some(path =>
+    typeof path === 'string' ? path === pathname : path.test(pathname),
+  )
+
+  if (encryptedToken && isPublicForGuestsOnly) {
+    return NextResponse.redirect(new URL(PATH.USERS.PROFILE, request.url))
   }
 
-  if (!encryptedToken && !publicPaths.some(path =>
-    typeof path === 'string' ? path === pathname : path.test(pathname),
-  )) {
+  if (!encryptedToken && !isAlwaysPublic && !isPublicForGuestsOnly) {
     return NextResponse.redirect(new URL(PATH.AUTH.LOGIN, request.url))
   }
 

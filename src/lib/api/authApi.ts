@@ -1,6 +1,6 @@
 import { baseApi } from '@/app/baseApi'
 import { deleteCookie, setCookie } from '@/shared/utils/cookieUtils'
-import { setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
+import { setAppEmail, setIsLoggedIn, setUserId } from '@/app/redux/appSlice'
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://dryzhniye.ru'
 
@@ -82,6 +82,7 @@ export const authApi = baseApi.injectEndpoints({
           if (response.data.email) {
             dispatch(setAppEmail(response.data.email))
             dispatch(setIsLoggedIn(true))
+            dispatch(setUserId(response.data.userId))
           }
         } catch (error) {
           throw error
@@ -94,7 +95,6 @@ export const authApi = baseApi.injectEndpoints({
         method: 'POST',
         credentials: 'include',
       }),
-      invalidatesTags: ['Auth'],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         await queryFulfilled
         deleteCookie('accessToken')
