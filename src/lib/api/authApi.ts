@@ -71,9 +71,6 @@ export const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: 'auth/me',
         method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
@@ -98,6 +95,7 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         await queryFulfilled
         deleteCookie('accessToken')
+        deleteCookie('oauthProvider')
         dispatch(setIsLoggedIn(false))
         dispatch(setAppEmail(null))
         dispatch(authApi.util.resetApiState())
@@ -131,12 +129,6 @@ export const authApi = baseApi.injectEndpoints({
         await dispatch(authApi.endpoints.me.initiate())
       }
     }),
-    updateTokens: build.mutation<{ accessToken: string }, void>({
-      query: () => ({
-        url: 'auth/update-tokens',
-        method: 'POST',
-      }),
-    }),
   }),
 })
 
@@ -152,5 +144,4 @@ export const {
   useResetEmailMutation,
   useMeQuery,
   useGoogleLoginMutation,
-  useUpdateTokensMutation,
 } = authApi
