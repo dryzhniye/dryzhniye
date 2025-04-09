@@ -53,6 +53,7 @@
     background: none;
 
     span {
+      font-size: 26px;
       color: var(--accent-500);
     }
   }
@@ -295,4 +296,22 @@
   &:hover {
     background-color: var(--dark-100);
   }
+}
+
+.modal {
+  max-width: 378px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+
+  &_end {
+    justify-content: flex-end;
+  }
+}
+
+.buttonGroup button {
+  width: 96px;
 }
