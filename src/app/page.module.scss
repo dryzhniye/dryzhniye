@@ -9,3 +9,98 @@
 .layout {
   padding-top: 60px;
 }
+
+.home {
+  width: 75%;
+  margin: 24px auto;
+}
+
+.counterBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 72px;
+  margin-bottom: 36px;
+  padding: 0 24px;
+  border: 1px solid var(--dark-300);
+
+  background-color: var(--dark-500);
+
+  & .title {
+    font-size: 18px;
+    color: var(--light-100);
+  }
+
+  & .counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 203px;
+    height: 48px;
+    border: 1px solid var(--dark-300);
+
+    background-color: var(--dark-700);
+
+    & .numberContainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      width: 100%;
+      height: 100%;
+    }
+
+    & .separator {
+      width: 1px;
+      height: 30px;
+      background: var(--dark-300);
+    }
+
+    & .number {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+
+      height: 100%;
+
+      font-size: 18px;
+      color: var(--light-100);
+    }
+  }
+}
+
+.postsBlock {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.post {
+  width: 240px;
+  border: 1px solid var(--dark-300);
+
+  & .photo {
+    width: 100%;
+  }
+
+  & .author {
+    & .avatar {
+
+    }
+
+    & .title {
+
+    }
+  }
+
+  & .time {
+
+  }
+
+  & .description {
+
+  }
+}
