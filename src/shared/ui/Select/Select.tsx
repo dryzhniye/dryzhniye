@@ -61,8 +61,8 @@ export const Select = ({
             </div>
             <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
           </div>
-          <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
-            <ul className={styles.selectBoxList}>
+          {isOpen && <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
+             <ul className={styles.selectBoxList}>
               {options.map((option, index) => (
                 <li
                   key={index}
@@ -73,7 +73,7 @@ export const Select = ({
                 </li>
               ))}
             </ul>
-          </div>
+          </div>}
         </div>
       ) : (
         <div
