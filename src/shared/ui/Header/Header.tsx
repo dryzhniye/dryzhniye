@@ -5,9 +5,7 @@ import { Button } from '@/shared/ui/Button/Button'
 import { useState } from 'react'
 import Image from 'next/image'
 import s from './Header.module.scss'
-import Link from 'next/link'
 import { useMeQuery } from '@/lib/api/authApi'
-import { redirect } from 'next/navigation'
 import { PATH } from '@/shared/const/PATH'
 
 type Props = {
@@ -49,7 +47,7 @@ export const Header = ({ isLoggedIn, notifications, countNotifications }: Props)
               />
             </Flex>
           ) : (
-            <Flex align="center" gap="3">
+            <div className={s.buttonsBlock}>
               <Select
                 options={['English', 'Russian']}
                 onChange={setSelectedValue}
@@ -57,11 +55,9 @@ export const Header = ({ isLoggedIn, notifications, countNotifications }: Props)
                 selectedValue={selectedValue}
                 width={'163px'}
               />
-              <Button title="Log in" variant={'link'} href={'/'} asChild={'a'} />
-              <Link href={'/privacy-policy'}>
-                <Button title="Sign up" variant={'primary'} width={'110px'} />
-              </Link>
-            </Flex>
+              <Button title="Log in" variant={'link'} href={PATH.AUTH.LOGIN} asChild={'a'} />
+              <Button title="Sign up" variant={'primary'} width={'110px'} asChild={'a'} href={PATH.AUTH.SIGNUP} />
+            </div>
           )}
         </header>
       </Flex>
