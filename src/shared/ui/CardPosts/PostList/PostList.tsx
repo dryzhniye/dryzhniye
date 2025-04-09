@@ -135,7 +135,9 @@ const PostList = () => {
           <Image src="/google.svg" alt="Post image" width={20} height={20} className={s.image} />
           <h3>URLProfiele</h3>
         </div>
-        <button onClick={handleOptionsClick}>...</button>
+        <button onClick={handleOptionsClick}>
+          <span>...</span>
+        </button>
         {isMenuOpen && (
           <div ref={menuRef} className={s.dropdownMenu}>
             <button onClick={handleEditPost}>

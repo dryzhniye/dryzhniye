@@ -1,16 +1,45 @@
 .myPost {
   display: flex;
-  height: 500px;
-  color: white;
+
+  width: 100%;
+  max-width: 972px;
+  height: auto;
+  margin: auto;
+
+  color: var(--light-100);
+
   background-color: #1c1c1c;
 }
 
 .slider {
-  flex: 3;
+  flex: 2;
 }
 
 .details {
   overflow-y: auto;
   flex: 2;
-  padding: 20px;
+  height: 100%;
+}
+
+.likes {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.comments {
+  margin-top: 20px;
+}
+
+.comment {
+  margin-bottom: 10px;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: var(--dark-100);
+}
+
+.answer {
+  margin-left: 20px;
+  font-style: italic;
 }
