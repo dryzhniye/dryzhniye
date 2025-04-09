@@ -15,7 +15,7 @@ type Props = {
 }
 
 const menuItems = [
-  { id: 'home', name: 'Home', iconDefault: '/home.svg', iconActive: '/homeActive.svg', PATH: '' },
+  { id: 'home', name: 'Home', iconDefault: '/home.svg', iconActive: '/homeActive.svg', PATH: PATH.MAIN },
   {
     id: 'create',
     name: 'Create',
@@ -28,7 +28,7 @@ const menuItems = [
     name: 'My Profile',
     iconDefault: '/profileIcon.svg',
     iconActive: '/profileActive.svg',
-    PATH: '',
+    PATH: PATH.USERS.PROFILE,
   },
   {
     id: 'messenger',
