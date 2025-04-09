@@ -1,6 +1,9 @@
 'use client'
 
+import { useDeletePostMutation } from '@/lib/api/postApi'
+import { Button } from '@/shared/ui/Button/Button'
 import Post from '@/shared/ui/CardPosts/PostList/Post'
+import { Modal } from '@/shared/ui/Modal/Modal'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import s from './PostList.module.scss'
@@ -80,8 +83,11 @@ const PostList = () => {
   const posts = mockPosts
   const [showAnswers, setShowAnswers] = useState<Record<number, boolean>>({})
   const [comment, setComment] = useState('')
+  const [showModal, setShowModal] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+
+  const [deletePost] = useDeletePostMutation()
 
   const handleClickOutside = (e: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -100,9 +106,14 @@ const PostList = () => {
     console.log('Edit Post')
     setIsMenuOpen(false)
   }
-  const handleDeletePost = () => {
-    console.log('delete Post')
-    setIsMenuOpen(false)
+  const handleDeletePost = async () => {
+    try {
+      await deletePost('postId').unwrap()
+    } catch (error) {
+      console.error('Failed to delete post:', error)
+    } finally {
+      setShowModal(false)
+    }
   }
 
   const handleOptionsClick = (e: React.MouseEvent) => {
@@ -144,7 +155,12 @@ const PostList = () => {
               <Image src={'/edit-2-outline.svg'} alt={'edit'} width={24} height={24} />
               Edit Post
             </button>
-            <button onClick={handleDeletePost}>
+            <button
+              onClick={() => {
+                setShowModal(true)
+                setIsMenuOpen(false)
+              }}
+            >
               <Image src={'/trash-outline.svg'} alt={'trash'} width={24} height={24} />
               Delete Post
             </button>
@@ -219,6 +235,22 @@ const PostList = () => {
           Publish
         </button>
       </div>
+      {showModal && (
+        <Modal
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          modalTitle={'Log Out'}
+          className={s.modal}
+        >
+          <p>Are you sure you want to delete this post?</p>
+          <div className={s.Description}>
+            <div className={`${s.buttonGroup} ${s.buttonGroup_end}`}>
+              <Button variant={'outlined'} title={'Yes'} onClick={handleDeletePost} />
+              <Button variant={'primary'} title={'No'} onClick={() => setShowModal(false)} />
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }
