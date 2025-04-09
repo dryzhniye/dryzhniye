@@ -26,10 +26,10 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
       {images.length > 1 && (
         <>
           <button onClick={handlePrevImage} className={`${s.sliderButton} ${s.prevButton}`}>
-            <Image src="/left-arrow.svg" alt="Previous" width={20} height={20} />
+            <Image src="/Vector.svg" alt="Previous" width={20} height={20} />
           </button>
           <button onClick={handleNextImage} className={`${s.sliderButton} ${s.nextButton}`}>
-            <Image src="/right-arrow.svg" alt="Next" width={20} height={20} />
+            <Image src="/Vector.svg" alt="Next" width={20} height={20} />
           </button>
         </>
       )}

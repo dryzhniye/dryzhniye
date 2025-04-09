@@ -8,7 +8,7 @@
   min-height: 564px;
   margin: 0 auto;
 
-  color: #fff;
+  color: var(--light-100);
 
   background-color: var(--dark-300);
 }
@@ -48,9 +48,13 @@
     border: none;
 
     font-size: 18px;
-    color: #fff;
+    color: var(--light-100);
 
     background: none;
+
+    span {
+      color: var(--accent-500);
+    }
   }
 }
 
