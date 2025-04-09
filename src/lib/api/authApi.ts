@@ -127,7 +127,10 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         await queryFulfilled
         await dispatch(authApi.endpoints.me.initiate())
-      }
+      },
+    }),
+    getTotalUsersCount: build.query<{ totalCount: number }, void>({
+      query: () => 'public-user',
     }),
   }),
 })
@@ -144,4 +147,5 @@ export const {
   useResetEmailMutation,
   useMeQuery,
   useGoogleLoginMutation,
+  useGetTotalUsersCountQuery
 } = authApi
