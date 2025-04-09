@@ -1,39 +1,53 @@
 .header {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  width: 100%;
   padding: 12px 60px;
   border-bottom: 1px solid var(--dark-500);
+
   background-color: var(--dark-900);
 }
 
 .notifications {
-  background: none;
-  border: none;
   cursor: pointer;
+
   width: 18px;
   height: 20px;
   margin-right: 50px;
+  border: none;
+
+  background: none;
 }
 
 .box {
   position: relative;
 
   &::after {
+    content: var(--notification-count);
+
     position: absolute;
     top: -5px;
     right: -5px;
-    width: 15px;
-    height: 15px;
-    background: red;
-    content: var(--notification-count);
-    color: white;
-    border-radius: 50%;
 
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1;
+
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+
     font-size: 12px;
+    line-height: 1;
+    color: white;
+
+    background: red;
   }
 }

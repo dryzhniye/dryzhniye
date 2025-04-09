@@ -7,8 +7,6 @@ import Image from 'next/image'
 import s from './Header.module.scss'
 import Link from 'next/link'
 import { useMeQuery } from '@/lib/api/authApi'
-import { redirect } from 'next/navigation'
-import { PATH } from '@/shared/const/PATH'
 
 type Props = {
   isLoggedIn: boolean

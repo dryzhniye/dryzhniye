@@ -3,6 +3,7 @@ import { Inter, Roboto } from 'next/font/google'
 import './globals.css'
 import StoreProvider from '@/app/StoreProvider'
 import LoadingHeader from '@/widgets/header/loadingHeader'
+import s from './page.module.scss'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -28,7 +29,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <body className={`${inter.variable} ${roboto.variable}`}>
     <StoreProvider>
       <LoadingHeader />
-      {children}
+      <div className={s.layout}>{children}</div>
     </StoreProvider>
     </body>
     </html>
