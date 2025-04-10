@@ -2,9 +2,16 @@ import React from 'react'
 import styles from './ProfileTopbar.module.scss'
 import Image from 'next/image'
 import { Button } from '@/shared/ui/Button/Button'
+import type { ProfileResponse } from '@/lib/api/postApi'
 
-export const ProfileTopbar = () => {
+interface ProfileTopbarProps {
+  profile: ProfileResponse
+}
+
+export const ProfileTopbar = ({ profile }: ProfileTopbarProps) => {
+
   return (
+
 
       <div className={styles.profileContent}>
         <div className={styles.avatarSection}>
@@ -26,7 +33,7 @@ export const ProfileTopbar = () => {
 
         <div className={styles.infoSection}>
           <div className={styles.profileHeader}>
-            <h1 className={styles.username}>URLProfile</h1>
+            <h1 className={styles.username}>{ "loading..."}</h1>
             <Button title={'Profile Settings'} variant={'secondary'} width={'167px'}/>
           </div>
 
