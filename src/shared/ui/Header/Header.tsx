@@ -7,6 +7,7 @@ import Image from 'next/image'
 import s from './Header.module.scss'
 import { useMeQuery } from '@/lib/api/authApi'
 import { PATH } from '@/shared/const/PATH'
+import Link from 'next/link'
 
 type Props = {
   isLoggedIn: boolean
@@ -23,7 +24,9 @@ export const Header = ({ isLoggedIn, notifications, countNotifications }: Props)
     <>
       <Flex asChild>
         <header className={s.header}>
-          <h1 style={{ color: 'var(--light-100)', fontSize: '26px' }}>Inctagram</h1>
+          <Link href={PATH.MAIN} style={{textDecoration: 'none'}}>
+            <h1 style={{ color: 'var(--light-100)', fontSize: '26px' }}>Inctagram</h1>
+          </Link>
           {isLoggedIn ? (
             <Flex align="center" gap="4">
               <button

@@ -1,74 +1,64 @@
-import { ProfileTopbar } from '@/widgets/profile-topbar/profile-topbar'
-
+'use client'
+import { useGetTotalUsersCountQuery } from '@/lib/api/authApi'
+import { useGetPublicPostsQuery } from '@/lib/api/postApi'
 import s from './page.module.scss'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination } from 'swiper/modules'
+import Link from 'next/link'
+import { PATH } from '@/shared/const/PATH'
+import { formatTimeAgo } from '@/shared/utils/formatTimeAgo'
 
 export default function Home() {
-  const posts = [
-    {
-      id: 1,
-      imageUrl: "/image_my_profile.png",
-      description: "Person with red hat",
-      likes: 243,
-      comments: 15,
-      isVideo: false
-    },
-    {
-      id: 2,
-      imageUrl: "/image_my_profile.png",
-      description: "Business team",
-      likes: 187,
-      comments: 9,
-      isVideo: false
-    },
-    {
-      id: 3,
-      imageUrl: "/image_my_profile.png",
-      description: "Group discussion",
-      likes: 412,
-      comments: 28,
-      isVideo: true
-    },
-    {
-      id: 4,
-      imageUrl: "/image_my_profile.png",
-      description: "Person with camera",
-      likes: 156,
-      comments: 7,
-      isVideo: false
-    },
-    {
-      id: 5,
-      imageUrl: "/image_my_profile.png",
-      description: "Mountain view",
-      likes: 538,
-      comments: 32,
-      isVideo: false
-    },
-    {
-      id: 6,
-      imageUrl: "/image_my_profile.png",
-      description: "Coffee and food",
-      likes: 216,
-      comments: 14,
-      isVideo: true
-    },
-    {
-      id: 7,
-      imageUrl: "/image_my_profile.png",
-      description: "Food ingredients",
-      likes: 295,
-      comments: 21,
-      isVideo: false
-    },
-  ];
+  const { data } = useGetTotalUsersCountQuery()
+  const { data: postsData } = useGetPublicPostsQuery(4)
+
+  const totalCount = data?.totalCount.toString().padStart(6, '0')
 
   return (
-    <div style={{ display: 'flex', gap: '20px' }}>
-      {/*<Sidebar/>*/}
-      {/*<CardPosts />*/}
-      <div className={s.profileContainer}>
-      <ProfileTopbar />
-
+    <div className={s.home}>
+      <div className={s.counterBlock}>
+        <h1 className={s.title}>Registered users:</h1>
+        <div className={s.counter}>
+          {totalCount?.split('').flatMap((digit, index, array) => [
+            <span key={`digit-${index}`} className={s.number}>{digit}</span>,
+            index < array.length - 1 && (
+              <span key={`separator-${index}`} className={s.separator} />
+            ),
+          ])}
+        </div>
+      </div>
+      <div className={s.postsBlock}>
+        {postsData?.items.map((post) => <div key={post.id} className={s.post}>
+          {post.images.length > 0 && (
+            <Swiper
+              modules={[Navigation, Pagination]}
+              navigation
+              pagination={{ clickable: true }}
+              className={s.carousel}
+            >
+              {post.images.map((image) => (
+                <SwiperSlide key={image.url}>
+                  <Link href={PATH.USERS.PROFILE_USERID(post.ownerId) + '?postId=' + post.id}>
+                    <img
+                      className={s.photo}
+                      src={image.url}
+                      alt="post photo"
+                    />
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
+          <div className={s.author}>
+            <img className={s.avatar} src={post.avatarOwner} alt="" />
+            <Link className={s.title} href={PATH.USERS.PROFILE_USERID(post.ownerId)}>URLProfile</Link>
+          </div>
+          <div className={s.time}>{formatTimeAgo(post.createdAt)}</div>
+          <p className={s.description}>{post.description}</p>
+        </div>)}
       </div>
     </div>
   )

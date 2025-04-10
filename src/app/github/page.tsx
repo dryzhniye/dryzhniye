@@ -23,8 +23,8 @@ const GithubPageContent = () => {
       window.location.assign('https://inctagram.work/api/v1/auth/github/login')
     } else {
       try {
-        setCookie('accessToken', accessToken, 7);
-        setCookie('oauthProvider', 'github', 7);
+        setCookie('accessToken', accessToken, 7)
+        setCookie('oauthProvider', 'github', 7)
         const userId = getDecodedToken(accessToken)
         if (userId) {
           replace(`/users/profile`)
