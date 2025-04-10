@@ -13,7 +13,7 @@ import {
 
 const UserProfile = () => {
 
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
   const [displayedPosts, setDisplayedPosts] = useState([])
   const loaderRef = useRef(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -21,7 +21,7 @@ const UserProfile = () => {
   const [uploadImage] = useUploadImagePostMutation()
   const [createPost] = useCreatePostMutation()
   const { data: profile} = useGetProfileQuery()
-     const {data: profilePost}= useGetProfilePostsQuery()
+     // const {data: profilePost}= useGetProfilePostsQuery()
   console.log(profile)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,18 +90,22 @@ const UserProfile = () => {
 
 
   // const { data: postsData, isLoading } = useGetPublicPostsQuery(18)
-  const { data: postsData, isLoading } = useGetProfilePostsQuery({
-    userName: 'ioleg5910' as string,
-    pageSize: 8,
-    pageNumber: 1,
-    sortBy: 'createdAt',
-    sortDirection: 'desc',
-  })
+
+
+    const { data: postsData, isLoading } = useGetProfilePostsQuery({
+      userName: 'ioleg5910' as string,
+      pageSize: 4,
+      pageNumber: page,
+      sortBy: 'createdAt',
+      sortDirection: 'desc',
+    })
+
+
 
 
 
   console.log(postsData)
-
+  // debugger
   useEffect(() => {
     if (postsData?.items) {
       setDisplayedPosts(prev => [...prev, ...postsData.items])
@@ -109,10 +113,16 @@ const UserProfile = () => {
   }, [postsData])
 
   useEffect(() => {
+    // debugger
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isLoading) {
-          setPage(prevPage => prevPage + 1)
+        if (entries[0].isIntersecting && !isLoading ) {
+          debugger
+          // setPage(prevPage => prevPage + 1)
+
+          setTimeout(() => {
+            setPage(prevPage => prevPage + 1)
+          }, 300)
         }
       },
       { threshold: 0.5 }
@@ -140,6 +150,7 @@ const UserProfile = () => {
           // style={{ display: 'none' }}
         />
         <button onClick={()=>handleSubmitPost()}>create post</button>
+        <button onClick={() => setPage(1)}>reset page number</button>
         {profile && <ProfileTopbar profile={profile} />}
         <div className={s.postsGridContainer}>
           <div className={s.postsGrid}>
