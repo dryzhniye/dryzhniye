@@ -5,8 +5,13 @@ import { selectAppStatus, selectIsLoggedIn } from '@/app/redux/appSlice'
 import LinearProgres from '@/shared/ui/Linear/LinearProgres'
 import { useAppSelector } from '@/lib/hooks/appHooks'
 import { Sidebar } from '@/shared/ui/Sidebar/Sidebar'
+import s from './HeaderSidebar.module.scss'
 
-const HeaderSidebarProvider = () => {
+type Props = {
+  children: React.ReactNode
+}
+
+const HeaderSidebarProvider = ({children}: Props) => {
   const status = useSelector(selectAppStatus)
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
@@ -15,6 +20,9 @@ const HeaderSidebarProvider = () => {
       <Header isLoggedIn={isLoggedIn} />
       {status === 'loading' && <LinearProgres color={'var(--accent-700)'} />}
       {isLoggedIn && <Sidebar />}
+      <div className={`${s.mainContent} ${isLoggedIn ? s.withSidebar : ''}`}>
+        {children}
+      </div>
     </>
   )
 }
