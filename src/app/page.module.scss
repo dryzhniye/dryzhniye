@@ -6,6 +6,15 @@
   display: flex;
 }
 
-.layout {
+
+.appContainer {
+  display: flex;
+  min-height: 100vh;
   padding-top: 60px;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 36px 64px 0 24px;
+  margin-left: 220px;
 }
