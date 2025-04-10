@@ -1,0 +1,92 @@
+.profileContent {
+  display: flex;
+  max-width: 1024px;
+  margin: 0 auto;
+  //margin-left: 24px;
+  gap: 38px;
+  padding: 0 22px;
+}
+
+.avatarSection {
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 204px;
+  height: 204px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.infoSection {
+  flex-grow: 1;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.username {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.stats {
+  display: flex;
+  gap: 100px;
+  margin-bottom: 24px;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 171%;
+}
+
+.statNumber {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.statLabel {
+  font-size: 14px;
+}
+
+.bio {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.bioLink {
+  font-size: 14px;
+  color: var(--accent-500);
+  text-decoration-skip-ink: none;
+}
+
+//@media (max-width: 768px) {
+//  .profileContent {
+//    flex-direction: column;
+//    align-items: center;
+//    text-align: center;
+//  }
+//
+//  .profileHeader {
+//    flex-direction: column;
+//    gap: 16px;
+//  }
+//
+//  .stats {
+//    justify-content: center;
+//  }
+//}
