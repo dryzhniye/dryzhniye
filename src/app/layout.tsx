@@ -28,6 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="ru">
     <body className={`${inter.variable} ${roboto.variable}`}>
     <StoreProvider>
+
       <HeaderSidebarProvider />
       <div className={s.layout}>{children}</div>
     </StoreProvider>
