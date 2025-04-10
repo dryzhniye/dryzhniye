@@ -1,0 +1,79 @@
+.userProfile {
+  color: white;
+  max-width: 950px;
+
+  & .wrapButton {
+    display: flex;
+    gap: 10px;
+
+    & button {
+      font-size: 15px;
+    }
+  }
+}
+
+.profileHeader {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  margin-bottom: 40px;
+}
+
+.avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileInfo {
+  flex: 1;
+}
+
+.username {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.stats {
+  display: flex;
+  gap: 30px;
+  margin: 20px 0;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statCount {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.statLabel {
+  font-size: 14px;
+  color: gray;
+}
+
+.bio {
+  max-width: 730px;
+  font-size: 16px;
+
+  a.bioLink {
+    color: #3399ff;
+    text-decoration: underline;
+    margin-left: 4px;
+  }
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+
+  img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+}
