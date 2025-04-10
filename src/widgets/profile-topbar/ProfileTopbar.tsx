@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './profile-topbar.module.scss'
+import styles from './ProfileTopbar.module.scss'
 import Image from 'next/image'
 import { Button } from '@/shared/ui/Button/Button'
 

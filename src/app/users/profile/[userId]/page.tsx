@@ -3,7 +3,7 @@
 import { PostItem } from '@/widgets/post/PostItem'
 import React from 'react'
 import s from './page.module.scss'
-import { ProfileTopbar } from '@/widgets/profile-topbar/profile-topbar'
+import { ProfileTopbar } from '@/widgets/profile-topbar/ProfileTopbar'
 
 const UserProfile = () => {
   const posts = [
