@@ -12,11 +12,8 @@ import { PATH } from '@/shared/const/PATH'
 import { formatTimeAgo } from '@/shared/utils/formatTimeAgo'
 
 export default function Home() {
-  const screenWidth = window.innerWidth
-  const containerWidth = screenWidth * 0.75
-  const postsCount = Math.floor(containerWidth / 252)
   const { data } = useGetTotalUsersCountQuery()
-  const { data: postsData } = useGetPublicPostsQuery(postsCount)
+  const { data: postsData } = useGetPublicPostsQuery(4)
 
   const totalCount = data?.totalCount.toString().padStart(6, '0')
 
@@ -24,12 +21,14 @@ export default function Home() {
     <div className={s.home}>
       <div className={s.counterBlock}>
         <h1 className={s.title}>Registered users:</h1>
-        <div className={s.counter}>{totalCount?.split('').map((digit, index) => (
-          <>
-            <span key={index} className={s.number}>{digit}</span>
-            {index < 5 && <span className={s.separator} />}
-          </>
-        ))}</div>
+        <div className={s.counter}>
+          {totalCount?.split('').flatMap((digit, index, array) => [
+            <span key={`digit-${index}`} className={s.number}>{digit}</span>,
+            index < array.length - 1 && (
+              <span key={`separator-${index}`} className={s.separator} />
+            ),
+          ])}
+        </div>
       </div>
       <div className={s.postsBlock}>
         {postsData?.items.map((post) => <div key={post.id} className={s.post}>
