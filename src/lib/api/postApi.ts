@@ -1,4 +1,5 @@
 import { baseApi } from '@/app/baseApi'
+import { getPublicPostsResponse } from '@/lib/types/postsTypes'
 
 export const postApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -9,7 +10,15 @@ export const postApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Posts'],
     }),
+    getPublicPosts: build.query<getPublicPostsResponse, number>({
+      query: (pageSize) =>({
+        url: 'public-posts/all/{endCursorPostId}',
+        params: {
+          pageSize
+        }
+      }),
+    })
   }),
 })
 
-export const { useDeletePostMutation } = postApi
+export const { useDeletePostMutation, useGetPublicPostsQuery } = postApi
