@@ -29,7 +29,7 @@ type Params = {
 }
 
 export default async function PublicUserProfilePage({ params }: { params: Params }) {
-  // почему-то с обычной типизацией, не работает
+  // почему-то с обычной типизацией, не работает. Наверное из-за специфичной передачи userId
   const { userId } = params
 
   try {

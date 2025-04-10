@@ -16,12 +16,17 @@ const UserProfile = ({ profile }: Props) => {
   const userId = profile.id
 
   const isCurrentUserProfile = currentUserId === Number(userId)
+  const isCurrentImgProfile = profile.avatars[0]?.url
 
   return (
     <>
       <section className={styles.userProfile}>
         <div className={styles.profileHeader}>
-          <img src="/avatar.png" alt="User avatar" className={styles.avatar} />
+          <img
+            src={isCurrentImgProfile ? isCurrentImgProfile : '/noAvatar.png'}
+            alt="User avatar"
+            className={styles.avatar}
+          />
 
           <div className={styles.profileInfo}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
