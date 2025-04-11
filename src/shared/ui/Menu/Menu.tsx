@@ -27,7 +27,7 @@ const images: ImagesType = {
   '/addPost': {
     active: '/addPost-active.svg',
     inactive: '/addPost-outline.svg',
-    description: 'add post',
+    description: 'add PostItem',
   },
   '/comments': {
     active: '/comment-active.svg',

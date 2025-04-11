@@ -110,7 +110,7 @@ const PostList = () => {
     try {
       await deletePost('postId').unwrap()
     } catch (error) {
-      console.error('Failed to delete post:', error)
+      console.error('Failed to delete PostItem:', error)
     } finally {
       setShowModal(false)
     }
