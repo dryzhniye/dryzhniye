@@ -32,3 +32,11 @@ export type getPublicPostsResponse = {
   totalUsers: number
   items: PostType[]
 }
+
+export type GetProfilePostsParams = {
+  userName: string
+  pageSize?: number
+  pageNumber?: number
+  sortBy?: string
+  sortDirection?: 'asc' | 'desc'
+}

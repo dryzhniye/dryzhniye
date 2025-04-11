@@ -1,0 +1,63 @@
+.profileContainer {
+  width: 100%;
+  background-color: var(--dark-900);
+  padding-top: 36px;
+  padding-right: 64px;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.postsGridContainer {
+  width: 100%;
+  padding: 0 24px 32px;
+}
+
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 234px);
+  gap: 12px;
+  max-width: 1024px;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.loaderContainer {
+  width: 100%;
+  min-height: 100px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.loader {
+  color: #aaaaaa;
+  display: flex;
+  align-items: center;
+
+  &:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 2px solid #aaaaaa;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+//@media (max-width: 1024px) {
+//  .postsGrid {
+//    grid-template-columns: repeat(3, 1fr);
+//  }
+//}
