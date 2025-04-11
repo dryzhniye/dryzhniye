@@ -1,20 +1,22 @@
 'use client'
-import { useAppSelector } from '@/lib/hooks/appHooks'
-import { selectUserId } from '@/app/redux/appSlice'
 import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
 import { PATH } from '@/shared/const/PATH'
+import { useMeQuery } from '@/lib/api/authApi'
 
 const Profile = () => {
-  const userId = useAppSelector(selectUserId)
+
+  const { data, isLoading } = useMeQuery()
 
   useEffect(() => {
-    if (userId) {
-      redirect(PATH.USERS.PROFILE_USERID(userId))
-    } else {
-      redirect(PATH.MAIN)
+    if (!isLoading) {
+      if (data?.userId) {
+        redirect(PATH.USERS.PROFILE_USERID(data.userId))
+      } else {
+        redirect(PATH.MAIN)
+      }
     }
-  }, [userId])
+  }, [data, isLoading])
 
   return (
     <>

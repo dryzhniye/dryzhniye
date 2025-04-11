@@ -27,7 +27,7 @@ const UserProfile = () => {
   const [uploadImage] = useUploadImagePostMutation()
   const [createPost] = useCreatePostMutation()
   const { data: profile} = useGetProfileQuery()
-     // const {data: profilePost}= useGetProfilePostsQuery()
+
   console.log(profile)
 
 
@@ -149,52 +149,52 @@ const UserProfile = () => {
     }
   }, [postsData])
 
-  // useEffect(() => {
-  //   // debugger
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting ) {
-  //         // debugger
-  //         console.log("Loader is visible, current page:", page);
-  //         // setPage(prevPage => prevPage + 1)
-  //
-  //         setTimeout(() => {
-  //           setPage(prevPage => prevPage + 1)
-  //         }, 300)
-  //       }
-  //     },
-  //     { threshold: 0.1 }
-  //   )
-  //
-  //   if (loaderRef.current) {
-  //     observer.observe(loaderRef.current)
-  //   }
-  //
-  //   return () => {
-  //     if (loaderRef.current) {
-  //       observer.unobserve(loaderRef.current)
-  //     }
-  //   }
-  // }, [isLoading])
-  const hasMore = postsData?.totalCount
-    ? displayedPosts.length < postsData.totalCount
-    : true
-
-  const intersection = useIntersection(loaderRef, {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1, // adjust as needed
-  })
-
-// When loaderRef is visible, fetch next page
   useEffect(() => {
-    if (intersection?.isIntersecting && !isLoading && !isFetching) {
-      console.log("Loader visible via react-use intersection")
-      setTimeout(() => {
-        setPage(prevPage => prevPage + 1)
-      }, 300)
+    // debugger
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting ) {
+          // debugger
+          console.log("Loader is visible, current page:", page);
+          // setPage(prevPage => prevPage + 1)
+
+          setTimeout(() => {
+            setPage(prevPage => prevPage + 1)
+          }, 300)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current)
     }
-  }, [intersection, isFetching])
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current)
+      }
+    }
+  }, [isLoading])
+//   const hasMore = postsData?.totalCount
+//     ? displayedPosts.length < postsData.totalCount
+//     : true
+//
+//   const intersection = useIntersection(loaderRef, {
+//     root: null,
+//     rootMargin: '0px',
+//     threshold: 0.1, // adjust as needed
+//   })
+//
+// // When loaderRef is visible, fetch next page
+//   useEffect(() => {
+//     if (intersection?.isIntersecting && !isLoading && !isFetching) {
+//       console.log("Loader visible via react-use intersection")
+//       setTimeout(() => {
+//         setPage(prevPage => prevPage + 1)
+//       }, 300)
+//     }
+//   }, [intersection, isFetching])
 
 
 
