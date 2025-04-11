@@ -1,64 +1,8 @@
 import { baseApi } from '@/app/baseApi'
-import { getPublicPostsResponse } from '@/lib/types/postsTypes'
+import { type GetProfilePostsParams, getPublicPostsResponse } from '@/lib/types/postsTypes'
+import type { GetProfileResponse } from '@/lib/types/profileTypes'
 
-interface GetProfilePostsParams {
-  userName: string
-  pageSize?: number
-  pageNumber?: number
-  sortBy?: string
-  sortDirection?: 'asc' | 'desc'
-}
 
-export interface ProfileResponse {
-  id: number;
-  userName: string;
-  firstName: string;
-  lastName: string;
-  city: string;
-  country: string;
-  region: string;
-  dateOfBirth: string;
-  aboutMe: string;
-  avatars: Array<{
-    url: string;
-    width: number;
-    height: number;
-    fileSize: number;
-    createdAt: string;
-  }>;
-  createdAt: string;
-}
-
-interface GetProfilePostsResponse {
-  pageSize: number;
-  totalCount: number;
-  notReadCount: number;
-  items: Array<{
-    id: number;
-    userName: string;
-    description: string;
-    location: string;
-    images: Array<{
-      url: string;
-      width: number;
-      height: number;
-      fileSize: number;
-      createdAt: string;
-      uploadId: string;
-    }>;
-    createdAt: string;
-    updatedAt: string;
-    ownerId: number;
-    avatarOwner: string;
-    owner: {
-      firstName: string;
-      lastName: string;
-    };
-    likesCount: number;
-    isLiked: boolean;
-    avatarWhoLikes: boolean;
-  }>;
-}
 
 
 export const postApi = baseApi.injectEndpoints({
@@ -89,50 +33,7 @@ export const postApi = baseApi.injectEndpoints({
         }
       }),
     }),
-
-    uploadImagePost: build.mutation<
-      {
-        images: {
-          url: string
-          width: number
-          height: number
-          fileSize: number
-          createdAt: string
-          uploadId: string
-        }[]
-      },
-      File[]
-    >({
-      query: (files) => {
-        const formData = new FormData()
-        files.forEach(file => {
-          formData.append('file', file)
-        })
-
-        return {
-          url: 'posts/image',
-          method: 'POST',
-          body: formData,
-        }
-      },
-    }),
-
-    // New: Create post
-    createPost: build.mutation<
-      any, // you can define the response shape if you want
-      {
-        description: string
-        childrenMetadata: { uploadId: string }[]
-      }
-    >({
-      query: (body) => ({
-        url: 'posts',
-        method: 'POST',
-        body,
-      }),
-      invalidatesTags: ['Posts'],
-    }),
-    getProfile: build.query<ProfileResponse, void>({
+    getProfile: build.query<GetProfileResponse, void>({
       query: () => ({
         url: 'users/profile',
       }),
@@ -141,4 +42,4 @@ export const postApi = baseApi.injectEndpoints({
   }),
 })
 
-export const { useDeletePostMutation, useGetPublicPostsQuery,  useGetProfilePostsQuery, useUploadImagePostMutation, useCreatePostMutation, useGetProfileQuery } = postApi
+export const { useDeletePostMutation, useGetPublicPostsQuery,  useGetProfilePostsQuery, useGetProfileQuery } = postApi
