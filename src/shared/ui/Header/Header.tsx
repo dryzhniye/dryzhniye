@@ -37,7 +37,6 @@ export const Header = ({ isLoggedIn, notifications, countNotifications }: Props)
                 }
                 className={` ${s.notifications} ${notifications ? s.box : ''}`}
               >
-                {/*todo: добавить точки, если больше 10*/}
                 <Image src={'/notification.svg'} alt={'Уведомление'} width={'18'} height={'20'} />
               </button>
 
@@ -59,7 +58,13 @@ export const Header = ({ isLoggedIn, notifications, countNotifications }: Props)
                 width={'163px'}
               />
               <Button title="Log in" variant={'link'} href={PATH.AUTH.LOGIN} asChild={'a'} />
-              <Button title="Sign up" variant={'primary'} width={'110px'} asChild={'a'} href={PATH.AUTH.SIGNUP} />
+              <Button
+                title="Sign up"
+                variant={'primary'}
+                width={'110px'}
+                asChild={'a'}
+                href={PATH.AUTH.SIGNUP}
+              />
             </div>
           )}
         </header>
