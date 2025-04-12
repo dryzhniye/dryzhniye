@@ -1,8 +1,12 @@
 import { baseApi } from '@/app/baseApi'
-import { type GetProfilePostsParams, getPublicPostsResponse } from '@/lib/types/postsTypes'
+import {
+  CreatePostArgs,
+  type GetProfilePostsParams,
+  getPublicPostsResponse,
+  PostType, UploadPostImagesArgs,
+  UploadPostImagesResponse,
+} from '@/lib/types/postsTypes'
 import type { GetProfileResponse } from '@/lib/types/profileTypes'
-
-
 
 
 export const postApi = baseApi.injectEndpoints({
@@ -15,22 +19,22 @@ export const postApi = baseApi.injectEndpoints({
       invalidatesTags: ['Posts'],
     }),
     getPublicPosts: build.query<getPublicPostsResponse, GetProfilePostsParams>({
-      query: (pageSize) =>({
+      query: (pageSize) => ({
         url: 'public-posts/all/{endCursorPostId}',
         params: {
-          pageSize
-        }
+          pageSize,
+        },
       }),
     }),
     getProfilePosts: build.query<getPublicPostsResponse, GetProfilePostsParams>({
-      query: (params) =>({
+      query: (params) => ({
         url: `posts/${params.userName}`,
         params: {
           pageSize: params.pageSize || 8,
           pageNumber: params.pageNumber || 1,
           sortBy: params.sortBy,
-          sortDirection: params.sortDirection || 'desc'
-        }
+          sortDirection: params.sortDirection || 'desc',
+        },
       }),
     }),
     getProfile: build.query<GetProfileResponse, void>({
@@ -38,8 +42,34 @@ export const postApi = baseApi.injectEndpoints({
         url: 'users/profile',
       }),
     }),
+    createPost: build.mutation<PostType, CreatePostArgs>({
+      query: ({ description, uploadIds }) => ({
+        body: {
+          childrenMetadata: uploadIds.map(uploadId => {
+            return { uploadId }
+          }),
+          description,
+        },
+        method: 'POST',
+        url: `/posts`,
+      }),
+    }),
+    uploadImagesForPost: build.mutation<UploadPostImagesResponse, UploadPostImagesArgs>({
+      query: ({ files }) => {
+        const formData = new FormData()
 
+        files.forEach(file => {
+          formData.append('file', file)
+        })
+
+        return {
+          body: formData,
+          method: 'POST',
+          url: `posts/image`,
+        }
+      },
+    }),
   }),
 })
 
-export const { useDeletePostMutation, useGetPublicPostsQuery,  useGetProfilePostsQuery, useGetProfileQuery } = postApi
+export const { useDeletePostMutation, useGetPublicPostsQuery, useGetProfilePostsQuery, useGetProfileQuery, useUploadImagesForPostMutation, useCreatePostMutation } = postApi

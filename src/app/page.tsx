@@ -37,7 +37,6 @@ export default function Home() {
               modules={[Navigation, Pagination]}
               navigation
               pagination={{ clickable: true }}
-              className={s.carousel}
             >
               {post.images.map((image) => (
                 <SwiperSlide key={image.url}>
