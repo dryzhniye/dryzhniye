@@ -11,9 +11,6 @@ import { useCreatePostMutation, useGetProfileQuery, useUploadImagesForPostMutati
 import TextArea from '@/shared/ui/TextArea/TextArea'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 type Props = {
   open: boolean;
@@ -28,7 +25,7 @@ export const CreatePostWindow = ({ open, onOpenChange }: Props) => {
 
   const { data: user } = useGetProfileQuery()
 
-  const [uploadImages, { data: uploadedImages }] = useUploadImagesForPostMutation()
+  const [uploadImages] = useUploadImagesForPostMutation()
   const [createPost] = useCreatePostMutation()
 
   const handleFileChange = (files: FileList | null) => {

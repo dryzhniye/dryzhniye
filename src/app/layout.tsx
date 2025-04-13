@@ -3,7 +3,9 @@ import { Inter, Roboto } from 'next/font/google'
 import './globals.css'
 import StoreProvider from '@/app/StoreProvider'
 import HeaderSidebarProvider from '@/widgets/header/HeaderSidebarProvider'
-import s from './page.module.scss'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 const inter = Inter({
   variable: '--font-inter',

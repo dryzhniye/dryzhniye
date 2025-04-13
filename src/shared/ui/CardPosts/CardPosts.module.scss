@@ -1,45 +1,36 @@
-.myPost {
+.modalOverlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.modalContent {
+  position: fixed;
+  z-index: 1001;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  overflow: hidden;
   display: flex;
 
-  width: 100%;
-  max-width: 972px;
-  height: auto;
-  margin: auto;
+  width: 972px;
+  height: 564px;
+  border: 1px solid var(--dark-100);
 
-  color: var(--light-100);
-
-  background-color: #1c1c1c;
+  background-color: var(--dark-300);
 }
 
-.slider {
-  flex: 2;
+.imageBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
 }
 
-.details {
-  overflow-y: auto;
-  flex: 2;
-  height: 100%;
-}
-
-.likes {
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-.comments {
-  margin-top: 20px;
-}
-
-.comment {
-  margin-bottom: 10px;
-}
-
-.timestamp {
-  font-size: 0.8rem;
-  color: var(--dark-100);
-}
-
-.answer {
-  margin-left: 20px;
-  font-style: italic;
+.image {
+  width: 490px;
+  height: 562px;
+  object-fit: fill;
 }

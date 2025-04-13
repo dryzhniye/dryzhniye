@@ -1,79 +1,80 @@
 'use client'
-
 import React, { useEffect, useRef, useState } from 'react'
 import { PublicProfile } from '@/app/users/profile/[userId]/page'
 import { ProfileTopbar } from '@/widgets/ProfileTopbar/ProfileTopbar'
 import s from './UserProfile.module.scss'
 import { PostItem } from '@/widgets/PostItem/PostItem'
-import { useAppSelector } from '@/lib/hooks/appHooks'
-import { selectIsLoggedIn } from '@/app/redux/appSlice'
-import { useGetProfilePostsQuery, useGetPublicPostsQuery } from '@/lib/api/postApi'
+import { useGetProfilePostsQuery } from '@/lib/api/postApi'
 import type { PostType } from '@/lib/types/postsTypes'
 import { CreatePostWindow } from '@/shared/ui/CreatePostWindow/CreatePostWindow'
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/navigation'
-import { PATH } from '@/shared/const/PATH'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { CardPosts } from '@/shared/ui/CardPosts/CardPosts'
 
 type Props = {
   profile: PublicProfile
 }
 
 const UserProfile = ({ profile }: Props) => {
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
-
   const searchParams = useSearchParams()
   const router = useRouter()
 
   const action = searchParams.get('action')
+  const postId = Number(searchParams.get('postId'))
 
   const [page, setPage] = useState(0)
   const [displayedPosts, setDisplayedPosts] = useState<PostType[]>([])
   const loaderRef = useRef(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isPostOpen, setIsPostOpen] = useState(false)
 
   const {
-    data: profilePosts,
-    isLoading: isLoadingProfile,
-    isFetching: isFetchingProfile,
+    data,
+    isLoading,
+    isFetching,
   } = useGetProfilePostsQuery({
     userName: profile.userName,
     pageSize: 4,
     pageNumber: page,
     sortBy: 'createdAt',
     sortDirection: 'desc',
-  }, {
-    skip: !isLoggedIn,
   })
-
-  const {
-    data: publicPosts,
-    isLoading: isLoadingPublic,
-    isFetching: isFetchingPublic,
-  } = useGetPublicPostsQuery(18, {
-    skip: isLoggedIn,
-  })
-  const postsData = isLoggedIn ? profilePosts : publicPosts
-  const isLoading = isLoggedIn ? isLoadingProfile : isLoadingPublic
-  const isFetching = isLoggedIn ? isFetchingProfile : isFetchingPublic
 
   useEffect(() => {
-    if (action === 'create') {
+    if (action === 'create' && postId) {
+      const url = new URL(window.location.href)
+      url.searchParams.delete('action')
+      window.history.replaceState(null, '', url.toString())
+      setIsPostOpen(true)
+      setIsModalOpen(false)
+    } else if (action === 'create') {
       setIsModalOpen(true)
+      setIsPostOpen(false)
+    } else if (postId) {
+      setIsPostOpen(true)
+      setIsModalOpen(false)
     } else {
       setIsModalOpen(false)
+      setIsPostOpen(false)
     }
-  }, [action])
+  }, [action, postId])
 
-  const closeModalHandler = (value: boolean) => {
+  const closeModalsHandler = (value: boolean) => {
     setIsModalOpen(value)
-    router.push(PATH.USERS.PROFILE)
+    setIsPostOpen(value)
+
+    const params = new URLSearchParams(window.location.search)
+    params.delete('postId')
+    params.delete('action')
+    const newUrl = `${window.location.pathname}?${params.toString()}`
+
+    router.replace(newUrl)
   }
 
   useEffect(() => {
-    if (postsData?.items) {
-      setDisplayedPosts(prev => [...prev, ...postsData.items])
+    if (data?.items) {
+      setDisplayedPosts(prev => [...prev, ...data.items])
     }
-  }, [postsData])
+  }, [data])
 
   useEffect(() => {
 
@@ -115,7 +116,8 @@ const UserProfile = ({ profile }: Props) => {
         </div>
       </div>
       <CreatePostWindow open={isModalOpen}
-                        onOpenChange={closeModalHandler} />
+                        onOpenChange={closeModalsHandler} />
+      {isPostOpen && postId && <CardPosts postId={postId} open={isPostOpen} onOpenChange={closeModalsHandler} />}
     </div>
   )
 }

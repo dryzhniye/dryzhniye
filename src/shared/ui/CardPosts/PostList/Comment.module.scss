@@ -1,12 +1,19 @@
 .postContent {
   display: flex;
-  padding: 10px 0;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
-.header {
-  display: flex;
-  gap: 10px;
-  align-items: start;
+.image {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.content {
+  width: 330px;
+  margin-right: 24px;
+  margin-left: 12px;
 }
 
 .avatar {
@@ -15,23 +22,19 @@
 }
 
 .userName {
-  margin-right: 10px;
-  font-size: 18px;
+  margin-right: 5px;
   font-weight: bold;
 }
 
-.content {
-}
-
 .description {
-  margin: 0;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 24px;
+  word-wrap: break-word;
 }
 
 .info {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
 
   margin-top: 5px;
@@ -39,7 +42,7 @@
   font-size: 12px;
   color: var(--light-900);
 
-  button {
+  & .answerButton {
     cursor: pointer;
 
     padding: 0;
@@ -52,14 +55,8 @@
   }
 }
 
-.actions {
-  display: flex;
-  align-items: start;
-  margin-top: 20px;
-
-  button {
-    cursor: pointer;
-    border: none;
-    background: none;
-  }
+.likeButton {
+  cursor: pointer;
+  border: none;
+  background: none;
 }

@@ -4,6 +4,7 @@ import React from 'react';
 import styles from './PostItem.module.scss';
 import Image from 'next/image'
 import type { PostType } from '@/lib/types/postsTypes'
+import Link from 'next/link';
 
 
 interface Post {
@@ -17,11 +18,13 @@ export const PostItem = ({ post }: Post) => {
       className={styles.postItem}
     >
       <div className={styles.imageContainer}>
-        <img
-          src={post.images.length > 0 ? post.images[0].url: ""}
-          alt={post.description || 'Post image'}
-          className={styles.postImage}
-        />
+        <Link href={`/users/profile/${post.ownerId}?postId=${post.id}`} >
+          <img
+            src={post.images.length > 0 ? post.images[0].url: ""}
+            alt={post.description || 'Post image'}
+            className={styles.postImage}
+          />
+        </Link>
       </div>
 
       {post.images.length > 1 && (
