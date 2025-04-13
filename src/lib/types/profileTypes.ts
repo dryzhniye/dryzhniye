@@ -1,3 +1,26 @@
+type Avatar = {
+  url: string
+  width: number
+  height: number
+  fileSize: number
+  createdAt: string
+}
+
+type UserMetadata = {
+  following: number
+  followers: number
+  publications: number
+}
+
+export type PublicProfile = {
+  id: number
+  userName: string
+  aboutMe: string
+  avatars: Avatar[]
+  userMetadata: UserMetadata
+  hasPaymentSubscription: boolean
+}
+
 export type GetProfileResponse  = {
   id: number;
   userName: string;
@@ -8,13 +31,6 @@ export type GetProfileResponse  = {
   region: string;
   dateOfBirth: string;
   aboutMe: string;
-  avatars: Array<{
-    url: string;
-    width: number;
-    height: number;
-    fileSize: number;
-    createdAt: string;
-  }>;
+  avatars: Avatar[];
   createdAt: string;
 }
-

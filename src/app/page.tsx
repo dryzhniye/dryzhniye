@@ -13,7 +13,7 @@ import { formatTimeAgo } from '@/shared/utils/formatTimeAgo'
 
 export default function Home() {
   const { data } = useGetTotalUsersCountQuery()
-  const { data: postsData } = useGetPublicPostsQuery(4)
+  const { data: postsData } = useGetPublicPostsQuery(18)
 
   const totalCount = data?.totalCount.toString().padStart(6, '0')
 

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { PublicProfile } from '@/app/users/profile/[userId]/page'
 import { ProfileTopbar } from '@/widgets/ProfileTopbar/ProfileTopbar'
 import s from './UserProfile.module.scss'
 import { PostItem } from '@/widgets/PostItem/PostItem'
@@ -9,6 +8,7 @@ import { useAppSelector } from '@/lib/hooks/appHooks'
 import { selectIsLoggedIn } from '@/app/redux/appSlice'
 import { useGetProfilePostsQuery, useGetPublicPostsQuery } from '@/lib/api/postApi'
 import type { PostType } from '@/lib/types/postsTypes'
+import type { PublicProfile } from '@/lib/types/profileTypes'
 
 type Props = {
   profile: PublicProfile
@@ -18,9 +18,14 @@ const UserProfile = ({ profile }: Props) => {
 
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const [displayedPosts, setDisplayedPosts] = useState<PostType[]>([])
   const loaderRef = useRef(null)
+
+  useEffect(() => {
+    // Reset the page state whenever the component is mounted or the route changes
+    setPage(1)
+  }, [])
 
   const {
     data: profilePosts,

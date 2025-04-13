@@ -28,8 +28,8 @@ export const baseQueryWithReAuth: BaseQueryFn<FetchArgs | string, unknown, Fetch
 
   const dynamicBaseUrl =
     oauthProvider === 'github' && (isMeRequest || isLogoutRequest || isUpdateToken)
-        ? 'https://inctagram.work/api/v1/'
-        : 'https://dryzhniye.ru/api/v1/';
+      ? 'https://inctagram.work/api/v1/'
+      : 'https://dryzhniye.ru/api/v1/'
 
 
   const dynamicBaseQuery = fetchBaseQuery({
@@ -52,17 +52,18 @@ export const baseQueryWithReAuth: BaseQueryFn<FetchArgs | string, unknown, Fetch
       const release = await mutex.acquire()
 
       try {
-        const refreshResult = await dynamicBaseQuery({ url: 'auth/update-tokens', method: 'POST'},
+        const refreshResult = await dynamicBaseQuery({ url: 'auth/update-tokens', method: 'POST' },
           api,
-          extraOptions
+          extraOptions,
         )
 
         if (refreshResult.data) {
           const newAccessToken = (refreshResult.data as { accessToken: string }).accessToken
-          if (newAccessToken){
+          if (newAccessToken) {
             setCookie('accessToken', newAccessToken.trim(), 7)
             result = await dynamicBaseQuery(args, api, extraOptions)
             if (typeof window !== 'undefined') {
+              window.location.reload()
               window.location.href = '/search'
             }
           }

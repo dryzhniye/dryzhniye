@@ -1,28 +1,8 @@
 import { notFound } from 'next/navigation'
 import UserProfile from '@/widgets/UserProfile/UserProfile'
+import type { PublicProfile } from '@/lib/types/profileTypes'
 
-type Avatar = {
-  url: string
-  width: number
-  height: number
-  fileSize: number
-  createdAt: string
-}
 
-type UserMetadata = {
-  following: number
-  followers: number
-  publications: number
-}
-
-export type PublicProfile = {
-  id: number
-  userName: string
-  aboutMe: string
-  avatars: Avatar[]
-  userMetadata: UserMetadata
-  hasPaymentSubscription: boolean
-}
 
 type Params = {
   userId: string

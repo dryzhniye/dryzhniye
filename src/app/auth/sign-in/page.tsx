@@ -79,7 +79,7 @@ export default function Page() {
                   onClick={handleGoogleAuth}>
             <Image src="/google.svg" alt="" width={34} height={34} />
           </button>
-          <Link href={'/github'}>
+          <Link href={PATH.GITHUB}>
             <Image src="/github.svg" alt="" width={34} height={34} />
           </Link>
         </div>

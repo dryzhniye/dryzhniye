@@ -10,7 +10,6 @@ export function middleware(request: NextRequest) {
   ]
 
   const publicPathsForGuestsOnly: (string | RegExp)[] = [
-    PATH.GITHUB,
     PATH.AUTH.LOGIN,
     PATH.AUTH.SIGNUP,
     PATH.AUTH.FORGOT_PASSWORD,
@@ -20,7 +19,8 @@ export function middleware(request: NextRequest) {
     PATH.AUTH.REGISTRATION_CONFIRMATION,
     PATH.AUTH.REGISTRATION_EMAIL_RESENDING,
     PATH.AUTH.TERMS_OF_SERVICE,
-    '/auth/callback/google',
+    PATH.GITHUB,
+    PATH.GOOGLE,
   ]
 
   const { pathname } = request.nextUrl

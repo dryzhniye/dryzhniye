@@ -16,5 +16,6 @@ export const PATH = {
     PROFILE_USERID: (userId: number) => `/users/profile/${userId}`,
     PROFILE_USERID_REGEX: /^\/users\/profile\/\d+$/
   },
-  GITHUB: '/github'
+  GITHUB: '/auth/callback/github',
+  GOOGLE: '/auth/callback/google',
 }

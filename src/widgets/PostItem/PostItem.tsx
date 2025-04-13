@@ -32,7 +32,8 @@ export const PostItem = ({ post }: Post) => {
             alt="many-posts"
             width={20}
             height={20}
-          /></span>
+          />
+          </span>
         </div>
       )}
     </div>
