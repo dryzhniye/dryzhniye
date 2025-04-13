@@ -40,3 +40,25 @@ export type GetProfilePostsParams = {
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
 }
+
+export interface PostImage {
+  createdAt: string
+  fileSize: number
+  height: number
+  uploadId: string
+  url: string
+  width: number
+}
+
+export type CreatePostArgs = {
+  description: string
+  uploadIds: string[]
+}
+
+export type UploadPostImagesArgs = {
+  files: File[]
+}
+
+export type UploadPostImagesResponse = {
+  images: PostImage[]
+}
