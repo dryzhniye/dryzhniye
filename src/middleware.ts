@@ -20,7 +20,7 @@ export function middleware(request: NextRequest) {
     PATH.AUTH.REGISTRATION_EMAIL_RESENDING,
     PATH.AUTH.TERMS_OF_SERVICE,
     PATH.GITHUB,
-    PATH.GOOGLE,
+    '/auth/callback/google',
   ]
 
   const { pathname } = request.nextUrl

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { PublicProfile } from '@/app/users/profile/[userId]/page'
 import { ProfileTopbar } from '@/widgets/ProfileTopbar/ProfileTopbar'
 import s from './UserProfile.module.scss'
 import { PostItem } from '@/widgets/PostItem/PostItem'
