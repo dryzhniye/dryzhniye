@@ -2,9 +2,6 @@
 import { useGetTotalUsersCountQuery } from '@/lib/api/authApi'
 import { useGetPublicPostsQuery } from '@/lib/api/postApi'
 import s from './page.module.scss'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import Link from 'next/link'
@@ -37,7 +34,6 @@ export default function Home() {
               modules={[Navigation, Pagination]}
               navigation
               pagination={{ clickable: true }}
-              className={s.carousel}
             >
               {post.images.map((image) => (
                 <SwiperSlide key={image.url}>
