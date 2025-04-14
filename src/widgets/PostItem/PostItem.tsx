@@ -29,14 +29,12 @@ export const PostItem = ({ post }: Post) => {
 
       {post.images.length > 1 && (
         <div className={styles.manyPostsIndicator}>
-          <span className={styles.postsIcon}>
             <Image
             src={'/copy-outline.svg'}
             alt="many-posts"
             width={20}
             height={20}
           />
-          </span>
         </div>
       )}
     </div>

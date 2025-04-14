@@ -1,8 +1,8 @@
 import { baseApi } from '@/app/baseApi'
 import {
   CreatePostArgs,
-  type GetProfilePostsParams,
-  getPublicPostsResponse,
+  type GetProfilePostsParams, type GetProfilePostsResponse, type GetProfilePublicPostsParams,
+  GetPublicPostsResponse,
   PostType, UploadPostImagesArgs,
   UploadPostImagesResponse,
 } from '@/lib/types/postsTypes'
@@ -20,7 +20,7 @@ export const postApi = baseApi.injectEndpoints({
         { type: 'Posts', id: arg },
       ],
     }),
-    getPublicPosts: build.query<getPublicPostsResponse, number>({
+    getPublicPosts: build.query<GetPublicPostsResponse, number>({
       query: (pageSize) => ({
         url: 'public-posts/all/{endCursorPostId}',
         params: {
@@ -28,12 +28,23 @@ export const postApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    getProfilePosts: build.query<getPublicPostsResponse, GetProfilePostsParams>({
+    getProfilePosts: build.query<GetProfilePostsResponse, GetProfilePostsParams>({
       query: (params) => ({
         url: `posts/${params.userName}`,
         params: {
           pageSize: params.pageSize || 8,
           pageNumber: params.pageNumber || 1,
+          sortBy: params.sortBy,
+          sortDirection: params.sortDirection || 'desc',
+        },
+      }),
+      providesTags: ['Posts'],
+    }),
+    getProfilePublicPosts: build.query<GetPublicPostsResponse, GetProfilePublicPostsParams>({
+      query: (params) => ({
+        url: `public-posts/user/${params.userId}/${params.endCursorPostId || ''}`,
+        params: {
+          pageSize: params.pageSize || 10,
           sortBy: params.sortBy,
           sortDirection: params.sortDirection || 'desc',
         },
@@ -97,6 +108,7 @@ export const {
   useDeletePostMutation,
   useGetPublicPostsQuery,
   useGetProfilePostsQuery,
+  useGetProfilePublicPostsQuery,
   useGetProfilePostQuery,
   useGetProfileQuery,
   useUploadImagesForPostMutation,

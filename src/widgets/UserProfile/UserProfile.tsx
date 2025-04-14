@@ -4,12 +4,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import { ProfileTopbar } from '@/widgets/ProfileTopbar/ProfileTopbar'
 import s from './UserProfile.module.scss'
 import { PostItem } from '@/widgets/PostItem/PostItem'
-import { useGetProfilePostsQuery } from '@/lib/api/postApi'
+import { useGetProfilePostsQuery, useGetProfilePublicPostsQuery } from '@/lib/api/postApi'
 import type { PostType } from '@/lib/types/postsTypes'
 import type { PublicProfile } from '@/lib/types/profileTypes'
 import { CreatePostWindow } from '@/shared/ui/CreatePostWindow/CreatePostWindow'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { CardPosts } from '@/shared/ui/CardPosts/CardPosts'
+import { useAppSelector } from '@/lib/hooks/appHooks'
+import { selectIsLoggedIn } from '@/app/redux/appSlice'
 
 type Props = {
   profile: PublicProfile
@@ -21,12 +23,12 @@ const UserProfile = ({ profile }: Props) => {
 
   const action = searchParams.get('action')
   const postId = Number(searchParams.get('postId'))
-
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const [displayedPosts, setDisplayedPosts] = useState<PostType[]>([])
   const loaderRef = useRef(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPostOpen, setIsPostOpen] = useState(false)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   const {
     data,
@@ -38,7 +40,21 @@ const UserProfile = ({ profile }: Props) => {
     pageNumber: page,
     sortBy: 'createdAt',
     sortDirection: 'desc',
-  })
+  }, {skip: !isLoggedIn})
+
+  const pagesCount = data?.pagesCount
+
+  const {
+    data: publicData,
+    isLoading: publicIsLoading,
+  } = useGetProfilePublicPostsQuery({
+    userId: profile.id,
+    endCursorPostId: undefined,
+    pageSize: 8,
+    sortBy: 'createdAt',
+    sortDirection: 'desc',
+  }, {skip: isLoggedIn});
+
 
   useEffect(() => {
     if (action === 'create' && postId) {
@@ -76,16 +92,27 @@ const UserProfile = ({ profile }: Props) => {
       setDisplayedPosts(prev => [...prev, ...data.items])
     }
   }, [data])
+  useEffect(() => {
+    if (!isLoggedIn && publicData?.items?.length) {
+      setDisplayedPosts((prev) => [...prev, ...publicData.items]);
+    }
+  }, [publicData]);
+
 
   useEffect(() => {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setTimeout(() => {
-            setPage(prevPage => prevPage + 1)
-          }, 300)
-        }
+          if (entries[0].isIntersecting && pagesCount) {
+            setTimeout(() => {
+              setPage(prev => {
+                if (prev < pagesCount) {
+                  return prev + 1
+                }
+                return prev
+              })
+            }, 300)
+          }
       },
       { threshold: 1 },
     )
@@ -101,7 +128,6 @@ const UserProfile = ({ profile }: Props) => {
     }
   }, [isLoading])
 
-
   return (
     <div className={s.profileContainer}>
 
@@ -113,12 +139,17 @@ const UserProfile = ({ profile }: Props) => {
             <PostItem key={post.id} post={post} />
           )) : '...loading'}
         </div>
-        <div ref={loaderRef} className={s.loaderContainer}>
-          {isLoading || isFetching && <div className={s.loader}>Loading...</div>}
-        </div>
-      </div>
-      <CreatePostWindow open={isModalOpen}
-                        onOpenChange={closeModalsHandler} />
+        {!isLoggedIn && !publicIsLoading &&
+          <div className={s.bottomFadeContainer}>
+            <div className={s.fadeOverlay}></div>
+            <div className={s.authNotice}>Зарегистируйтесь или войдите, чтобы посмотреть больше постов</div></div>
+            }
+            <div ref={loaderRef} className={s.loaderContainer}>
+              {isLoading || isFetching && <div className={s.loader}>Loading...</div>}
+            </div>
+          </div>
+          <CreatePostWindow open={isModalOpen}
+        onOpenChange={closeModalsHandler} />
       {isPostOpen && postId && <CardPosts postId={postId} open={isPostOpen} onOpenChange={closeModalsHandler} />}
     </div>
   )
