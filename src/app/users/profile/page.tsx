@@ -10,14 +10,20 @@ const Profile = () => {
   const { data, isLoading } = useMeQuery()
 
   useEffect(() => {
-
+debugger
     if (!isLoading) {
+      const reload = localStorage.getItem('reload')
       if (getCookie('oauthProvider') === 'github' && !data) {
-        window.location.reload()
+        if (!reload) {
+          localStorage.setItem('reload', 'true')
+          window.location.reload()
+        }
       }
       if (data?.userId) {
+        localStorage.removeItem('reload')
         redirect(PATH.USERS.PROFILE_USERID(data.userId))
       } else {
+        localStorage.removeItem('reload')
         redirect(PATH.MAIN)
       }
     }
