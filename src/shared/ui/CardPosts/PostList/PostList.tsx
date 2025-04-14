@@ -3,6 +3,7 @@ import { useDeletePostMutation, useLikePostMutation } from '@/lib/api/postApi'
 import { Button } from '@/shared/ui/Button/Button'
 import Comment from '@/shared/ui/CardPosts/PostList/Comment'
 import { Modal } from '@/shared/ui/Modal/Modal'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import s from './PostList.module.scss'
@@ -24,9 +25,9 @@ export const PostList = ({ post }: Props) => {
   const [deletePost] = useDeletePostMutation()
   const [addComment] = useAddCommentMutation()
   const [likePost] = useLikePostMutation()
-
   const { data: comments } = useGetPostCommentsQuery(post.id)
 
+  const router = useRouter()
   const handleClickOutside = (e: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
       setIsMenuOpen(false)
@@ -46,7 +47,8 @@ export const PostList = ({ post }: Props) => {
   }
   const handleDeletePost = async () => {
     try {
-      await deletePost('postId').unwrap()
+      await deletePost(post.id).unwrap()
+      router.push('/')
     } catch (error) {
       console.error('Failed to delete PostItem:', error)
     } finally {
@@ -69,13 +71,20 @@ export const PostList = ({ post }: Props) => {
     const likeStatus = currentLike ? 'NONE' : 'LIKE'
     await likePost({ postId: post.id, likeStatus })
   }
-
   return (
     <div className={s.postListWrapper}>
       <div className={s.header}>
         <div className={s.author}>
-          <Image src={post.avatarOwner || '/avatar.svg'} alt="Post image" width={36} height={36} className={s.image} />
-          <Link href={PATH.USERS.PROFILE_USERID(post.ownerId)} className={s.title}>URLProfiele</Link>
+          <Image
+            src={post.avatarOwner || '/avatar.svg'}
+            alt="Post image"
+            width={36}
+            height={36}
+            className={s.image}
+          />
+          <Link href={PATH.USERS.PROFILE_USERID(post.ownerId)} className={s.title}>
+            URLProfiele
+          </Link>
         </div>
         <button className={s.button} onClick={handleOptionsClick}>
           ...
@@ -101,19 +110,19 @@ export const PostList = ({ post }: Props) => {
       </div>
 
       <div className={s.scrollableContent}>
-        {comments?.items.map(comm => (
-          <Comment
-            key={comm.id}
-            comment={comm}
-          />
-        ))}
+        {comments?.items.map(comm => <Comment key={comm.id} comment={comm} />)}
       </div>
 
       <div className={s.infoStories}>
         <div className={s.infoStoriesIcons}>
           <div className={s.infoStoriesGroup}>
             <button className={s.button} onClick={handlePostLike}>
-              <Image src={post.isLiked ? '/heart.svg' : '/heart-outline.svg'} alt="heart" width={24} height={24} />
+              <Image
+                src={post.isLiked ? '/heart.svg' : '/heart-outline.svg'}
+                alt="heart"
+                width={24}
+                height={24}
+              />
             </button>
             <button className={s.button}>
               <Image src="/paper-plane-outline.svg" alt="plane" width={24} height={24} />
@@ -126,7 +135,7 @@ export const PostList = ({ post }: Props) => {
         <div className={s.footerInfo}>
           <div className={s.footerAva}>
             <div className={s.avatarCarousel}>
-              {post.avatarWhoLikes.map((ava, index) =>
+              {post.avatarWhoLikes.map((ava, index) => (
                 <Image
                   key={index}
                   src={ava}
@@ -134,19 +143,21 @@ export const PostList = ({ post }: Props) => {
                   width={20}
                   height={20}
                   className={s.avatarSmall}
-                />,
-              )}
+                />
+              ))}
             </div>
             <div className={s.likeCount}>
               {post.likesCount} <p className={s.likeCountTitle}>&#34;Like&#34;</p>
             </div>
           </div>
         </div>
-        <div className={s.date}>{new Date(post.createdAt).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}</div>
+        <div className={s.date}>
+          {new Date(post.createdAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </div>
       </div>
 
       <div className={s.commentInputWrapper}>
@@ -155,7 +166,7 @@ export const PostList = ({ post }: Props) => {
           placeholder="Add a Comment..."
           className={s.commentInput}
           value={comment}
-          onChange={(e) => setComment(e.currentTarget.value)}
+          onChange={e => setComment(e.currentTarget.value)}
         />
         <button className={s.commentSubmit} onClick={handleCommentSubmit}>
           Publish
@@ -165,7 +176,7 @@ export const PostList = ({ post }: Props) => {
         <Modal
           open={showModal}
           onClose={() => setShowModal(false)}
-          modalTitle={'Log Out'}
+          modalTitle={' Delete Post'}
           className={s.modal}
         >
           <p>Are you sure you want to delete this post?</p>

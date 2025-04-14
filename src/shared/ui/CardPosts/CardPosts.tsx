@@ -9,8 +9,8 @@ import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 type Props = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  open: boolean
+  onOpenChange: (open: boolean) => void
   postId: number
 }
 
@@ -24,18 +24,10 @@ export const CardPosts = ({ open, onOpenChange, postId }: Props) => {
         <Dialog.Content className={styles.modalContent}>
           <DialogTitle></DialogTitle>
           <div className={styles.imageBlock}>
-            <Swiper
-              modules={[Navigation, Pagination]}
-              navigation
-              pagination={{ clickable: true }}
-            >
+            <Swiper modules={[Navigation, Pagination]} navigation pagination={{ clickable: true }}>
               {data?.images.map((image, index) => (
                 <SwiperSlide key={index}>
-                  <img
-                    className={styles.image}
-                    src={image.url}
-                    alt="post photo"
-                  />
+                  <img className={styles.image} src={image.url} alt="post photo" />
                 </SwiperSlide>
               ))}
             </Swiper>

@@ -197,3 +197,17 @@
     }
   }
 }
+
+.buttonGroup {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+
+  &_end {
+    justify-content: flex-end;
+  }
+}
+
+.buttonGroup button {
+  width: 96px;
+}

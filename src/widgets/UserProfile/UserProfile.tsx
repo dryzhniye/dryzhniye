@@ -27,11 +27,7 @@ const UserProfile = ({ profile }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPostOpen, setIsPostOpen] = useState(false)
 
-  const {
-    data,
-    isLoading,
-    isFetching,
-  } = useGetProfilePostsQuery({
+  const { data, isLoading, isFetching } = useGetProfilePostsQuery({
     userName: profile.userName,
     pageSize: 4,
     pageNumber: page,
@@ -77,16 +73,15 @@ const UserProfile = ({ profile }: Props) => {
   }, [data])
 
   useEffect(() => {
-
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         if (entries[0].isIntersecting) {
           setTimeout(() => {
             setPage(prevPage => prevPage + 1)
           }, 300)
         }
       },
-      { threshold: 1 },
+      { threshold: 1 }
     )
 
     if (loaderRef.current) {
@@ -102,22 +97,22 @@ const UserProfile = ({ profile }: Props) => {
 
   return (
     <div className={s.profileContainer}>
-
       <ProfileTopbar profile={profile} />
 
       <div className={s.postsGridContainer}>
         <div className={s.postsGrid}>
-          {displayedPosts ? displayedPosts.map((post) => (
-            <PostItem key={post.id} post={post} />
-          )) : '...loading'}
+          {displayedPosts
+            ? displayedPosts.map(post => <PostItem key={post.id} post={post} />)
+            : '...loading'}
         </div>
         <div ref={loaderRef} className={s.loaderContainer}>
-          {isLoading || isFetching && <div className={s.loader}>Loading...</div>}
+          {isLoading || (isFetching && <div className={s.loader}>Loading...</div>)}
         </div>
       </div>
-      <CreatePostWindow open={isModalOpen}
-                        onOpenChange={closeModalsHandler} />
-      {isPostOpen && postId && <CardPosts postId={postId} open={isPostOpen} onOpenChange={closeModalsHandler} />}
+      <CreatePostWindow open={isModalOpen} onOpenChange={closeModalsHandler} />
+      {isPostOpen && postId && (
+        <CardPosts postId={postId} open={isPostOpen} onOpenChange={closeModalsHandler} />
+      )}
     </div>
   )
 }
