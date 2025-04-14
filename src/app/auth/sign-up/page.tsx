@@ -95,7 +95,7 @@ function Page() {
           <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGoogleAuth}>
             <Image  src="/google.svg" alt="" width={34} height={34} />
           </button>
-          <Link href={'/github'}>
+          <Link href={PATH.GITHUB}>
             <Image src="/github.svg" alt="" width={34} height={34} />
           </Link>
         </div>

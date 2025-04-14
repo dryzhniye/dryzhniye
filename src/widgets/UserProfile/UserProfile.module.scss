@@ -12,6 +12,7 @@
 .postsGridContainer {
   width: 100%;
   padding: 0 24px 32px;
+  position: relative;
 }
 
 .postsGrid {
@@ -31,6 +32,41 @@
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+}
+
+.bottomFadeContainer {
+  position: absolute;
+  bottom: 150px;
+  left: 0;
+  width: 100%;
+  height: 250px;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 10;
+}
+
+.fadeOverlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, var(--dark-900) 10%, transparent);
+  z-index: 0;
+}
+
+.authNotice {
+  position: relative;
+  z-index: 1;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .loader {

@@ -1,13 +1,13 @@
 import { baseApi } from '@/app/baseApi'
 import {
   CreatePostArgs,
-  type GetProfilePostsParams,
-  getPublicPostsResponse,
-  PostType,
-  UploadPostImagesArgs,
+  type GetProfilePostsParams, type GetProfilePostsResponse, type GetProfilePublicPostsParams,
+  GetPublicPostsResponse,
+  PostType, UploadPostImagesArgs,
   UploadPostImagesResponse,
 } from '@/lib/types/postsTypes'
 import type { GetProfileResponse } from '@/lib/types/profileTypes'
+
 
 export const postApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -16,18 +16,20 @@ export const postApi = baseApi.injectEndpoints({
         url: `posts/${postId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, arg) => [{ type: 'Posts', id: arg }],
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Posts', id: arg },
+      ],
     }),
-    getPublicPosts: build.query<getPublicPostsResponse, number>({
-      query: pageSize => ({
+    getPublicPosts: build.query<GetPublicPostsResponse, number>({
+      query: (pageSize) => ({
         url: 'public-posts/all/{endCursorPostId}',
         params: {
           pageSize,
         },
       }),
     }),
-    getProfilePosts: build.query<getPublicPostsResponse, GetProfilePostsParams>({
-      query: params => ({
+    getProfilePosts: build.query<GetProfilePostsResponse, GetProfilePostsParams>({
+      query: (params) => ({
         url: `posts/${params.userName}`,
         params: {
           pageSize: params.pageSize || 8,
@@ -38,9 +40,22 @@ export const postApi = baseApi.injectEndpoints({
       }),
       providesTags: ['Posts'],
     }),
+    getProfilePublicPosts: build.query<GetPublicPostsResponse, GetProfilePublicPostsParams>({
+      query: (params) => ({
+        url: `public-posts/user/${params.userId}/${params.endCursorPostId || ''}`,
+        params: {
+          pageSize: params.pageSize || 10,
+          sortBy: params.sortBy,
+          sortDirection: params.sortDirection || 'desc',
+        },
+      }),
+      providesTags: ['Posts'],
+    }),
     getProfilePost: build.query<PostType, number>({
-      query: postId => `posts/id/${postId}`,
-      providesTags: (result, error, postId) => [{ type: 'Posts', id: postId }],
+      query: (postId) => `posts/id/${postId}`,
+      providesTags: (result, error, postId) => [
+        { type: 'Posts', id: postId },
+      ],
     }),
     getProfile: build.query<GetProfileResponse, void>({
       query: () => ({
@@ -74,7 +89,7 @@ export const postApi = baseApi.injectEndpoints({
         }
       },
     }),
-    likePost: build.mutation<void, { postId: number; likeStatus: 'NONE' | 'LIKE' }>({
+    likePost: build.mutation<void, { postId: number, likeStatus: 'NONE' | 'LIKE' }>({
       query: ({ postId, likeStatus }) => ({
         url: `posts/${postId}/like-status`,
         method: 'PUT',
@@ -82,7 +97,9 @@ export const postApi = baseApi.injectEndpoints({
           likeStatus,
         },
       }),
-      invalidatesTags: (result, error, arg) => [{ type: 'Posts', id: arg.postId }],
+      invalidatesTags: (result, error, arg) => [
+        { type: 'Posts', id: arg.postId },
+      ],
     }),
   }),
 })
@@ -91,6 +108,7 @@ export const {
   useDeletePostMutation,
   useGetPublicPostsQuery,
   useGetProfilePostsQuery,
+  useGetProfilePublicPostsQuery,
   useGetProfilePostQuery,
   useGetProfileQuery,
   useUploadImagesForPostMutation,

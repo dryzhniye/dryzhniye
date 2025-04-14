@@ -2,9 +2,9 @@ import React from 'react'
 import styles from './ProfileTopbar.module.scss'
 import Image from 'next/image'
 import { Button } from '@/shared/ui/Button/Button'
-import { PublicProfile } from '@/app/users/profile/[userId]/page'
 import { useAppSelector } from '@/lib/hooks/appHooks'
 import { selectIsLoggedIn, selectUserId } from '@/app/redux/appSlice'
+import type { PublicProfile } from '@/lib/types/profileTypes'
 
 type Props = {
   profile: PublicProfile

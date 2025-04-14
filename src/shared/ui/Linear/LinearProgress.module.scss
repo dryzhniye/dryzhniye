@@ -4,7 +4,9 @@
   background-color: var(--accent-100);
   border-radius: 4px;
   overflow: hidden;
-  position: relative;
+  position: fixed;
+  top: 60px;
+  z-index: 51;
 }
 
 .linearProgressBar {

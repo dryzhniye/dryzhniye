@@ -26,10 +26,18 @@ export type PostType = {
   avatarWhoLikes: string[]
 }
 
-export type getPublicPostsResponse = {
+export type GetPublicPostsResponse = {
   totalCount: number
   pageSize: number
   totalUsers: number
+  items: PostType[]
+}
+
+export type GetProfilePostsResponse = {
+  totalCount: number
+  pageSize: number
+  page: number
+  pagesCount: number
   items: PostType[]
 }
 
@@ -40,6 +48,15 @@ export type GetProfilePostsParams = {
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
 }
+
+export type GetProfilePublicPostsParams = {
+  userId: number
+  endCursorPostId?: number
+  pageSize?: number
+  sortBy?: string
+  sortDirection?: 'asc' | 'desc'
+}
+
 
 export interface PostImage {
   createdAt: string
