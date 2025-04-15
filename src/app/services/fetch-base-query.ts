@@ -64,7 +64,6 @@ export const baseQueryWithReAuth: BaseQueryFn<FetchArgs | string, unknown, Fetch
             result = await dynamicBaseQuery(args, api, extraOptions)
             if (typeof window !== 'undefined') {
               window.location.reload()
-              window.location.href = '/search'
             }
           }
         }
