@@ -12,10 +12,10 @@ import { UserHeader } from '@/shared/ui/UserHeader/UserHeader'
 
 type Props = {
   post: PostType
-  onOpenChange: (open: boolean) => void
+  onCloseModal: () => void
 }
 
-export const PostList = ({ post, onOpenChange }: Props) => {
+export const PostList = ({ post, onCloseModal }: Props) => {
   const [showModal, setShowModal] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -46,7 +46,7 @@ export const PostList = ({ post, onOpenChange }: Props) => {
   const handleDeletePost = async () => {
     try {
       await deletePost(post.id).unwrap()
-      onOpenChange(false)
+      onCloseModal()
     } catch (error) {
       console.error('Failed to delete PostItem:', error)
     } finally {
