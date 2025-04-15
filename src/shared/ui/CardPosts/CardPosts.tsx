@@ -18,7 +18,9 @@ export const CardPosts = ({ open, onOpenChange, postId }: Props) => {
   const { data } = useGetProfilePostQuery(postId)
 
   return (
-    <Dialog.Root open={open} onOpenChange={() => onOpenChange(false)}>
+    <Dialog.Root open={open} onOpenChange={() => {
+      onOpenChange(false)
+    }}>
       <Dialog.Portal>
         <Dialog.Overlay className={styles.modalOverlay} />
         <Dialog.Content className={styles.modalContent}>
@@ -32,7 +34,7 @@ export const CardPosts = ({ open, onOpenChange, postId }: Props) => {
               ))}
             </Swiper>
           </div>
-          {data && <PostList post={data} />}
+          {data && <PostList post={data} onOpenChange={onOpenChange}/>}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
