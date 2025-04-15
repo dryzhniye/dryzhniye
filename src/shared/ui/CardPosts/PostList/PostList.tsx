@@ -3,7 +3,6 @@ import { useDeletePostMutation, useLikePostMutation } from '@/lib/api/postApi'
 import { Button } from '@/shared/ui/Button/Button'
 import Comment from '@/shared/ui/CardPosts/PostList/Comment'
 import { Modal } from '@/shared/ui/Modal/Modal'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import s from './PostList.module.scss'
@@ -14,9 +13,10 @@ import { useAddCommentMutation, useGetPostCommentsQuery } from '@/lib/api/commen
 
 type Props = {
   post: PostType
+  onOpenChange: (open: boolean) => void
 }
 
-export const PostList = ({ post }: Props) => {
+export const PostList = ({ post, onOpenChange }: Props) => {
   const [showModal, setShowModal] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -27,7 +27,6 @@ export const PostList = ({ post }: Props) => {
   const [likePost] = useLikePostMutation()
   const { data: comments } = useGetPostCommentsQuery(post.id)
 
-  const router = useRouter()
   const handleClickOutside = (e: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
       setIsMenuOpen(false)
@@ -48,7 +47,7 @@ export const PostList = ({ post }: Props) => {
   const handleDeletePost = async () => {
     try {
       await deletePost(post.id).unwrap()
-      router.push('/')
+      onOpenChange(false)
     } catch (error) {
       console.error('Failed to delete PostItem:', error)
     } finally {

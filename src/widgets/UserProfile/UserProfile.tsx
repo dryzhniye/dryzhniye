@@ -1,17 +1,16 @@
 'use client'
-
 import React, { useEffect, useRef, useState } from 'react'
 import { ProfileTopbar } from '@/widgets/ProfileTopbar/ProfileTopbar'
 import s from './UserProfile.module.scss'
 import { PostItem } from '@/widgets/PostItem/PostItem'
 import { useGetProfilePostsQuery, useGetProfilePublicPostsQuery } from '@/lib/api/postApi'
-import type { PostType } from '@/lib/types/postsTypes'
 import type { PublicProfile } from '@/lib/types/profileTypes'
 import { CreatePostWindow } from '@/shared/ui/CreatePostWindow/CreatePostWindow'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { CardPosts } from '@/shared/ui/CardPosts/CardPosts'
 import { useAppSelector } from '@/lib/hooks/appHooks'
 import { selectIsLoggedIn } from '@/app/redux/appSlice'
+import { PostItemSkeleton } from '@/widgets/PostItem/PostItemSkeleton'
 
 type Props = {
   profile: PublicProfile
@@ -20,11 +19,9 @@ type Props = {
 const UserProfile = ({ profile }: Props) => {
   const searchParams = useSearchParams()
   const router = useRouter()
-
   const action = searchParams.get('action')
   const postId = Number(searchParams.get('postId'))
   const [page, setPage] = useState(1)
-  const [displayedPosts, setDisplayedPosts] = useState<PostType[]>([])
   const loaderRef = useRef(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPostOpen, setIsPostOpen] = useState(false)
@@ -88,19 +85,6 @@ const UserProfile = ({ profile }: Props) => {
   }
 
   useEffect(() => {
-    if (data?.items) {
-      setDisplayedPosts(prev => [...prev, ...data.items])
-    }
-  }, [data])
-  useEffect(() => {
-    if (!isLoggedIn && publicData?.items?.length) {
-      setDisplayedPosts((prev) => [...prev, ...publicData.items]);
-    }
-  }, [publicData]);
-
-
-  useEffect(() => {
-
     const observer = new IntersectionObserver(
       (entries) => {
           if (entries[0].isIntersecting && pagesCount) {
@@ -128,6 +112,8 @@ const UserProfile = ({ profile }: Props) => {
     }
   }, [isLoading])
 
+  const dataForRender = publicData?.items || data?.items
+
   return (
     <div className={s.profileContainer}>
 
@@ -135,9 +121,9 @@ const UserProfile = ({ profile }: Props) => {
 
       <div className={s.postsGridContainer}>
         <div className={s.postsGrid}>
-          {displayedPosts ? displayedPosts.map((post) => (
+          {dataForRender ? dataForRender.map((post) => (
             <PostItem key={post.id} post={post} />
-          )) : '...loading'}
+          )) : <PostItemSkeleton />}
         </div>
         {!isLoggedIn && !publicIsLoading &&
           <div className={s.bottomFadeContainer}>

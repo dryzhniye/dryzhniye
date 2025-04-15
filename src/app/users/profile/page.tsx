@@ -10,7 +10,6 @@ const Profile = () => {
   const { data, isLoading } = useMeQuery()
 
   useEffect(() => {
-debugger
     if (!isLoading) {
       const reload = localStorage.getItem('reload')
       if (getCookie('oauthProvider') === 'github' && !data) {
