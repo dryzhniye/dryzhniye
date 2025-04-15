@@ -146,7 +146,6 @@ export const {
   useConfirmationMutation,
   useResetEmailMutation,
   useMeQuery,
-  useLazyMeQuery,
   useGoogleLoginMutation,
   useGetTotalUsersCountQuery
 } = authApi
