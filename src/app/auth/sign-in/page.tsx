@@ -1,5 +1,5 @@
 'use client'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import Cards from '@/shared/ui/Cards/Cards'
 import Input from '@/shared/ui/Input/Input'
 import { Typography } from '@/shared/ui/Typography'

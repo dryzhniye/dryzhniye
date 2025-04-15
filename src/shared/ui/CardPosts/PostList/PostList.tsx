@@ -1,6 +1,6 @@
 'use client'
 import { useDeletePostMutation, useLikePostMutation } from '@/lib/api/postApi'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import Comment from '@/shared/ui/CardPosts/PostList/Comment'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useEffect, useRef, useState } from 'react'

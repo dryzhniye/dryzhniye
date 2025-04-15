@@ -6,11 +6,38 @@
   height: 84px;
   resize: none;
   padding: 6px 0 0 12px;
+  border-color: var(--dark-100);
+  transition: border-color 0.4s ease-in-out;
+  font-size: 16px;
+
+  &::placeholder {
+    font-size: 16px;
+  }
+  &:hover {
+    border-color: var(--light-900);
+  }
+
+  &:focus-visible {
+    border-color: transparent;
+    border-radius: 2px;
+    outline: 2px solid var(--accent-500);
+    &:hover {
+      border-color: var(--dark-100);
+    }
+  }
 
 
-  &:focus {
-    border-color: 2px var(--light-100);
-    outline: none;
+}
+
+.label {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 171% !important;
+  color: var(--light-900) !important;
+
+  .required {
+    color: var(--danger-300) !important;;
+    margin-left: 4px !important;;
   }
 }
 

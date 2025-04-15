@@ -1,6 +1,6 @@
 'use client'
 import s from './registration-confirmation.module.scss'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import Image from 'next/image'
 import { useConfirmationMutation } from '@/lib/api/authApi'
 import React, { useEffect, useState } from 'react'

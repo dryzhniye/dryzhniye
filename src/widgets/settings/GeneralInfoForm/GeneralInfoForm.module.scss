@@ -1,0 +1,16 @@
+
+.profileForm {
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+  }
+    textarea {
+      resize: none;
+    }
+  .formRow {
+    display: flex;
+    gap: 24px;
+  }
+}

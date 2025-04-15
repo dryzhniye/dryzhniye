@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  border-bottom: 2px solid var(--dark-100);
+  //border-bottom: 2px solid var(--dark-100);
 }
 
 .Trigger {
@@ -30,7 +30,7 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 150%;
-  color: var(--accent-500);
+  color: var(--dark-100);
   text-align: center;
 
   transition:
@@ -46,16 +46,18 @@
 
   &:hover {
     background-color: rgb(14 18 53 / 80%);
-  }
+    &:focus {
+      background-color: rgb(21 32 85 / 80%);
 
+    }
+  }
   &[data-state='active'] {
     border-bottom: 2px solid var(--accent-500);
     color: var(--accent-500);
-    background-color: rgb(21 32 85 / 80%);
   }
 
   &:focus {
-    border: 1px solid var(--accent-700);
+    border-bottom: 2px solid var(--accent-700);
     border-radius: 2px;
     outline: none;
   }
@@ -63,6 +65,6 @@
 
 .tabContent {
   min-height: 100px;
-  padding: 16px;
+  //padding: 16px;
   color: white;
 }

@@ -16,6 +16,8 @@ const Profile = () => {
         if (!reload) {
           localStorage.setItem('reload', 'true')
           window.location.reload()
+        } else {
+          console.warn('Page reloaded already, skipping reload to prevent loop.')
         }
       }
       if (data?.userId) {

@@ -13,7 +13,7 @@
 
   position: relative;
 
-  width: 210px;
+  width: 100%;
   height: 36px;
   border: 1px solid var(--dark-100);
   border-radius: 1px;
@@ -22,7 +22,7 @@
   font-weight: 400;
   color: var(--light-100);
 
-  background-color: var(--dark-700);
+  background-color: inherit;
 
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 
@@ -55,7 +55,7 @@
   justify-content: space-between;
 
   height: 100%;
-  padding: 0 10px;
+  padding: 0 12px;
 }
 
 .selectBoxList {
@@ -87,6 +87,19 @@
     opacity: 1;
   }
 }
+
+.label {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 171% !important;
+  color: var(--light-900) !important;
+
+  .required {
+    color: var(--danger-300) !important;;
+    margin-left: 4px !important;;
+  }
+}
+
 
 .selectBoxItem {
   cursor: pointer;

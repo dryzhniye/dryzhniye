@@ -1,7 +1,7 @@
 import * as Tabs from '@radix-ui/react-tabs'
 import styles from './Tabs.module.scss'
 
-type Tab = {
+export type Tab = {
   id: string
   title: string
   content: React.ReactNode
@@ -36,3 +36,6 @@ export default function TabsComponent({ tabs, defaultTab }: TabsProps) {
     </Tabs.Root>
   )
 }
+
+
+
