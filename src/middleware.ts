@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { PATH } from '@/shared/const/PATH'
+import { PATH } from '@/shared/lib/const/PATH'
 
 export function middleware(request: NextRequest) {
   const alwaysPublicPaths: (string | RegExp)[] = [

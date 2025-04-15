@@ -1,9 +1,9 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect } from 'react'
-import { getDecodedToken } from '@/shared/utils/getDecodedToken'
-import { PATH } from '@/shared/const/PATH'
-import { setCookie } from '@/shared/utils/cookieUtils'
+import { getDecodedToken } from '@/shared/lib/utils/getDecodedToken'
+import { PATH } from '@/shared/lib/const/PATH'
+import { setCookie } from '@/shared/lib/utils/cookieUtils'
 
 export default function GithubPage() {
   return (

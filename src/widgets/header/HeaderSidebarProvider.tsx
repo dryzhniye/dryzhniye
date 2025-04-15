@@ -1,10 +1,10 @@
 'use client'
 import { useSelector } from 'react-redux'
-import { Header } from '@/shared/ui/Header/Header'
-import { selectAppStatus, selectIsLoggedIn } from '@/app/redux/appSlice'
-import LinearProgress from '@/shared/ui/Linear/LinearProgress'
-import { useAppSelector } from '@/lib/hooks/appHooks'
-import { Sidebar } from '@/shared/ui/Sidebar/Sidebar'
+import { Header } from '@/shared/ui/base/Header/Header'
+import { selectAppStatus, selectIsLoggedIn } from '@/store/slices/appSlice'
+import LinearProgress from '@/shared/ui/base/Linear/LinearProgress'
+import { useAppSelector } from '@/shared/lib/hooks/appHooks'
+import { Sidebar } from '@/shared/ui/base/Sidebar/Sidebar'
 import s from './HeaderSidebar.module.scss'
 
 type Props = {

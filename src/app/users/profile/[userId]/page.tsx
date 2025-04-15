@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
-import UserProfile from '@/widgets/UserProfile/UserProfile'
-import type { PublicProfile } from '@/lib/types/profileTypes'
+import UserProfile from '@/shared/ui/UserProfile/UserProfile'
+import type { PublicProfile } from '@/shared/lib/types/profileTypes'
 import { cookies } from 'next/headers'
-import { PostType } from '@/lib/types/postsTypes'
+import { PostType } from '@/shared/lib/types/postsTypes'
 
 type Props = {
   params: { userId: string }

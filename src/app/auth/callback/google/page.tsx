@@ -1,8 +1,8 @@
 'use client'
 import { useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useGoogleLoginMutation } from '@/lib/api/authApi'
-import { setCookie } from '@/shared/utils/cookieUtils'
+import { useGoogleLoginMutation } from '@/shared/api/authApi'
+import { setCookie } from '@/shared/lib/utils/cookieUtils'
 
 interface Error {
   statusCode: number,

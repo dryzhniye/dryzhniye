@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Button } from '@/shared/ui/base/Button/Button'
 import s from './recovery-resending.module.scss'
 import { useSearchParams } from 'next/navigation'
-import { useResendRecoveryCodeMutation } from '@/lib/api/authApi'
+import { useResendRecoveryCodeMutation } from '@/shared/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
 
 function RecoveryResending() {

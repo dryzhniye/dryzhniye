@@ -1,13 +1,13 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import s from '@/app/auth/forgot-password/forgot-password.module.scss'
-import Input from '@/shared/ui/Input/Input'
+import Input from '@/shared/ui/base/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '@/shared/ui/base/Button/Button'
 import { redirect, useRouter, useSearchParams } from 'next/navigation'
-import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/lib/api/authApi'
+import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/shared/api/authApi'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
-import { PATH } from '@/shared/const/PATH'
+import { PATH } from '@/shared/lib/const/PATH'
 
 type createPasswordArgs = {
   password1: string

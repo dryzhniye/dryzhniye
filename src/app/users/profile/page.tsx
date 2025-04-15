@@ -1,9 +1,9 @@
 'use client'
 import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
-import { PATH } from '@/shared/const/PATH'
-import { useMeQuery } from '@/lib/api/authApi'
-import { getCookie } from '@/shared/utils/cookieUtils'
+import { PATH } from '@/shared/lib/const/PATH'
+import { useMeQuery } from '@/shared/api/authApi'
+import { getCookie } from '@/shared/lib/utils/cookieUtils'
 
 const Profile = () => {
 

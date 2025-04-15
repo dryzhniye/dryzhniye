@@ -3,7 +3,7 @@ import s from './terms-of-service.module.scss'
 import Link from 'next/link'
 import Image from 'next/image'
 import { TextExample } from '@/app/auth/terms-of-service/TextExample'
-import { PATH } from '@/shared/const/PATH'
+import { PATH } from '@/shared/lib/const/PATH'
 
 export default function Page() {
   return (
