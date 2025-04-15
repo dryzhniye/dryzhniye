@@ -1,6 +1,6 @@
 'use client'
 import { useLogoutMutation } from '@/lib/api/authApi'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import s from './Sidebar.module.scss'
 import Image from 'next/image'

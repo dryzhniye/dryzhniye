@@ -1,7 +1,7 @@
 'use client'
 import { Flex } from '@radix-ui/themes'
 import { Select } from '@/shared/ui/Select/Select'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import { useState } from 'react'
 import Image from 'next/image'
 import s from './Header.module.scss'

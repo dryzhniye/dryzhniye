@@ -2,7 +2,7 @@
 import s from './signUp.module.scss'
 import Input from '@/shared/ui/Input/Input'
 import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useRegistrationMutation } from '@/lib/api/authApi'
 import { useState } from 'react'

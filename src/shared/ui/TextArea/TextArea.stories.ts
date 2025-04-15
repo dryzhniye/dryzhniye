@@ -1,4 +1,4 @@
-import {Button} from "@/shared/ui/Button/Button";
+import {Button} from "@/shared/ui/base/Button/Button";
 import type {Meta, StoryObj} from "@storybook/react";
 import TextArea from "@/shared/ui/TextArea/TextArea";
 

@@ -1,6 +1,6 @@
 'use client'
 import s from '@/app/auth/registration-confirmation/registration-confirmation.module.scss'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import Image from 'next/image'
 import Input from '@/shared/ui/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'

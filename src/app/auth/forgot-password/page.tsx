@@ -1,7 +1,7 @@
 'use client'
 import s from './forgot-password.module.scss'
 import Input from '@/shared/ui/Input/Input'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import { Recaptcha } from '@/shared/ui/Recaptcha/Recaptcha'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'

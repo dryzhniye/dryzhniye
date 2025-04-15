@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { format, isValid, parse } from 'date-fns'
 import { DateRange, DayPicker, type Mode } from 'react-day-picker'
 import { enGB } from 'date-fns/locale'
-import { DatePickerCustomNav } from '@/shared/ui/DatePicker/DatePickerCustomNav'
+import { DatePickerCustomNav } from '@/shared/ui/base/DatePicker/DatePickerCustomNav'
 import Image from 'next/image'
 import 'react-day-picker/style.css'
 import './DatePicker.scss'
@@ -13,12 +13,15 @@ import s from './DatePickerCustomNav.module.scss'
 type DatePickerMode = Exclude<Mode, 'multiple'>;
 
 interface DatePickerInputProps {
+  width?: string
   mode?: DatePickerMode;
   error?: string;
+  label?: string;
+  required?: boolean;
   disabled?: boolean;
 }
 
-export const DatePicker = ({mode= 'range', error, disabled=false}: DatePickerInputProps) => {
+export const DatePicker = ({mode='range', width='340px', error, label, required, disabled=false}: DatePickerInputProps) => {
   const calendarRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [month, setMonth] = useState(new Date())
@@ -135,12 +138,16 @@ export const DatePicker = ({mode= 'range', error, disabled=false}: DatePickerInp
 
       <div className="rdp-wrapper">
         <div style={{
-          position: 'relative',  width: 'fit-content', height: 'fit-content', }}>
+          position: 'relative', height: 'fit-content', }}>
+          {label && <label style={{color: 'var(--light-900)', fontSize: '14px' ,lineHeight: '171%'}} className={s['label-text']}>{label}
+            {required && <span style={{marginLeft: '4px', color: 'var(--danger-300)'}} className={s.required}>*</span>}</label>}
         <input
           ref={inputRef}
           autoComplete={'off'}
           className={`datepicker-input ${displayError ? 'input-error' : ''} ${disabled ? 'input-disabled' : ''}`}
           type="text"
+          width={'1000px'}
+          style={{width: width}}
           value={inputValue}
           placeholder={mode === 'range' ? "dd/MM/yyyy - dd/MM/yyyy" : "dd/MM/yyyy"}
           onChange={handleInputChange}

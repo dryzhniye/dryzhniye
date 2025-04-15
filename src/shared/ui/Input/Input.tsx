@@ -7,6 +7,7 @@ import s from './Input.module.scss'
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   type?: 'text' | 'search' | 'password'
   label?: string
+  required?: boolean
   placeholder?: string
   value?: string
   disabled?: boolean
@@ -19,6 +20,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 const Input: React.FC<InputProps> = ({
   type = 'text',
   label,
+  required,
   error,
   disabled,
   className,
@@ -67,7 +69,8 @@ const Input: React.FC<InputProps> = ({
       }`}
       style={{ width }}
     >
-      {label && <label className={s.label}>{label}</label>}
+      {label && <label className={s.label}>{label}
+        {required && <span className={s.required}>*</span>}</label>}
 
       <div className={s.inputWrapper}>
         {type === 'search' && getIconSrc() && (
