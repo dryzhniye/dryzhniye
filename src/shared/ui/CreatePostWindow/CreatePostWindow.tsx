@@ -5,19 +5,18 @@ import s from './CreatePostWindow.module.scss'
 import Image from 'next/image'
 import { Button } from '@/shared/ui/base/Button/Button'
 import Input from '@/shared/ui/Input/Input'
-import Link from 'next/link'
-import { PATH } from '@/shared/const/PATH'
 import { useCreatePostMutation, useGetProfileQuery, useUploadImagesForPostMutation } from '@/lib/api/postApi'
 import TextArea from '@/shared/ui/TextArea/TextArea'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { UserHeader } from '@/shared/ui/UserHeader/UserHeader'
 
 type Props = {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onCloseModal: () => void;
 }
 
-export const CreatePostWindow = ({ open, onOpenChange }: Props) => {
+export const CreatePostWindow = ({ open, onCloseModal }: Props) => {
   const [images, setImages] = useState<File[] | null>(null)
   const [description, setDescription] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -59,7 +58,7 @@ export const CreatePostWindow = ({ open, onOpenChange }: Props) => {
         uploadIds: uploadedImages.images.map(img => img.uploadId),
       }).unwrap()
 
-      onOpenChange(false)
+      onCloseModal()
       setImages(null)
       setDescription('')
 
@@ -73,13 +72,13 @@ export const CreatePostWindow = ({ open, onOpenChange }: Props) => {
     if (images || description) {
       setShowCloseConfirm(true)
     } else {
-      onOpenChange(false)
+      onCloseModal()
     }
   }
 
   const confirmClose = () => {
     setShowCloseConfirm(false)
-    onOpenChange(false)
+    onCloseModal()
     setImages(null)
     setDescription('')
   }
@@ -87,8 +86,6 @@ export const CreatePostWindow = ({ open, onOpenChange }: Props) => {
   const cancelClose = () => {
     setShowCloseConfirm(false)
   }
-
-  const userAvatar = user?.avatars[0]?.url || '/avatar.svg'
 
   return (
     <Dialog.Root open={open} onOpenChange={handleCloseAttempt}>
@@ -122,7 +119,7 @@ export const CreatePostWindow = ({ open, onOpenChange }: Props) => {
                 <div className={s.uploadIcon}>
                   <Image src={'/picture.svg'} alt={'picture'} width="48" height="48" />
                 </div>
-                <Button title={'Select from Computer'} width={'100%'} onClick={() => fileInputRef.current?.click()} />
+                <Button title='Select from Computer' width={'100%'} onClick={() => fileInputRef.current?.click()} />
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -153,10 +150,7 @@ export const CreatePostWindow = ({ open, onOpenChange }: Props) => {
                 </div>
                 <div className={s.descriptionSection}>
                   <div className={s.textBlock}>
-                    <div className={s.author}>
-                      <img className={s.avatar} src={userAvatar} alt="" />
-                      <Link className={s.title} href={PATH.USERS.PROFILE}>URLProfile</Link>
-                    </div>
+                    <UserHeader imageUrl={user?.avatars[0]?.url}/>
                     <div>
                       <p className={s.description}>Add publication descriptions</p>
                       <TextArea width={'433px'} height={'120px'} title={description} onChange={setDescription} />

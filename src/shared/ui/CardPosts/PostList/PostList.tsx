@@ -3,20 +3,19 @@ import { useDeletePostMutation, useLikePostMutation } from '@/lib/api/postApi'
 import { Button } from '@/shared/ui/base/Button/Button'
 import Comment from '@/shared/ui/CardPosts/PostList/Comment'
 import { Modal } from '@/shared/ui/Modal/Modal'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import s from './PostList.module.scss'
 import { PostType } from '@/lib/types/postsTypes'
-import Link from 'next/link'
-import { PATH } from '@/shared/const/PATH'
 import { useAddCommentMutation, useGetPostCommentsQuery } from '@/lib/api/commentsApi'
+import { UserHeader } from '@/shared/ui/UserHeader/UserHeader'
 
 type Props = {
   post: PostType
+  onCloseModal: () => void
 }
 
-export const PostList = ({ post }: Props) => {
+export const PostList = ({ post, onCloseModal }: Props) => {
   const [showModal, setShowModal] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -27,7 +26,6 @@ export const PostList = ({ post }: Props) => {
   const [likePost] = useLikePostMutation()
   const { data: comments } = useGetPostCommentsQuery(post.id)
 
-  const router = useRouter()
   const handleClickOutside = (e: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
       setIsMenuOpen(false)
@@ -48,7 +46,7 @@ export const PostList = ({ post }: Props) => {
   const handleDeletePost = async () => {
     try {
       await deletePost(post.id).unwrap()
-      router.push('/')
+      onCloseModal()
     } catch (error) {
       console.error('Failed to delete PostItem:', error)
     } finally {
@@ -74,18 +72,7 @@ export const PostList = ({ post }: Props) => {
   return (
     <div className={s.postListWrapper}>
       <div className={s.header}>
-        <div className={s.author}>
-          <Image
-            src={post.avatarOwner || '/avatar.svg'}
-            alt="Post image"
-            width={36}
-            height={36}
-            className={s.image}
-          />
-          <Link href={PATH.USERS.PROFILE_USERID(post.ownerId)} className={s.title}>
-            URLProfiele
-          </Link>
-        </div>
+        <UserHeader userId={post.ownerId} imageUrl={post.avatarOwner}/>
         <button className={s.button} onClick={handleOptionsClick}>
           ...
         </button>

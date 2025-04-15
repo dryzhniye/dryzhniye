@@ -11,23 +11,6 @@ import type { GetProfileResponse } from '@/lib/types/profileTypes'
 
 export const postApi = baseApi.injectEndpoints({
   endpoints: build => ({
-    deletePost: build.mutation<void, number>({
-      query: postId => ({
-        url: `posts/${postId}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: (result, error, arg) => [
-        { type: 'Posts', id: arg },
-      ],
-    }),
-    getPublicPosts: build.query<GetPublicPostsResponse, number>({
-      query: (pageSize) => ({
-        url: 'public-posts/all/{endCursorPostId}',
-        params: {
-          pageSize,
-        },
-      }),
-    }),
     getProfilePosts: build.query<GetProfilePostsResponse, GetProfilePostsParams>({
       query: (params) => ({
         url: `posts/${params.userName}`,
@@ -51,16 +34,33 @@ export const postApi = baseApi.injectEndpoints({
       }),
       providesTags: ['Posts'],
     }),
+    getPublicPosts: build.query<GetPublicPostsResponse, number>({
+      query: (pageSize) => ({
+        url: 'public-posts/all',
+        params: {
+          pageSize,
+        },
+      }),
+    }),
+
+    getProfile: build.query<GetProfileResponse, void>({
+      query: () => ({
+        url: 'users/profile',
+      }),
+    }),
+
+    deletePost: build.mutation<void, number>({
+      query: postId => ({
+        url: `posts/${postId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Posts']
+    }),
     getProfilePost: build.query<PostType, number>({
       query: (postId) => `posts/id/${postId}`,
       providesTags: (result, error, postId) => [
         { type: 'Posts', id: postId },
       ],
-    }),
-    getProfile: build.query<GetProfileResponse, void>({
-      query: () => ({
-        url: 'users/profile',
-      }),
     }),
     createPost: build.mutation<PostType, CreatePostArgs>({
       query: ({ description, uploadIds }) => ({
@@ -73,6 +73,7 @@ export const postApi = baseApi.injectEndpoints({
         method: 'POST',
         url: `/posts`,
       }),
+      invalidatesTags: ['Posts'],
     }),
     uploadImagesForPost: build.mutation<UploadPostImagesResponse, UploadPostImagesArgs>({
       query: ({ files }) => {

@@ -1,40 +1,68 @@
 'use client'
 import { PostList } from '@/shared/ui/CardPosts/PostList/PostList'
 import styles from './CardPosts.module.scss'
-import { useGetProfilePostQuery } from '@/lib/api/postApi'
+import { postApi, useGetProfilePostQuery } from '@/lib/api/postApi'
 import * as Dialog from '@radix-ui/react-dialog'
 import { DialogTitle } from '@radix-ui/react-dialog'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { PostType } from '@/lib/types/postsTypes'
+import { useAppDispatch } from '@/lib/hooks/appHooks'
 
 type Props = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  onCloseModal: () => void
   postId: number
+  post: PostType
 }
 
-export const CardPosts = ({ open, onOpenChange, postId }: Props) => {
-  const { data } = useGetProfilePostQuery(postId)
+export const CardPosts = ({ onCloseModal, postId, post }: Props) => {
+  const dispatch = useAppDispatch()
+
+  const needInitPostInStore = useRef(!!post)
+
+  const { data } = useGetProfilePostQuery(postId, {
+    skip: needInitPostInStore.current,
+  })
+
+
+  useEffect(() => {
+    if (needInitPostInStore.current) {
+      dispatch(
+        postApi.util.upsertQueryData('getProfilePost', postId, post),
+      )
+      needInitPostInStore.current = false
+    }
+  }, [dispatch, post, postId])
+
+  useEffect(() => {
+    return () => {
+      dispatch(
+        postApi.util.resetApiState(),
+      )
+    }
+  }, [dispatch])
+
+  const dataForRender = data || post
 
   return (
-    <Dialog.Root open={open} onOpenChange={() => onOpenChange(false)}>
-      <Dialog.Portal>
+    <Dialog.Root open={true} onOpenChange={onCloseModal}>
+      <div className="fixed inset-0 z-50">
         <Dialog.Overlay className={styles.modalOverlay} />
         <Dialog.Content className={styles.modalContent}>
           <DialogTitle></DialogTitle>
           <div className={styles.imageBlock}>
             <Swiper modules={[Navigation, Pagination]} navigation pagination={{ clickable: true }}>
-              {data?.images.map((image, index) => (
+              {dataForRender?.images.map((image, index) => (
                 <SwiperSlide key={index}>
                   <img className={styles.image} src={image.url} alt="post photo" />
                 </SwiperSlide>
               ))}
             </Swiper>
           </div>
-          {data && <PostList post={data} />}
+          {dataForRender && <PostList post={dataForRender} onCloseModal={onCloseModal}/>}
         </Dialog.Content>
-      </Dialog.Portal>
+      </div>
     </Dialog.Root>
   )
 }

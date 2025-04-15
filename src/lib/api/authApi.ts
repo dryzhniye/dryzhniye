@@ -75,7 +75,6 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const response = await queryFulfilled
-          console.log(response)
           if (response.data.email) {
             dispatch(setAppEmail(response.data.email))
             dispatch(setIsLoggedIn(true))
@@ -146,7 +145,6 @@ export const {
   useConfirmationMutation,
   useResetEmailMutation,
   useMeQuery,
-  useLazyMeQuery,
   useGoogleLoginMutation,
   useGetTotalUsersCountQuery
 } = authApi
