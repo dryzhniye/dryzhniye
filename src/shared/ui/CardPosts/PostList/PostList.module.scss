@@ -13,24 +13,6 @@
 
   text-align: center;
 
-  & .author {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-
-    & .image {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-    }
-
-    & .title {
-      font-size: 16px;
-      color: var(--light-100);
-      text-decoration: none;
-    }
-  }
-
   & .button {
     cursor: pointer;
 

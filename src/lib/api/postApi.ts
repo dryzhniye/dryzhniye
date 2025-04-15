@@ -36,7 +36,7 @@ export const postApi = baseApi.injectEndpoints({
     }),
     getPublicPosts: build.query<GetPublicPostsResponse, number>({
       query: (pageSize) => ({
-        url: 'public-posts/all/{endCursorPostId}',
+        url: 'public-posts/all',
         params: {
           pageSize,
         },

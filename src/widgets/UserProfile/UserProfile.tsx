@@ -11,12 +11,15 @@ import { CardPosts } from '@/shared/ui/CardPosts/CardPosts'
 import { useAppSelector } from '@/lib/hooks/appHooks'
 import { selectIsLoggedIn } from '@/app/redux/appSlice'
 import { PostItemSkeleton } from '@/widgets/PostItem/PostItemSkeleton'
+import { PostType } from '@/lib/types/postsTypes'
 
 type Props = {
   profile: PublicProfile
+  post: PostType
+  postId: string | undefined
 }
 
-const UserProfile = ({ profile }: Props) => {
+const UserProfile = ({ profile, post }: Props) => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const action = searchParams.get('action')
@@ -24,7 +27,6 @@ const UserProfile = ({ profile }: Props) => {
   const [page, setPage] = useState(1)
   const loaderRef = useRef(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isPostOpen, setIsPostOpen] = useState(false)
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   const {
@@ -37,7 +39,7 @@ const UserProfile = ({ profile }: Props) => {
     pageNumber: page,
     sortBy: 'createdAt',
     sortDirection: 'desc',
-  }, {skip: !isLoggedIn})
+  }, { skip: !isLoggedIn })
 
   const pagesCount = data?.pagesCount
 
@@ -50,31 +52,25 @@ const UserProfile = ({ profile }: Props) => {
     pageSize: 8,
     sortBy: 'createdAt',
     sortDirection: 'desc',
-  }, {skip: isLoggedIn});
-
+  }, { skip: isLoggedIn })
 
   useEffect(() => {
     if (action === 'create' && postId) {
       const url = new URL(window.location.href)
       url.searchParams.delete('action')
       window.history.replaceState(null, '', url.toString())
-      setIsPostOpen(true)
       setIsModalOpen(false)
     } else if (action === 'create') {
       setIsModalOpen(true)
-      setIsPostOpen(false)
     } else if (postId) {
-      setIsPostOpen(true)
       setIsModalOpen(false)
     } else {
       setIsModalOpen(false)
-      setIsPostOpen(false)
     }
   }, [action, postId])
 
-  const closeModalsHandler = (value: boolean) => {
-    setIsModalOpen(value)
-    setIsPostOpen(value)
+  const closeModalsHandler = () => {
+    setIsModalOpen(false)
 
     const params = new URLSearchParams(window.location.search)
     params.delete('postId')
@@ -87,16 +83,16 @@ const UserProfile = ({ profile }: Props) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-          if (entries[0].isIntersecting && pagesCount) {
-            setTimeout(() => {
-              setPage(prev => {
-                if (prev < pagesCount) {
-                  return prev + 1
-                }
-                return prev
-              })
-            }, 300)
-          }
+        if (entries[0].isIntersecting && pagesCount) {
+          setTimeout(() => {
+            setPage(prev => {
+              if (prev < pagesCount) {
+                return prev + 1
+              }
+              return prev
+            })
+          }, 300)
+        }
       },
       { threshold: 1 },
     )
@@ -114,6 +110,8 @@ const UserProfile = ({ profile }: Props) => {
 
   const dataForRender = publicData?.items || data?.items
 
+  const newPostId = Number(postId)
+
   return (
     <div className={s.profileContainer}>
 
@@ -128,15 +126,17 @@ const UserProfile = ({ profile }: Props) => {
         {!isLoggedIn && !publicIsLoading &&
           <div className={s.bottomFadeContainer}>
             <div className={s.fadeOverlay}></div>
-            <div className={s.authNotice}>Зарегистируйтесь или войдите, чтобы посмотреть больше постов</div></div>
-            }
-            <div ref={loaderRef} className={s.loaderContainer}>
-              {isLoading || isFetching && <div className={s.loader}>Loading...</div>}
-            </div>
+            <div className={s.authNotice}>Зарегистируйтесь или войдите, чтобы посмотреть больше постов</div>
           </div>
-          <CreatePostWindow open={isModalOpen}
-        onOpenChange={closeModalsHandler} />
-      {isPostOpen && postId && <CardPosts postId={postId} open={isPostOpen} onOpenChange={closeModalsHandler} />}
+        }
+        <div ref={loaderRef} className={s.loaderContainer}>
+          {isLoading || isFetching && <div className={s.loader}>Loading...</div>}
+        </div>
+      </div>
+      <CreatePostWindow open={isModalOpen}
+                        onCloseModal={closeModalsHandler} />
+      {postId ?
+        <CardPosts post={post} postId={newPostId} onCloseModal={closeModalsHandler} /> : ''}
     </div>
   )
 }
