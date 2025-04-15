@@ -11,6 +11,7 @@ import { useCreatePostMutation, useGetProfileQuery, useUploadImagesForPostMutati
 import TextArea from '@/shared/ui/TextArea/TextArea'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { UserHeader } from '@/shared/ui/UserHeader/UserHeader'
 
 type Props = {
   open: boolean;
@@ -88,8 +89,6 @@ export const CreatePostWindow = ({ open, onOpenChange }: Props) => {
     setShowCloseConfirm(false)
   }
 
-  const userAvatar = user?.avatars[0]?.url || '/avatar.svg'
-
   return (
     <Dialog.Root open={open} onOpenChange={handleCloseAttempt}>
       <Dialog.Portal>
@@ -153,10 +152,7 @@ export const CreatePostWindow = ({ open, onOpenChange }: Props) => {
                 </div>
                 <div className={s.descriptionSection}>
                   <div className={s.textBlock}>
-                    <div className={s.author}>
-                      <img className={s.avatar} src={userAvatar} alt="" />
-                      <Link className={s.title} href={PATH.USERS.PROFILE}>URLProfile</Link>
-                    </div>
+                    <UserHeader imageUrl={user?.avatars[0]?.url}/>
                     <div>
                       <p className={s.description}>Add publication descriptions</p>
                       <TextArea width={'433px'} height={'120px'} title={description} onChange={setDescription} />

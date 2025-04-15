@@ -7,6 +7,7 @@ import { Navigation, Pagination } from 'swiper/modules'
 import Link from 'next/link'
 import { PATH } from '@/shared/const/PATH'
 import { formatTimeAgo } from '@/shared/utils/formatTimeAgo'
+import { UserHeader } from '@/shared/ui/UserHeader/UserHeader'
 
 export default function Home() {
   const { data } = useGetTotalUsersCountQuery()
@@ -48,10 +49,7 @@ export default function Home() {
               ))}
             </Swiper>
           )}
-          <div className={s.author}>
-            <img className={s.avatar} src={post.avatarOwner} alt="" />
-            <Link className={s.title} href={PATH.USERS.PROFILE_USERID(post.ownerId)}>URLProfile</Link>
-          </div>
+          <UserHeader userId={post.ownerId} imageUrl={post.avatarOwner}/>
           <div className={s.time}>{formatTimeAgo(post.createdAt)}</div>
           <p className={s.description}>{post.description}</p>
         </div>)}

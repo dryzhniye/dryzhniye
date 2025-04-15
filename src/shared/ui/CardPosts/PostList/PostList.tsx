@@ -7,9 +7,8 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import s from './PostList.module.scss'
 import { PostType } from '@/lib/types/postsTypes'
-import Link from 'next/link'
-import { PATH } from '@/shared/const/PATH'
 import { useAddCommentMutation, useGetPostCommentsQuery } from '@/lib/api/commentsApi'
+import { UserHeader } from '@/shared/ui/UserHeader/UserHeader'
 
 type Props = {
   post: PostType
@@ -73,18 +72,7 @@ export const PostList = ({ post, onOpenChange }: Props) => {
   return (
     <div className={s.postListWrapper}>
       <div className={s.header}>
-        <div className={s.author}>
-          <Image
-            src={post.avatarOwner || '/avatar.svg'}
-            alt="Post image"
-            width={36}
-            height={36}
-            className={s.image}
-          />
-          <Link href={PATH.USERS.PROFILE_USERID(post.ownerId)} className={s.title}>
-            URLProfiele
-          </Link>
-        </div>
+        <UserHeader userId={post.ownerId} imageUrl={post.avatarOwner}/>
         <button className={s.button} onClick={handleOptionsClick}>
           ...
         </button>
