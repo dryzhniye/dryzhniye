@@ -2,12 +2,12 @@
 import s from './registration-confirmation.module.scss'
 import { Button } from '@/shared/ui/base/Button/Button'
 import Image from 'next/image'
-import { useConfirmationMutation } from '@/lib/api/authApi'
+import { useConfirmationMutation } from '@/shared/api/authApi'
 import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
-import { PATH } from '@/shared/const/PATH'
+import { PATH } from '@/shared/lib/const/PATH'
 
 const Page = () => {
   const router = useRouter()

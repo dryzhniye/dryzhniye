@@ -1,13 +1,13 @@
 'use client'
 import s from './forgot-password.module.scss'
-import Input from '@/shared/ui/Input/Input'
+import Input from '@/shared/ui/base/Input/Input'
 import { Button } from '@/shared/ui/base/Button/Button'
-import { Recaptcha } from '@/shared/ui/Recaptcha/Recaptcha'
+import { Recaptcha } from '@/shared/ui/base/Recaptcha/Recaptcha'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
-import { useResetPasswordMutation } from '@/lib/api/authApi'
+import { useResetPasswordMutation } from '@/shared/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
-import { PATH } from '@/shared/const/PATH'
+import { PATH } from '@/shared/lib/const/PATH'
 
 type ResetPasswordArgs = {
   email: string

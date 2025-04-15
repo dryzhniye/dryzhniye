@@ -1,14 +1,14 @@
 'use client'
 import { PostList } from '@/shared/ui/CardPosts/PostList/PostList'
 import styles from './CardPosts.module.scss'
-import { postApi, useGetProfilePostQuery } from '@/lib/api/postApi'
+import { postApi, useGetProfilePostQuery } from '@/shared/api/postApi'
 import * as Dialog from '@radix-ui/react-dialog'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import React, { useEffect, useRef } from 'react'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { PostType } from '@/lib/types/postsTypes'
-import { useAppDispatch } from '@/lib/hooks/appHooks'
+import { PostType } from '@/shared/lib/types/postsTypes'
+import { useAppDispatch } from '@/shared/lib/hooks/appHooks'
 
 type Props = {
   onCloseModal: () => void

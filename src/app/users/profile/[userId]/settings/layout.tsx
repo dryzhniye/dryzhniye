@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 import { cookies } from 'next/headers'
-import { ProfileContext } from '@/lib/contexts/ProfileContext'
+import { ProfileContext } from '@/shared/lib/contexts/ProfileContext'
 
 type Props = {
   children: ReactNode

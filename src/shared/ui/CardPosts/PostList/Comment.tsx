@@ -1,10 +1,10 @@
 'use client'
 import Image from 'next/image'
 import s from './Comment.module.scss'
-import { formatTimeAgo } from '@/shared/utils/formatTimeAgo'
-import { CommentType } from '@/lib/types/commentTypes'
-import { useAppSelector } from '@/lib/hooks/appHooks'
-import { selectUserId } from '@/app/redux/appSlice'
+import { formatTimeAgo } from '@/shared/lib/utils/formatTimeAgo'
+import { CommentType } from '@/shared/lib/types/commentTypes'
+import { useAppSelector } from '@/shared/lib/hooks/appHooks'
+import { selectUserId } from '@/store/slices/appSlice'
 
 type Props = {
   comment: CommentType

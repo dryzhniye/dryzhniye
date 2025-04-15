@@ -1,13 +1,13 @@
 'use client'
-import { useDeletePostMutation, useLikePostMutation } from '@/lib/api/postApi'
+import { useDeletePostMutation, useLikePostMutation } from '@/shared/api/postApi'
 import { Button } from '@/shared/ui/base/Button/Button'
 import Comment from '@/shared/ui/CardPosts/PostList/Comment'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import s from './PostList.module.scss'
-import { PostType } from '@/lib/types/postsTypes'
-import { useAddCommentMutation, useGetPostCommentsQuery } from '@/lib/api/commentsApi'
+import { PostType } from '@/shared/lib/types/postsTypes'
+import { useAddCommentMutation, useGetPostCommentsQuery } from '@/shared/api/commentsApi'
 import { UserHeader } from '@/shared/ui/UserHeader/UserHeader'
 
 type Props = {

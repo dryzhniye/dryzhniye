@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Roboto } from 'next/font/google'
 import './globals.css'
-import StoreProvider from '@/app/StoreProvider'
+import StoreProvider from '@/store/StoreProvider'
 import HeaderSidebarProvider from '@/widgets/header/HeaderSidebarProvider'
 import 'swiper/css'
 import 'swiper/css/navigation'

@@ -2,9 +2,9 @@
 
 import React from 'react'
 import { v1 } from 'uuid'
-import TabsComponent, { type Tab } from '@/shared/ui/Tabs/Tabs'
-import { GeneralInfo } from '@/widgets/settings/GeneralInfo/GeneralInfo'
-import { useProfile } from '@/lib/contexts/ProfileContext'
+import TabsComponent, { type Tab } from '@/shared/ui/base/Tabs/Tabs'
+import { GeneralInfo } from '@/shared/ui/GeneralInfo/GeneralInfo'
+import { useProfile } from '@/shared/lib/contexts/ProfileContext'
 
 const UserProfilePage = () => {
 

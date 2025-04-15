@@ -2,7 +2,7 @@ import React from 'react'
 import s from './UserHeader.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
-import { PATH } from '@/shared/const/PATH'
+import { PATH } from '@/shared/lib/const/PATH'
 
 type Props = {
   imageUrl: string | undefined
