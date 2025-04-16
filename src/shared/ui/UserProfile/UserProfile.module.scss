@@ -57,6 +57,9 @@
 }
 
 .authNotice {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
   position: relative;
   z-index: 1;
   padding: 10px 16px;
@@ -67,6 +70,10 @@
   pointer-events: auto;
   backdrop-filter: blur(4px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+  .lock {
+    margin-bottom: 2px;
+  }
 }
 
 .loader {
