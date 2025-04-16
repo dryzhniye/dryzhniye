@@ -5,6 +5,8 @@ import { Button } from '@/shared/ui/base/Button/Button'
 import { useAppSelector } from '@/shared/lib/hooks/appHooks'
 import { selectIsLoggedIn, selectUserId } from '@/store/slices/appSlice'
 import type { PublicProfile } from '@/shared/lib/types/profileTypes'
+import { useRouter } from 'next/navigation'
+import { PATH } from '@/shared/lib/const/PATH'
 
 type Props = {
   profile: PublicProfile
@@ -17,6 +19,15 @@ export const ProfileTopbar = ({ profile }: Props) => {
 
   const isCurrentUserProfile = currentUserId === Number(userId)
   const isCurrentImgProfile = profile.avatars[0]?.url
+
+  const router = useRouter()
+
+
+  const onSettingsClickHandler = () => {
+    if (isCurrentUserProfile) {
+      router.push(PATH.USERS.PROFILE_SETTINGS(userId))
+    }
+  }
 
   return (
 
@@ -38,7 +49,7 @@ export const ProfileTopbar = ({ profile }: Props) => {
         <div className={styles.profileHeader}>
           <h1 className={styles.username}>{profile.userName}</h1>
           {isLoggedIn && isCurrentUserProfile && (
-            <Button title="Profile Settings" variant="secondary" width="167px" />
+            <Button title="Profile Settings" variant="secondary" width="167px" onClick={onSettingsClickHandler}/>
           )}
         </div>
 
