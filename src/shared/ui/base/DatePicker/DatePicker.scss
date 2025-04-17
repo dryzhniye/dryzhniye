@@ -178,7 +178,9 @@
     font-size: 0.8rem;
     left: 2px;
     z-index: 99999999999999999;
-
+    .link {
+        color: var(--danger-500);
+    }
 }
 .custom-calendar-icon{
     position: absolute;

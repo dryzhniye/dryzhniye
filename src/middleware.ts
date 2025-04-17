@@ -27,11 +27,11 @@ export function middleware(request: NextRequest) {
   const encryptedToken = request.cookies.get('accessToken')?.value
 
   const isAlwaysPublic = alwaysPublicPaths.some(path =>
-    typeof path === 'string' ? path === pathname : path.test(pathname),
+    typeof path === 'string' ? path === pathname && path !== PATH.AUTH.PRIVACY_POLICY : path.test(pathname),
   )
 
   const isPublicForGuestsOnly = publicPathsForGuestsOnly.some(path =>
-    typeof path === 'string' ? path === pathname : path.test(pathname),
+    typeof path === 'string' ? path === pathname && path !== PATH.AUTH.PRIVACY_POLICY : path.test(pathname),
   )
 
   if (encryptedToken && isPublicForGuestsOnly) {

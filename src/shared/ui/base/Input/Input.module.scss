@@ -141,8 +141,12 @@
 }
 
 .errorText {
-  font-size: 14px;
+
   font-weight: 400;
   line-height: 171%;
   color: var(--danger-500);
+  position: absolute;
+  font-size: 0.8rem;
+  left: 2px;
+  z-index: 99999999999999999;
 }

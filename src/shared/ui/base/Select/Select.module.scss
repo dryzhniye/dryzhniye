@@ -44,7 +44,9 @@
   }
 
   &.open {
-    border: 1px solid var(--light-100);
+    //border: 1px solid var(--light-100);
+    border-color: transparent;
+    outline: 2px solid var(--accent-500);
     background-color: var(--dark-500);
   }
 }
@@ -74,7 +76,8 @@
   overflow: hidden;
 
   max-height: 0;
-  border: 1px solid var(--light-100);
+  //border: 2px solid var(--accent-500);
+  outline: 2px solid var(--accent-500);
   border-radius: 0 0 1px 1px;
 
   opacity: 0;

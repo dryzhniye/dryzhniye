@@ -100,7 +100,7 @@ const Input: React.FC<InputProps> = ({
           </button>
         )}
       </div>
-      {error && <span className={s.errorText}>{error}</span>}
+      {error && <span style={{position: 'relative'}}><span className={s.errorText}>{error}</span></span>}
     </div>
   )
 }
