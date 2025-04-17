@@ -4,13 +4,14 @@ import { ProfilePhotoAddForm } from '@/shared/ui/ProfilePhotoAddForm/ProfilePhot
 import { GeneralInfoForm } from '@/shared/ui/GeneralInfoForm/GeneralInfoForm'
 import { Button } from '@/shared/ui/base/Button/Button'
 import s from './GeneralInfo.module.scss'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { generalInfoSchema, type SettingsForm } from '@/shared/lib/schemas/settingsSchema'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getFormValues, saveFormValues } from '@/shared/lib/utils/formStorage'
-import { useUpdateProfileMutation } from '@/shared/api/profileApi'
+import { useGetProfileQuery, useUpdateProfileMutation } from '@/shared/api/profileApi'
 import { parse } from 'date-fns'
+import { Alerts } from '@/shared/ui/base/Alerts/Alerts'
 
 //todo: apply right type for error
 type ErrorResponse = {
@@ -25,9 +26,18 @@ type ErrorResponse = {
 export const GeneralInfo = () => {
 
   const defaultValues = useMemo(() => getFormValues(), [])
+  const { data: profileData } = useGetProfileQuery()
   const [updateProfile] = useUpdateProfileMutation()
+  const [alert, setAlert] = useState<{ message: string; isError?: boolean, id: number } | null>(null)
 
-    const {
+  const showSuccess = (msg: string) => {
+    setAlert({ message: msg, isError: false, id: Date.now() })
+  }
+  const showError = (msg: string) => {
+    setAlert({ message: msg, isError: true, id: Date.now() })
+  }
+
+  const {
       register,
       handleSubmit,
       setValue,
@@ -40,6 +50,18 @@ export const GeneralInfo = () => {
       resolver: zodResolver(generalInfoSchema),
       defaultValues
     })
+
+  useEffect(() => {
+    if (profileData) {
+      setValue('userName', profileData.userName)
+      setValue('firstName', profileData.firstName)
+      setValue('lastName', profileData.lastName)
+      // setValue('dateOfBirth', profileData.dateOfBirth?.slice(0, 10))
+      // setValue('aboutMe', profileData.aboutMe)
+      // setValue('country', profileData.country)
+      // setValue('city', profileData.city)
+    }
+  }, [profileData, setValue])
 
     const onSettingsSubmit = async (data: SettingsForm) => {
       debugger
@@ -56,18 +78,19 @@ export const GeneralInfo = () => {
         setValue('userName', '')
         setValue('firstName', '')
         setValue('lastName', '')
-        setValue('dateOfBirth', '')
+        setValue('dateOfBirth', undefined)
         setValue('aboutMe', '')
         setValue('aboutMe', '')
         setValue('country', '')
         setValue('city', '')
 
-//todo:make custom alert appeared
-        alert('Profile updated')
-
+        showSuccess('Your settings are saved')
       } catch (err: any) {
-        console.log(err)
-        console.error('Update failed', err.data.messages[0].message)
+
+        debugger
+        const errMessage = err.data.messages[0].message
+        console.error('Update failed', errMessage)
+        showError(errMessage)
       }
 
     }
@@ -96,6 +119,9 @@ export const GeneralInfo = () => {
         <div className={s.formActions}>
           <Button type={'submit'} title={'Save Changes'} disabled={!isValid}/>
         </div>
+      {alert &&
+        <Alerts key={alert.id} style={{marginBottom: '24px', marginLeft: '176px'}} message={alert.message} isError={alert.isError} />
+    }
     </form>
   )
 

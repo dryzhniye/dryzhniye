@@ -1,4 +1,5 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import Input from '@/shared/ui/base/Input/Input'
 import { DatePicker } from '../base/DatePicker'
 import { Select } from '@/shared/ui/base/Select/Select'
@@ -7,7 +8,7 @@ import s from './GeneralInfoForm.module.scss'
 import type { Control, FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import type { SettingsForm } from '@/shared/lib/schemas/settingsSchema'
 import { Controller } from 'react-hook-form'
-import { format, parse } from 'date-fns';
+import { Country, City } from 'country-state-city';
 
 type FormProps = {
   register: UseFormRegister<SettingsForm>
@@ -18,7 +19,32 @@ type FormProps = {
 
 export const GeneralInfoForm = ({ register, setValue, errors, control }: FormProps) => {
 
+  const countries = Country.getAllCountries();
 
+  const countryNameToIsoMap = Object.fromEntries(
+    countries.map(country => [country.name, country.isoCode])
+  );
+  const countryOptions = countries.map(country => (country.name));
+  const [selectedCountryIso, setSelectedCountryIso] = useState<string | null>(null);
+  const [cityOptions, setCityOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (selectedCountryIso) {
+      const citiesForCountry = City.getCitiesOfCountry(selectedCountryIso);
+      const formattedCities = citiesForCountry?.map(city => city.name) || [];
+      setCityOptions(formattedCities);
+    } else {
+      setCityOptions([]);
+    }
+  }, [selectedCountryIso]);
+
+  const handleCountryChange = (countryName: string, onChange: (value: string) => void) => {
+    setCityOptions([])
+    setValue('city', '')
+    const countryIso = countryNameToIsoMap[countryName];
+    setSelectedCountryIso(countryIso);
+    onChange(countryName);
+  };
   return (
 
     <div className={s.profileForm}>
@@ -55,6 +81,7 @@ export const GeneralInfoForm = ({ register, setValue, errors, control }: FormPro
             <DatePicker
               mode={'single'}
               width={'100%'}
+              // required={true}
               // selectOnly={true}
               label={'Date of birth'}
               error={fieldState.error?.message}
@@ -62,8 +89,6 @@ export const GeneralInfoForm = ({ register, setValue, errors, control }: FormPro
             />
           )}
         />
-
-        {/*<DatePicker mode={'single'} width={'100%'} label={'Date of birth'}/>*/}
         <div className={s.formRow}>
 
           <Controller
@@ -74,8 +99,9 @@ export const GeneralInfoForm = ({ register, setValue, errors, control }: FormPro
                       placeholder={'Country'}
                       label={"Select your country"}
                       width={'100%'}
-                      options={['haahah', 'dddddd']}
+                      options={countryOptions}
                       {...field}
+                      onChange={(value) => handleCountryChange(value, field.onChange)}
               />
             )}
           />
@@ -88,7 +114,8 @@ export const GeneralInfoForm = ({ register, setValue, errors, control }: FormPro
                   placeholder={'City'}
                   label={"Select your city"}
                   width={'100%'}
-                  options={['haahah', 'dddddd']}
+                  disabled={!selectedCountryIso}
+                  options={cityOptions}
                   {...field}
           />
             )}
