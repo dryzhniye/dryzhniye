@@ -8,6 +8,8 @@ const dateOfBirthSchema = z
   .optional()
   .refine((value) => {
     if (value) {
+
+      if (!value) return true
       const parsedDate = parse(value, 'dd/MM/yyyy', new Date())
 
       if (isNaN(parsedDate.getTime())) return false
@@ -57,7 +59,7 @@ export const generalInfoSchema = z.object({
     .string()
     .optional(),
 
-  dateOfBirth: dateOfBirthSchema,
+  dateOfBirth: dateOfBirthSchema.optional(),
 
   aboutMe: z
     .string()

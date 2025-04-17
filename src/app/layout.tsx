@@ -6,6 +6,7 @@ import HeaderSidebarProvider from '@/widgets/header/HeaderSidebarProvider'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -42,6 +43,41 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <StoreProvider>
       <HeaderSidebarProvider>
         {children}
+        <Toaster
+          position="bottom-left"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              zIndex: 999999999999999999999,
+              border: '1px solid var(--success-500)',
+              background: 'var(--success-900)',
+              color: 'var(--light-100)',
+              padding: '12px 24px',
+              width: '387px',
+              minHeight: '48px',
+              fontSize: '16px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            },
+            success: {
+              iconTheme: {
+                primary: 'var(--success-500)',
+                secondary: 'var(--success-900)',
+              },
+            },
+            error: {
+              style: {
+                border: '1px solid var(--danger-500)',
+                background: 'var(--danger-900)',
+              },
+              iconTheme: {
+                primary: 'var(--danger-500)',
+                secondary: 'var(--danger-900)',
+              },
+            },
+          }}
+        />
       </HeaderSidebarProvider>
     </StoreProvider>
     </body>

@@ -1,9 +1,9 @@
 
 export const saveFormValues = (values: string) => {
-  localStorage.setItem('settingsForm', JSON.stringify(values))
+  sessionStorage.setItem('settingsForm', JSON.stringify(values))
 }
 
 export const getFormValues = () => {
-  const stored = localStorage.getItem('settingsForm')
+  const stored = sessionStorage.getItem('settingsForm')
   return stored ? JSON.parse(stored) : undefined
 }
