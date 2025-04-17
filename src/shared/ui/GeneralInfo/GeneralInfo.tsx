@@ -51,7 +51,7 @@ export const GeneralInfo = () => {
       try {
         await updateProfile(data).unwrap()
 
-        localStorage.removeItem('settingsForm')
+        sessionStorage.removeItem('settingsForm')
         reset()
         setValue('userName', '')
         setValue('firstName', '')
