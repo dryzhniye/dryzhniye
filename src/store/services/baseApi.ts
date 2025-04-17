@@ -4,5 +4,5 @@ import { baseQueryWithReAuth } from '@/store/services/fetch-base-query'
 export const baseApi = createApi({
   baseQuery: baseQueryWithReAuth,
   endpoints: () => ({}),
-  tagTypes: ['Auth', 'Posts', 'Comments', 'Description'],
+  tagTypes: ['Auth', 'Posts', 'Comments', 'Profile', 'Description'],
 })
