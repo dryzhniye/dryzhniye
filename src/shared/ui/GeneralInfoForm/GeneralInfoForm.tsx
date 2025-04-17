@@ -4,46 +4,112 @@ import { DatePicker } from '../base/DatePicker'
 import { Select } from '@/shared/ui/base/Select/Select'
 import TextArea from '@/shared/ui/base/TextArea/TextArea'
 import s from './GeneralInfoForm.module.scss'
+import type { Control, FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import type { SettingsForm } from '@/shared/lib/schemas/settingsSchema'
+import { Controller } from 'react-hook-form'
+import { format, parse } from 'date-fns';
 
-export const GeneralInfoForm = () => {
+type FormProps = {
+  register: UseFormRegister<SettingsForm>
+  setValue: UseFormSetValue<SettingsForm>
+  errors: FieldErrors<SettingsForm>
+  control: Control<SettingsForm>
+}
+
+export const GeneralInfoForm = ({ register, setValue, errors, control }: FormProps) => {
 
 
   return (
 
     <div className={s.profileForm}>
-      <form className={s.block} onSubmit={() => {
-      }}>
+      <div className={s.block}>
         <Input
           label={'Username'}
           placeholder={'Your nickname'}
           width={'100%'}
           required
+          error={errors.userName?.message}
+          {...register('userName')}
         />
         <Input
           label={'First Name'}
           placeholder={'Your name'}
           width={'100%'}
           required
+          error={errors.firstName?.message}
+          {...register('firstName')}
         />
         <Input
           label={'Last Name'}
           placeholder={'Your surname'}
           width={'100%'}
           required
+          error={errors.lastName?.message}
+          {...register('lastName')}
         />
 
-        <DatePicker mode={'single'} width={'100%'} label={'Date of birth'}/>
+        <Controller
+          control={control}
+          name="dateOfBirth"
+          render={({ field, fieldState }) => (
+            <DatePicker
+              mode={'single'}
+              width={'100%'}
+              // selectOnly={true}
+              label={'Date of birth'}
+              error={fieldState.error?.message}
+              {...field}
+            />
+          )}
+        />
+
+        {/*<DatePicker mode={'single'} width={'100%'} label={'Date of birth'}/>*/}
         <div className={s.formRow}>
-          <Select placeholder={'Country'} label={'Select your country'} width={'25px'} options={['haahah', 'dddddd']} onChange={() => {
-          }} />
-          <Select placeholder={'City'} label={"Select your city"} width={'100%'} options={['haahah', 'dddddd']} onChange={() => {
-          }} />
+
+          <Controller
+            control={control}
+            name="country"
+            render={({ field, fieldState }) => (
+              <Select error={fieldState.error?.message}
+                      placeholder={'Country'}
+                      label={"Select your country"}
+                      width={'100%'}
+                      options={['haahah', 'dddddd']}
+                      {...field}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="city"
+            render={({ field, fieldState }) => (
+          <Select error={fieldState.error?.message}
+                  placeholder={'City'}
+                  label={"Select your city"}
+                  width={'100%'}
+                  options={['haahah', 'dddddd']}
+                  {...field}
+          />
+            )}
+          />
         </div>
-
-        <TextArea placeholder={'Type something about you...'} label={'About me'} width={'100%'} height={'84px'} onChange={() => {
-        }} />
-
-      </form>
+        <Controller
+          control={control}
+          name="aboutMe"
+          render={({ field, fieldState }) => (
+            <>
+              <TextArea error={fieldState.error?.message}
+                        placeholder={'Type something about you...'}
+                        label={'About me'}
+                        width={'100%'}
+                        height={'84px'}
+                        {...field}
+              />
+            </>
+          )}
+        />
+      </div>
 
     </div>
   )

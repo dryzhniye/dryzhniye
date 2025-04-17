@@ -14,6 +14,7 @@ export const PATH = {
   USERS: {
     PROFILE: '/users/profile',
     PROFILE_USERID: (userId: number) => `/users/profile/${userId}`,
+    PROFILE_SETTINGS: (userId: number) => `/users/profile/${userId}/settings`,
     PROFILE_USERID_REGEX: /^\/users\/profile\/\d+$/
   },
   GITHUB: '/auth/callback/github',

@@ -12,6 +12,7 @@ import { useAppSelector } from '@/shared/lib/hooks/appHooks'
 import { selectIsLoggedIn } from '@/store/slices/appSlice'
 import { PostItemSkeleton } from '@/shared/ui/PostItem/PostItemSkeleton'
 import { PostType } from '@/shared/lib/types/postsTypes'
+import { LockKeyhole } from 'lucide-react';
 
 type Props = {
   profile: PublicProfile
@@ -28,6 +29,9 @@ const UserProfile = ({ profile, post }: Props) => {
   const loaderRef = useRef(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+//todo: apply useState and useEffects if necessary for correct scroll working
+  // const [postsForRender, setPostsForRender] = useState<PostType[]>([])
 
   const {
     data,
@@ -53,6 +57,20 @@ const UserProfile = ({ profile, post }: Props) => {
     sortBy: 'createdAt',
     sortDirection: 'desc',
   }, { skip: isLoggedIn })
+
+
+  // useEffect(() => {
+  //   if (data?.items) {
+  //     setPostsForRender(prev => [...prev, ...data.items])
+  //   }
+  // }, [data])
+  //
+  // useEffect(() => {
+  //   if (!isLoggedIn && publicData?.items?.length) {
+  //     setPostsForRender((prev) => [...prev, ...publicData.items]);
+  //   }
+  // }, [publicData]);
+
 
   useEffect(() => {
     if (action === 'create' && postId) {
@@ -126,7 +144,7 @@ const UserProfile = ({ profile, post }: Props) => {
         {!isLoggedIn && !publicIsLoading &&
           <div className={s.bottomFadeContainer}>
             <div className={s.fadeOverlay}></div>
-            <div className={s.authNotice}>Зарегистируйтесь или войдите, чтобы посмотреть больше постов</div>
+            <div className={s.authNotice}><p>Зарегистрируйтесь или войдите, чтобы посмотреть больше постов </p><LockKeyhole className={s.lock} /></div>
           </div>
         }
         <div ref={loaderRef} className={s.loaderContainer}>

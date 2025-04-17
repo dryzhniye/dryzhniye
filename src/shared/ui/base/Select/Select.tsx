@@ -15,6 +15,10 @@ type Props = {
   isLanguage?: boolean
   width?: string
   placeholder?: string
+  error?: string
+  value?: string
+  name?: string
+  onBlur?: () => void
 }
 
 export const Select = ({
@@ -27,19 +31,32 @@ export const Select = ({
   placeholder,
   label,
   required,
+                         error,
+                         value,
+                         onBlur,
+                         name,
   isLanguage,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const [language, setLanguage] = useState<string>('English')
 
-  const [value, setValue] = useState<string>('')
+  const [internalValue, setInternalValue] = useState<string>(value || '')
+
+  // Update internal state when external value changes
+  useEffect(() => {
+    if (value !== undefined) {
+      setInternalValue(value)
+    }
+  }, [value])
+
   const selectRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
         setIsOpen(false)
+        if (onBlur) onBlur()
       }
     }
 
@@ -51,12 +68,16 @@ export const Select = ({
   }, [])
 
   const handleOptionClick = (option: string) => {
-    debugger
+
     if (!disabled) {
-      onChange(option)
+      setInternalValue(option)
+      if (onChange) {
+        onChange(option)
+      }
       setIsOpen(false)
-      setValue(option)
-      setLanguage(option)
+      if (isLanguage) {
+        setLanguage(option)
+      }
     }
   }
 
@@ -110,7 +131,7 @@ export const Select = ({
     }`}
     >
     <div className={styles.selectBoxHeader} onClick={toggleDropdown}>
-      <span>{value ? value : <span style={placeholder ? {color: 'var(--light-900)'} : {color: ''}}>{placeholder}</span>}</span>
+      <span>{internalValue ? internalValue : <span style={placeholder ? {color: 'var(--light-900)'} : {color: ''}}>{placeholder}</span>}</span>
       <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
     </div>
     <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
