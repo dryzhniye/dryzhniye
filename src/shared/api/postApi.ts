@@ -21,7 +21,7 @@ export const postApi = baseApi.injectEndpoints({
           sortDirection: params.sortDirection || 'desc',
         },
       }),
-      providesTags: ['Posts'],
+      providesTags: ['Posts', 'Description'],
     }),
     getProfilePublicPosts: build.query<GetPublicPostsResponse, GetProfilePublicPostsParams>({
       query: (params) => ({
@@ -102,6 +102,16 @@ export const postApi = baseApi.injectEndpoints({
         { type: 'Posts', id: arg.postId },
       ],
     }),
+    updatePost: build.mutation<void, { postId: number; description: string }>({
+      query: ({ postId, description }) => ({
+        url: `/posts/${postId}`,
+        method: 'PUT',
+        body: { description },
+      }),
+      invalidatesTags: (result, error, { postId }) => [
+        { type: 'Posts', id: postId },
+      ],
+    }),
   }),
 })
 
@@ -115,4 +125,5 @@ export const {
   useUploadImagesForPostMutation,
   useCreatePostMutation,
   useLikePostMutation,
+  useUpdatePostMutation
 } = postApi

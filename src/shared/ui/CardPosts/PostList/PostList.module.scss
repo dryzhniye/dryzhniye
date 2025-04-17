@@ -193,3 +193,49 @@
 .buttonGroup button {
   width: 96px;
 }
+
+.profileInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  color: white;
+}
+
+.profileName {
+  color: white;
+}
+
+.editPostWrap {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editPostForm {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.editInput {
+  background-color: var(--dark-500);
+  border: none;
+  resize: none;
+  min-height: 120px;
+  color: #fff;
+  padding: 6px 12px 0 12px;
+}
+
+.saveChangesBtn {
+  margin-top: auto;
+  align-self: flex-end;
+  padding: 10px 16px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
