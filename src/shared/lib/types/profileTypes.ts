@@ -34,3 +34,12 @@ export type GetProfileResponse  = {
   avatars: Avatar[];
   createdAt: string;
 }
+
+export type ErrorResponse = {
+  statusCode: number;
+  messages: {
+    message: string;
+    field: string;
+  }[];
+  error: string;
+};

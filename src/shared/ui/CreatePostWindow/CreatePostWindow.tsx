@@ -5,11 +5,12 @@ import s from './CreatePostWindow.module.scss'
 import Image from 'next/image'
 import { Button } from '@/shared/ui/base/Button/Button'
 import Input from '@/shared/ui/base/Input/Input'
-import { useCreatePostMutation, useGetProfileQuery, useUploadImagesForPostMutation } from '@/shared/api/postApi'
+import { useCreatePostMutation, useUploadImagesForPostMutation } from '@/shared/api/postApi'
 import TextArea from '@/shared/ui/base/TextArea/TextArea'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { UserHeader } from '@/shared/ui/UserHeader/UserHeader'
+import { useGetProfileQuery } from '@/shared/api/profileApi'
 
 type Props = {
   open: boolean;

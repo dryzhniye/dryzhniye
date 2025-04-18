@@ -30,8 +30,7 @@ const UserProfile = ({ profile, post }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
-//todo: apply useState and useEffects if necessary for correct scroll working
-  // const [postsForRender, setPostsForRender] = useState<PostType[]>([])
+  const [postsForRender, setPostsForRender] = useState<PostType[]>([])
 
   const {
     data,
@@ -59,17 +58,17 @@ const UserProfile = ({ profile, post }: Props) => {
   }, { skip: isLoggedIn })
 
 
-  // useEffect(() => {
-  //   if (data?.items) {
-  //     setPostsForRender(prev => [...prev, ...data.items])
-  //   }
-  // }, [data])
-  //
-  // useEffect(() => {
-  //   if (!isLoggedIn && publicData?.items?.length) {
-  //     setPostsForRender((prev) => [...prev, ...publicData.items]);
-  //   }
-  // }, [publicData]);
+  useEffect(() => {
+    if (data?.items) {
+      setPostsForRender(prev => [...prev, ...data.items])
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (!isLoggedIn && publicData?.items?.length) {
+      setPostsForRender((prev) => [...prev, ...publicData.items]);
+    }
+  }, [publicData]);
 
 
   useEffect(() => {
@@ -126,7 +125,8 @@ const UserProfile = ({ profile, post }: Props) => {
     }
   }, [isLoading])
 
-  const dataForRender = publicData?.items || data?.items
+//todo: apply useState and useEffects if necessary for correct scroll working
+  // const dataForRender = publicData?.items || data?.items
 
   const newPostId = Number(postId)
 
@@ -137,7 +137,7 @@ const UserProfile = ({ profile, post }: Props) => {
 
       <div className={s.postsGridContainer}>
         <div className={s.postsGrid}>
-          {dataForRender ? dataForRender.map((post) => (
+          {postsForRender ? postsForRender.map((post) => (
             <PostItem key={post.id} post={post} />
           )) : <PostItemSkeleton />}
         </div>

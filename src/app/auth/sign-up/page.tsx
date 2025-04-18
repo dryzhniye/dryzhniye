@@ -10,7 +10,7 @@ import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PATH } from '@/shared/lib/const/PATH'
-import { formRegisterSchema, type TFormRegisterValues } from '@/shared/lib/schemas/schemas'
+import { formRegisterSchema, type TFormRegisterValues } from '@/shared/lib/schemas/authSchemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { handleGoogleAuth } from '@/shared/lib/utils/google-auth-handler'
 

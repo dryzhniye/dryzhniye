@@ -10,15 +10,15 @@ const Profile = () => {
   const { data, isLoading, error } = useMeQuery()
 
   useEffect(() => {
-
+debugger
     if (!isLoading) {
 
       if (getCookie('oauthProvider') === 'github' && !data) {
 
           if (error) {
             if (getCookie('accessToken') && getCookie('oauthProvider')) {
-              deleteCookie('accessToken')
-              deleteCookie('oauthProvider')
+              // deleteCookie('accessToken')
+              // deleteCookie('oauthProvider')
             }
           } else {
             window.location.reload()

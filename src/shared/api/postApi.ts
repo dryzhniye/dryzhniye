@@ -1,12 +1,14 @@
 import { baseApi } from '@/store/services/baseApi'
 import {
   CreatePostArgs,
-  type GetProfilePostsParams, type GetProfilePostsResponse, type GetProfilePublicPostsParams,
+  type GetProfilePostsParams,
+  type GetProfilePostsResponse,
+  type GetProfilePublicPostsParams,
   GetPublicPostsResponse,
-  PostType, UploadPostImagesArgs,
+  PostType,
+  UploadPostImagesArgs,
   UploadPostImagesResponse,
 } from '@/shared/lib/types/postsTypes'
-import type { GetProfileResponse } from '@/shared/lib/types/profileTypes'
 
 
 export const postApi = baseApi.injectEndpoints({
@@ -42,13 +44,6 @@ export const postApi = baseApi.injectEndpoints({
         },
       }),
     }),
-
-    getProfile: build.query<GetProfileResponse, void>({
-      query: () => ({
-        url: 'users/profile',
-      }),
-    }),
-
     deletePost: build.mutation<void, number>({
       query: postId => ({
         url: `posts/${postId}`,
@@ -111,7 +106,6 @@ export const {
   useGetProfilePostsQuery,
   useGetProfilePublicPostsQuery,
   useGetProfilePostQuery,
-  useGetProfileQuery,
   useUploadImagesForPostMutation,
   useCreatePostMutation,
   useLikePostMutation,

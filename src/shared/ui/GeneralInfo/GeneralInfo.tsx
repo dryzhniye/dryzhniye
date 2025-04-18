@@ -13,16 +13,6 @@ import { useGetProfileQuery, useUpdateProfileMutation } from '@/shared/api/profi
 import { parse } from 'date-fns'
 import { Alerts } from '@/shared/ui/base/Alerts/Alerts'
 
-//todo: apply right type for error
-type ErrorResponse = {
-  statusCode: number;
-  messages: {
-    message: string;
-    field: string;
-  }[];
-  error: string;
-};
-
 export const GeneralInfo = () => {
 
   const defaultValues = useMemo(() => getFormValues(), [])
@@ -83,11 +73,9 @@ export const GeneralInfo = () => {
         setValue('aboutMe', '')
         setValue('country', '')
         setValue('city', '')
-
         showSuccess('Your settings are saved')
-      } catch (err: any) {
 
-        debugger
+      } catch (err: any) {
         const errMessage = err.data.messages[0].message
         console.error('Update failed', errMessage)
         showError(errMessage)

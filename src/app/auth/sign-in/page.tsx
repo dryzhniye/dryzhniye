@@ -12,7 +12,7 @@ import { ErrorType } from '../sign-up/page'
 import Link from 'next/link'
 import { PATH } from '@/shared/lib/const/PATH'
 import { handleGoogleAuth } from '@/shared/lib/utils/google-auth-handler'
-import { formLoginSchema, type TFormLoginValues } from '@/shared/lib/schemas/schemas'
+import { formLoginSchema, type TFormLoginValues } from '@/shared/lib/schemas/authSchemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 type LoginArgs = {
