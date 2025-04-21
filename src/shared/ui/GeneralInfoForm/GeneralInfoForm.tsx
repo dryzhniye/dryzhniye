@@ -8,7 +8,7 @@ import s from './GeneralInfoForm.module.scss'
 import type { Control, FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import type { SettingsForm } from '@/shared/lib/schemas/settingsSchema'
 import { Controller } from 'react-hook-form'
-import { Country, City } from 'country-state-city';
+import { Country, City } from 'country-state-city'
 
 type FormProps = {
   register: UseFormRegister<SettingsForm>
@@ -18,35 +18,33 @@ type FormProps = {
 }
 
 export const GeneralInfoForm = ({ register, setValue, errors, control }: FormProps) => {
-
-  const countries = Country.getAllCountries();
+  const countries = Country.getAllCountries()
 
   const countryNameToIsoMap = Object.fromEntries(
     countries.map(country => [country.name, country.isoCode])
-  );
-  const countryOptions = countries.map(country => (country.name));
-  const [selectedCountryIso, setSelectedCountryIso] = useState<string | null>(null);
-  const [cityOptions, setCityOptions] = useState<string[]>([]);
+  )
+  const countryOptions = countries.map(country => country.name)
+  const [selectedCountryIso, setSelectedCountryIso] = useState<string | null>(null)
+  const [cityOptions, setCityOptions] = useState<string[]>([])
 
   useEffect(() => {
     if (selectedCountryIso) {
-      const citiesForCountry = City.getCitiesOfCountry(selectedCountryIso);
-      const formattedCities = citiesForCountry?.map(city => city.name) || [];
-      setCityOptions(formattedCities);
+      const citiesForCountry = City.getCitiesOfCountry(selectedCountryIso)
+      const formattedCities = citiesForCountry?.map(city => city.name) || []
+      setCityOptions(formattedCities)
     } else {
-      setCityOptions([]);
+      setCityOptions([])
     }
-  }, [selectedCountryIso]);
+  }, [selectedCountryIso])
 
   const handleCountryChange = (countryName: string, onChange: (value: string) => void) => {
     setCityOptions([])
     setValue('city', '')
-    const countryIso = countryNameToIsoMap[countryName];
-    setSelectedCountryIso(countryIso);
-    onChange(countryName);
-  };
+    const countryIso = countryNameToIsoMap[countryName]
+    setSelectedCountryIso(countryIso)
+    onChange(countryName)
+  }
   return (
-
     <div className={s.profileForm}>
       <div className={s.block}>
         <Input
@@ -90,18 +88,18 @@ export const GeneralInfoForm = ({ register, setValue, errors, control }: FormPro
           )}
         />
         <div className={s.formRow}>
-
           <Controller
             control={control}
             name="country"
             render={({ field, fieldState }) => (
-              <Select error={fieldState.error?.message}
-                      placeholder={'Country'}
-                      label={"Select your country"}
-                      width={'100%'}
-                      options={countryOptions}
-                      {...field}
-                      onChange={(value) => handleCountryChange(value, field.onChange)}
+              <Select
+                error={fieldState.error?.message}
+                placeholder={'Country'}
+                label={'Select your country'}
+                width={'100%'}
+                options={countryOptions}
+                {...field}
+                onChange={value => handleCountryChange(value, field.onChange)}
               />
             )}
           />
@@ -110,14 +108,15 @@ export const GeneralInfoForm = ({ register, setValue, errors, control }: FormPro
             control={control}
             name="city"
             render={({ field, fieldState }) => (
-          <Select error={fieldState.error?.message}
-                  placeholder={'City'}
-                  label={"Select your city"}
-                  width={'100%'}
-                  disabled={!selectedCountryIso}
-                  options={cityOptions}
-                  {...field}
-          />
+              <Select
+                error={fieldState.error?.message}
+                placeholder={'City'}
+                label={'Select your city'}
+                width={'100%'}
+                disabled={!selectedCountryIso}
+                options={cityOptions}
+                {...field}
+              />
             )}
           />
         </div>
@@ -126,18 +125,18 @@ export const GeneralInfoForm = ({ register, setValue, errors, control }: FormPro
           name="aboutMe"
           render={({ field, fieldState }) => (
             <>
-              <TextArea error={fieldState.error?.message}
-                        placeholder={'Type something about you...'}
-                        label={'About me'}
-                        width={'100%'}
-                        height={'84px'}
-                        {...field}
+              <TextArea
+                error={fieldState.error?.message}
+                placeholder={'Type something about you...'}
+                label={'About me'}
+                width={'100%'}
+                height={'84px'}
+                {...field}
               />
             </>
           )}
         />
       </div>
-
     </div>
   )
 }
