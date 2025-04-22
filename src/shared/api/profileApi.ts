@@ -1,6 +1,6 @@
 import { baseApi } from '@/store/services/baseApi'
 import type { SettingsForm } from '@/shared/lib/schemas/settingsSchema'
-import type { GetProfileResponse } from '@/shared/lib/types/profileTypes'
+import { AvatarResponse, GetProfileResponse } from '@/shared/lib/types/profileTypes'
 
 
 export const profileApi = baseApi.injectEndpoints({
@@ -19,7 +19,21 @@ export const profileApi = baseApi.injectEndpoints({
         url: 'users/profile',
       }),
     }),
+    setAvatar: build.mutation<AvatarResponse, { file: File }>({
+      invalidatesTags: ['Profile'],
+      query: ({ file }) => {
+        const formData = new FormData()
+
+        formData.append('file', file)
+
+        return {
+          body: formData,
+          method: 'POST',
+          url: `users/profile/avatar`,
+        }
+      },
+    }),
   }),
 })
 
-export const { useUpdateProfileMutation, useGetProfileQuery} = profileApi
+export const { useUpdateProfileMutation, useGetProfileQuery, useSetAvatarMutation } = profileApi

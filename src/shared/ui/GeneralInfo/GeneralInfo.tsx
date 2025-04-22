@@ -35,7 +35,7 @@ export const GeneralInfo = () => {
     setValue,
     control,
     watch,
-    reset,
+    //reset,
     formState: { errors, isValid },
   } = useForm<SettingsForm>({
     mode: 'all',
@@ -60,7 +60,6 @@ export const GeneralInfo = () => {
   }, [profileData, setValue])
 
   const onSettingsSubmit = async (data: SettingsForm) => {
-    debugger
     if (data.dateOfBirth) {
       const parsed = parse(data.dateOfBirth, 'dd/MM/yyyy', new Date())
       const utcDate = new Date(Date.UTC(parsed.getFullYear(), parsed.getMonth(), parsed.getDate()))
@@ -70,15 +69,15 @@ export const GeneralInfo = () => {
       await updateProfile(data).unwrap()
 
       sessionStorage.removeItem('settingsForm')
-      reset()
-      setValue('userName', '')
-      setValue('firstName', '')
-      setValue('lastName', '')
-      setValue('dateOfBirth', undefined)
-      setValue('aboutMe', '')
-      setValue('aboutMe', '')
-      setValue('country', '')
-      setValue('city', '')
+      // reset() не понял зачем он тут, данные же оставаться должны
+      // setValue('userName', '')
+      // setValue('firstName', '')
+      // setValue('lastName', '')
+      // setValue('dateOfBirth', undefined)
+      // setValue('aboutMe', '')
+      // setValue('aboutMe', '')
+      // setValue('country', '')
+      // setValue('city', '')
       showSuccess('Your settings are saved')
     } catch (err: any) {
       const errMessage = err.data.messages[0].message
@@ -98,7 +97,7 @@ export const GeneralInfo = () => {
     <form onSubmit={handleSubmit(onSettingsSubmit)}>
       <div className={s.generalInfoContainer}>
         <div className={s.photoSidebar}>
-          <ProfilePhotoAddForm />
+          <ProfilePhotoAddForm image={profileData?.avatars[0].url || ''}/>
         </div>
 
         <div className={s.generalInfoContent}>

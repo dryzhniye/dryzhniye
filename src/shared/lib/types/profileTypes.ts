@@ -21,7 +21,7 @@ export type PublicProfile = {
   hasPaymentSubscription: boolean
 }
 
-export type GetProfileResponse  = {
+export type GetProfileResponse = {
   id: number;
   userName: string;
   firstName: string;
@@ -43,3 +43,7 @@ export type ErrorResponse = {
   }[];
   error: string;
 };
+
+export type AvatarResponse = {
+  avatars: Avatar[]
+}
