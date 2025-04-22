@@ -1,22 +1,36 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import s from './ProfilePhotoAddForm.module.scss'
 import { Button } from '@/shared/ui/base/Button/Button'
+import { useSetAvatarMutation } from '@/shared/api/profileApi'
 
-export const ProfilePhotoAddForm = () => {
-  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+type Props = {
+  image: string
+}
+
+export const ProfilePhotoAddForm = ({ image }: Props) => {
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [setAvatar] = useSetAvatarMutation()
+
+  useEffect(() => {
+    setPhotoUrl(image)
+  }, [image])
+
+  const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPhotoUrl(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    setPhotoUrl(URL.createObjectURL(file));
+
+    try {
+      await setAvatar({ file }).unwrap();
+      console.log('Аватар успешно загружен!');
+    } catch (error) {
+      console.error('Ошибка загрузки:', error);
     }
-  };
+  }
 
   return (
     <div className={s.profilePhotoContainer}>
@@ -30,15 +44,16 @@ export const ProfilePhotoAddForm = () => {
         )}
       </div>
 
-      <Button width={'198px'} title={'Add a Profile Photo'} variant={'outlined'} onClick={() => fileInputRef.current?.click()}/>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => handlePhotoUpload(e)}
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-        />
+      <Button width={'198px'} title={'Add a Profile Photo'} variant={'outlined'}
+              onClick={() => fileInputRef.current?.click()} type="button" />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handlePhotoUpload}
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+      />
 
     </div>
-  );
-};
+  )
+}

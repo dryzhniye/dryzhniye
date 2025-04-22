@@ -12,7 +12,6 @@ type Props = {
 
 export default async function ProtectedSettings({ children, params }: Props) {
   async function fetchMe() {
-    debugger
     const res = await fetch(`https://inctagram.work/api/v1/auth/me`, {
       headers: {
         Cookie: cookies().toString(),

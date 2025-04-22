@@ -40,7 +40,6 @@ export const PostList = ({ post, onCloseModal }: Props) => {
   }, [])
   const toggleMenu = () => setIsMenuOpen(prev => !prev)
   const handleEditPost = () => {
-    console.log('Edit Post')
     setIsMenuOpen(false)
   }
   const handleDeletePost = async () => {
