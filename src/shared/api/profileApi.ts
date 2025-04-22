@@ -2,7 +2,6 @@ import { baseApi } from '@/store/services/baseApi'
 import type { SettingsForm } from '@/shared/lib/schemas/settingsSchema'
 import { AvatarResponse, GetProfileResponse } from '@/shared/lib/types/profileTypes'
 
-
 export const profileApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: build => ({
@@ -18,6 +17,7 @@ export const profileApi = baseApi.injectEndpoints({
       query: () => ({
         url: 'users/profile',
       }),
+      providesTags: ['Profile']
     }),
     setAvatar: build.mutation<AvatarResponse, { file: File }>({
       invalidatesTags: ['Profile'],

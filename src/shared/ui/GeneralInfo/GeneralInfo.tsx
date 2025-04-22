@@ -97,7 +97,7 @@ export const GeneralInfo = () => {
     <form onSubmit={handleSubmit(onSettingsSubmit)}>
       <div className={s.generalInfoContainer}>
         <div className={s.photoSidebar}>
-          <ProfilePhotoAddForm image={profileData?.avatars[0].url || ''}/>
+          <ProfilePhotoAddForm/>
         </div>
 
         <div className={s.generalInfoContent}>

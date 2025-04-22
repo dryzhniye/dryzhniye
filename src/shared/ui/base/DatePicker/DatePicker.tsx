@@ -48,7 +48,6 @@ export const DatePicker = ({
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const isUserTypingRef = useRef(false)
 
-  console.log(error === 'too_young')
 //create right local weekdays order started from monday
   const modifiers = {
     weekend: (date: Date) => date.getDay() === 0 || date.getDay() === 6, // Sunday (0) & Saturday (6)
