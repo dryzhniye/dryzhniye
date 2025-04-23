@@ -12,9 +12,10 @@ type Props = {
   selectedValue: string
   disabled?: boolean
   onChange: (value: string) => void
+  isDirectionColumn?: boolean
 }
 
-export const RadioGroup = ({ options, selectedValue, disabled, onChange }: Props) => {
+export const RadioGroup = ({ options, selectedValue, disabled, onChange, isDirectionColumn }: Props) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!disabled) {
       onChange(event.target.value)
@@ -22,7 +23,8 @@ export const RadioGroup = ({ options, selectedValue, disabled, onChange }: Props
   }
 
   return (
-    <div className={`${styles.radioGroup} ${disabled ? styles.disabled : ''}`}>
+    <div className={`${styles.radioGroup} ${disabled ? styles.disabled : ''}`}
+         style={isDirectionColumn ? { display: 'flex', flexDirection: 'column', gap: '28px' } : {}}>
       {options.map((option) => (
         <label key={option.value} className={styles.radioOption}>
           <input
