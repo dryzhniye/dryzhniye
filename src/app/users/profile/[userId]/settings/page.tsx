@@ -5,6 +5,7 @@ import { GeneralInfo } from '@/shared/ui/GeneralInfo/GeneralInfo'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useMeQuery } from '@/shared/api/authApi'
 import { PATH } from '@/shared/lib/const/PATH'
+import { AccountManagement } from '@/shared/ui/AccountManagement/AccountManagement'
 
 type TabPart = 'info' | 'devices' | 'subscriptions' | 'payments'
 
@@ -47,7 +48,7 @@ const UserProfilePage = () => {
       {
         id: 'subscriptions',
         title: 'Account Management',
-        content: <div>Subscriptions management</div>,
+        content: <AccountManagement />,
       },
       {
         id: 'payments',

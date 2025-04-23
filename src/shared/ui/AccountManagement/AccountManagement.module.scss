@@ -1,0 +1,19 @@
+.buttonsContainer {
+  display: flex;
+  gap: 54px;
+  align-items: center;
+  justify-content: end;
+
+  margin-top: 24px;
+
+  & .button {
+    cursor: pointer;
+
+    width: 96px;
+    height: 64px;
+    border: 1px solid var(--dark-300);
+    border-radius: 2px;
+
+    background-color: var(--dark-500);
+  }
+}
