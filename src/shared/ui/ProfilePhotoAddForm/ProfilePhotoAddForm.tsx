@@ -25,8 +25,7 @@ export const ProfilePhotoAddForm = () => {
       }
       await setAvatar({ file: photoUrl }).unwrap()
       handleCloseAttempt()
-    } catch
-      (error) {
+    } catch (error) {
       console.error(error)
     }
   }
@@ -39,8 +38,8 @@ export const ProfilePhotoAddForm = () => {
   return (
     <div className={s.profilePhotoContainer}>
       <div className={s.profilePhoto}>
-        {profileData?.avatars[0].url ? (
-          <img src={profileData?.avatars[0].url} alt="User profile" />
+        {profileData?.avatars?.[0]?.url ? (
+          <img src={profileData.avatars[0].url} alt="User profile" />
         ) : (
           <div className={s.photoPlaceholder}>
             <Image src={'/picture.svg'} alt={'no photo'} width="48" height="48" />
@@ -48,22 +47,23 @@ export const ProfilePhotoAddForm = () => {
         )}
       </div>
 
-      <Button width={'198px'} title={'Add a Profile Photo'} variant={'outlined'}
-              onClick={() => setIsModalOpen(true)} type="button" />
+      <Button
+        width={'198px'}
+        title={'Add a Profile Photo'}
+        variant={'outlined'}
+        onClick={() => setIsModalOpen(true)}
+        type="button"
+      />
 
       <Dialog.Root open={isModalOpen} onOpenChange={handleCloseAttempt}>
         <Dialog.Portal>
           <Dialog.Overlay className={s.modalOverlay} />
 
-          <Dialog.Content
-            className={s.modalContent}
-          >
+          <Dialog.Content className={s.modalContent}>
             <DialogTitle></DialogTitle>
             {/* Header */}
             <div className={s.modalHeader}>
-              <div className={s.modalTitle}>
-                Add a Profile Photo
-              </div>
+              <div className={s.modalTitle}>Add a Profile Photo</div>
               <Dialog.Close className={s.closeButton} onClick={handleCloseAttempt}>
                 <Image src={'/closeIcon.svg'} alt={'X'} width="14" height="14" />
               </Dialog.Close>
@@ -71,29 +71,33 @@ export const ProfilePhotoAddForm = () => {
 
             {/* Main Content */}
 
-              {!photoUrl ? <div className={s.uploadSection}>
-                  <div className={s.uploadIcon}>
-                    <Image src={'/picture.svg'} alt={'picture'} width="48" height="48" />
-                  </div>
-                  <Button title="Select from Computer" width={'100%'} onClick={() => fileInputRef.current?.click()} />
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    className={s.hiddenInput}
-                    accept="image/*"
-                    onChange={(e) => setPhotoUrl(e.target.files?.[0] || null)}
-                  />
+            {!photoUrl ? (
+              <div className={s.uploadSection}>
+                <div className={s.uploadIcon}>
+                  <Image src={'/picture.svg'} alt={'picture'} width="48" height="48" />
                 </div>
-                :
-                <div className={s.previewSection}>
-                  <Image src={getImagePreview(photoUrl)} alt={'photo'} width="330" height="330" />
-                  <Button title="Save" width={'86px'} onClick={handlePublish} className={s.button}/>
-                </div>
-              }
+                <Button
+                  title="Select from Computer"
+                  width={'100%'}
+                  onClick={() => fileInputRef.current?.click()}
+                />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  className={s.hiddenInput}
+                  accept="image/*"
+                  onChange={e => setPhotoUrl(e.target.files?.[0] || null)}
+                />
+              </div>
+            ) : (
+              <div className={s.previewSection}>
+                <Image src={getImagePreview(photoUrl)} alt={'photo'} width="330" height="330" />
+                <Button title="Save" width={'86px'} onClick={handlePublish} className={s.button} />
+              </div>
+            )}
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
-
     </div>
   )
 }
