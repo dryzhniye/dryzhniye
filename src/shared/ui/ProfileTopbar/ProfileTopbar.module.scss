@@ -1,8 +1,9 @@
 .profileContent {
   display: flex;
+  gap: 38px;
+
   max-width: 1024px;
   margin: 0 auto;
-  gap: 38px;
   padding: 0 22px;
 }
 
@@ -11,10 +12,10 @@
 }
 
 .avatar {
+  overflow: hidden;
   width: 204px;
   height: 204px;
   border-radius: 50%;
-  overflow: hidden;
 }
 
 .avatarImage {
@@ -29,15 +30,22 @@
 
 .profileHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 24px;
 }
 
 .username {
+  margin: 0;
   font-size: 28px;
   font-weight: 600;
-  margin: 0;
+}
+
+.paid {
+  display: inline-block;
+  margin-left: 12px;
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .stats {
