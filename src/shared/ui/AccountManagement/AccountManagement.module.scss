@@ -35,3 +35,39 @@
   flex-direction: column;
   gap: 54px;
 }
+
+.infoBox {
+  display: flex;
+  gap: 48px;
+
+  margin: 18px 0;
+  padding: 12px 24px;
+  border: 1px solid var(--dark-300);
+
+  background-color: var(--dark-500);
+}
+
+.subscribtionTitle {
+  padding-top: 30px;
+
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 150%;
+  color: var(--light-100);
+}
+
+.infoTitle {
+  margin-bottom: 12px;
+
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 171%;
+  color: var(--light-900);
+}
+
+.infoDate {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 171%;
+  color: var(--light-100);
+}
