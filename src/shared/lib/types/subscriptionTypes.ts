@@ -9,14 +9,14 @@ export type createPaymentRequest = {
 }
 
 export type Payment = {
-    userId: number
-    subscriptionId: string
-    dateOfPayment: string
-    endDateOfSubscription: string
-    price: number
-    subscriptionType: SubscriptionType
-    paymentType: PaymentType
-  }
+  userId: number
+  subscriptionId: string
+  dateOfPayment: string
+  endDateOfSubscription: string
+  price: number
+  subscriptionType: SubscriptionType
+  paymentType: PaymentType
+}
 
 type Subscription = {
   userId: number
@@ -29,11 +29,4 @@ type Subscription = {
 export type CurrentSubscriptionResponse = {
   data: Subscription[]
   hasAutoRenewal: boolean
-}
-
-export type CreateSubscriptionInput = {
-  typeSubscription: SubscriptionType
-  paymentType: PaymentType
-  amount: number
-  baseUrl: string
 }

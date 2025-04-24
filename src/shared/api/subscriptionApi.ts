@@ -1,14 +1,14 @@
 import { baseApi } from '@/store/services/baseApi'
 import {
   createPaymentRequest,
-  CreateSubscriptionInput,
-  CurrentSubscriptionResponse, Payment,
+  CurrentSubscriptionResponse,
+  Payment,
 } from '@/shared/lib/types/subscriptionTypes'
 
 export const subscriptionApi = baseApi.injectEndpoints({
   endpoints: build => ({
     createPayment: build.mutation<{ url: string }, createPaymentRequest>({
-      query: (body) => ({
+      query: body => ({
         url: 'subscriptions',
         method: 'POST',
         body,
@@ -24,14 +24,6 @@ export const subscriptionApi = baseApi.injectEndpoints({
     getCurrentSubscription: build.query<CurrentSubscriptionResponse, void>({
       query: () => 'subscriptions/current-payment-subscriptions',
       providesTags: ['subscription'],
-    }),
-    createSubscription: build.mutation<{ url: string }, CreateSubscriptionInput>({
-      query: body => ({
-        url: 'subscriptions',
-        method: 'POST',
-        body,
-      }),
-      invalidatesTags: ['subscription'],
     }),
     getMyPayments: build.query<Payment[], void>({
       query: () => 'subscriptions/my-payments',
@@ -51,7 +43,6 @@ export const {
   useCreatePaymentMutation,
   useCancelAutoRenewalMutation,
   useGetCurrentSubscriptionQuery,
-  useCreateSubscriptionMutation,
   useGetMyPaymentsQuery,
   useGetSubscriptionCostsQuery,
 } = subscriptionApi
