@@ -17,3 +17,21 @@
     background-color: var(--dark-500);
   }
 }
+
+.title {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.resultModal {
+  display: flex;
+  flex-direction: column;
+  gap: 54px;
+}

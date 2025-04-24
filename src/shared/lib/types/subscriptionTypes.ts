@@ -1,12 +1,22 @@
-export type Payment = {
-  userId: number
-  subscriptionId: string
-  dateOfPayment: string
-  endDateOfSubscription: string
-  price: number
-  subscriptionType: 'MONTHLY' | 'WEEKLY' | 'DAY'
-  paymentType: 'STRIPE'
+export type PaymentType = 'STRIPE' | 'PAYPAL' | 'CREDIT_CARD'
+export type SubscriptionType = 'MONTHLY' | 'DAY' | 'WEEKLY'
+
+export type createPaymentRequest = {
+  typeSubscription: SubscriptionType
+  paymentType: PaymentType
+  amount: number
+  baseUrl: string
 }
+
+export type Payment = {
+    userId: number
+    subscriptionId: string
+    dateOfPayment: string
+    endDateOfSubscription: string
+    price: number
+    subscriptionType: SubscriptionType
+    paymentType: PaymentType
+  }
 
 type Subscription = {
   userId: number
@@ -22,8 +32,8 @@ export type CurrentSubscriptionResponse = {
 }
 
 export type CreateSubscriptionInput = {
-  typeSubscription: 'MONTHLY' | 'WEEKLY' | 'DAY'
-  paymentType: 'STRIPE'
+  typeSubscription: SubscriptionType
+  paymentType: PaymentType
   amount: number
   baseUrl: string
 }
