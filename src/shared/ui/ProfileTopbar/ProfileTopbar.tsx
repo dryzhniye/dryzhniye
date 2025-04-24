@@ -1,3 +1,4 @@
+import { useGetCurrentSubscriptionQuery } from '@/shared/api/subscriptionApi'
 import React from 'react'
 import styles from './ProfileTopbar.module.scss'
 import Image from 'next/image'
@@ -20,8 +21,10 @@ export const ProfileTopbar = ({ profile }: Props) => {
   const isCurrentUserProfile = currentUserId === Number(userId)
   const isCurrentImgProfile = profile.avatars[0]?.url
 
-  const router = useRouter()
+  const { data: currentSubscription } = useGetCurrentSubscriptionQuery()
+  const subscription = currentSubscription?.data?.[0]
 
+  const router = useRouter()
 
   const onSettingsClickHandler = () => {
     if (isCurrentUserProfile) {
@@ -30,8 +33,6 @@ export const ProfileTopbar = ({ profile }: Props) => {
   }
 
   return (
-
-
     <div className={styles.profileContent}>
       <div className={styles.avatarSection}>
         <div className={styles.avatar}>
@@ -47,9 +48,25 @@ export const ProfileTopbar = ({ profile }: Props) => {
 
       <div className={styles.infoSection}>
         <div className={styles.profileHeader}>
-          <h1 className={styles.username}>{profile.userName}</h1>
+          <h1 className={styles.username}>
+            {profile.userName}
+            {subscription && (
+              <Image
+                src={'/Paid.svg'}
+                alt="Subscription badge"
+                width={24}
+                height={24}
+                className={styles.paid}
+              />
+            )}
+          </h1>
           {isLoggedIn && isCurrentUserProfile && (
-            <Button title="Profile Settings" variant="secondary" width="167px" onClick={onSettingsClickHandler}/>
+            <Button
+              title="Profile Settings"
+              variant="secondary"
+              width="167px"
+              onClick={onSettingsClickHandler}
+            />
           )}
         </div>
 
@@ -69,15 +86,19 @@ export const ProfileTopbar = ({ profile }: Props) => {
         </div>
 
         <div className={styles.bio}>
-          {profile.aboutMe ? <p>{profile.aboutMe}</p> : <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco{' '}
-            <a href="#" className={styles.bioLink}>
-              laboris nisi ut aliquip ex ea commodo consequat.
-            </a>
-          </p>}
+          {profile.aboutMe ? (
+            <p>{profile.aboutMe}</p>
+          ) : (
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco{' '}
+              <a href="#" className={styles.bioLink}>
+                laboris nisi ut aliquip ex ea commodo consequat.
+              </a>
+            </p>
+          )}
         </div>
-
       </div>
     </div>
   )
