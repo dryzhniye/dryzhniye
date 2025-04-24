@@ -5,28 +5,57 @@ import Image from 'next/image'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { CheckBox } from '@/shared/ui/base/CheckBox/CheckBox'
 import { Button } from '@/shared/ui/base/Button/Button'
-import { useCreatePaymentMutation } from '@/shared/api/subscriptionApi'
-import { createPaymentRequest, PaymentType, SubscriptionType } from '@/shared/lib/types/subscriptionTypes'
+import {
+  useCancelAutoRenewalMutation,
+  useCreatePaymentMutation,
+  useGetCurrentSubscriptionQuery,
+} from '@/shared/api/subscriptionApi'
+import {
+  createPaymentRequest,
+  PaymentType,
+  SubscriptionType,
+} from '@/shared/lib/types/subscriptionTypes'
 import { useGetProfileQuery } from '@/shared/api/profileApi'
 import { useSearchParams } from 'next/navigation'
 
 export const AccountManagement = () => {
-  const accountTypes = [{ value: '1', label: 'Personal' }, { value: '2', label: 'Business' }]
-  const costs = [{ value: 'DAY', label: '$10 per 1 Day' }, { value: 'WEEKLY', label: '$50 per 7 Day' }, {
-    value: 'MONTHLY',
-    label: '$100 per month',
-  }]
+  const accountTypes = [
+    { value: '1', label: 'Personal' },
+    { value: '2', label: 'Business' },
+  ]
+  const costs = [
+    { value: 'DAY', label: '$10 per 1 Day' },
+    { value: 'WEEKLY', label: '$50 per 7 Day' },
+    {
+      value: 'MONTHLY',
+      label: '$100 per month',
+    },
+  ]
+
   const [selectedType, setSelectedType] = useState('1')
   const [selectedCost, setSelectedCost] = useState<SubscriptionType>('DAY')
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
   const [isResultModalOpen, setIsResultModalOpen] = useState(false)
   const [paymentResult, setPaymentResult] = useState<'success' | 'failed' | null>(null)
   const [isChecked, setIsChecked] = useState(false)
+  const [autoRenewalChecked, setAutoRenewalChecked] = useState(false)
   const [selectedPaymentType, setSelectedPaymentType] = useState<PaymentType>('PAYPAL')
   const { data: profileData } = useGetProfileQuery()
   const searchParams = useSearchParams()
+  const { data: currentSubscription } = useGetCurrentSubscriptionQuery()
+  const [cancelAutoRenewal] = useCancelAutoRenewalMutation()
 
   const [createPayment, { isLoading }] = useCreatePaymentMutation()
+
+  // const currentSubscription = {
+  //   data: [
+  //     {
+  //       endDateOfSubscription: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // через 7 дней
+  //       autoRenewal: true,
+  //       dateOfPayment: new Date().toISOString(),
+  //     },
+  //   ],
+  // }
 
   useEffect(() => {
     const successParam = searchParams.get('success')
@@ -82,9 +111,64 @@ export const AccountManagement = () => {
   const handleCostChange = (value: string) => {
     setSelectedCost(value as SubscriptionType)
   }
+  const subscription = currentSubscription?.data?.[0]
+
+  useEffect(() => {
+    if (subscription) {
+      setAutoRenewalChecked(subscription.autoRenewal)
+      if (subscription.autoRenewal) {
+        setSelectedType('2')
+      } else {
+        const endDate = new Date(subscription.endDateOfSubscription)
+        const now = new Date()
+        if (now > endDate) {
+          setSelectedType('1')
+        } else {
+          setSelectedType('2')
+        }
+      }
+    }
+  }, [subscription])
+
+  const toggleAutoRenewal = async () => {
+    const newAutoRenewalState = !autoRenewalChecked
+    setAutoRenewalChecked(newAutoRenewalState)
+    try {
+      if (!newAutoRenewalState) {
+        await cancelAutoRenewal().unwrap()
+      }
+    } catch (error) {
+      console.error('Failed to cancel auto-renewal:', error)
+      setAutoRenewalChecked(autoRenewalChecked)
+    }
+  }
 
   return (
     <>
+      {subscription && (
+        <div className={s.subscriptionontainer}>
+          <h3 className={s.subscribtionTitle}>Current Subscription:</h3>
+          <div className={s.infoBox}>
+            <div>
+              <p className={s.infoTitle}>Expire at:</p>
+              <p className={s.infoDate}>
+                {new Date(subscription.endDateOfSubscription).toLocaleDateString()}
+              </p>
+            </div>
+            <div>
+              <p className={s.infoTitle}>Next payment:</p>
+              <p className={s.infoDate}>
+                {new Date(subscription.dateOfPayment).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+          <CheckBox
+            title={'Auto-Renewal'}
+            checked={autoRenewalChecked}
+            onChange={toggleAutoRenewal}
+          />
+        </div>
+      )}
       <RadioGroupWind
         title={'Account type:'}
         onChange={setSelectedType}
@@ -92,37 +176,39 @@ export const AccountManagement = () => {
         selectedValue={selectedType}
       />
 
-      {selectedType === '2' && <>
-        <RadioGroupWind
-          title={'Your subscription costs:'}
-          onChange={handleCostChange}
-          options={costs}
-          selectedValue={selectedCost}
-        />
-        <div className={s.buttonsContainer}>
-          <button
-            className={s.button}
-            onClick={() => {
-              setSelectedPaymentType('PAYPAL')
-              setIsPaymentModalOpen(true)
-            }}
-          >
-            <Image src={'/paypal.svg'} alt={'PayPal'} width={72} height={48} />
-          </button>
-          <p>Or</p>
-          <button
-            className={s.button}
-            onClick={() => {
-              setSelectedPaymentType('STRIPE')
-              setIsPaymentModalOpen(true)
-            }}
-          >
-            <Image src={'/stripe.svg'} alt={'stripe'} width={70} height={30} />
-          </button>
-        </div>
-      </>}
+      {selectedType === '2' && (
+        <>
+          <RadioGroupWind
+            title={'Your subscription costs:'}
+            onChange={handleCostChange}
+            options={costs}
+            selectedValue={selectedCost}
+          />
+          <div className={s.buttonsContainer}>
+            <button
+              className={s.button}
+              onClick={() => {
+                setSelectedPaymentType('PAYPAL')
+                setIsPaymentModalOpen(true)
+              }}
+            >
+              <Image src={'/paypal.svg'} alt={'PayPal'} width={72} height={48} />
+            </button>
+            <p>Or</p>
+            <button
+              className={s.button}
+              onClick={() => {
+                setSelectedPaymentType('STRIPE')
+                setIsPaymentModalOpen(true)
+              }}
+            >
+              <Image src={'/stripe.svg'} alt={'stripe'} width={70} height={30} />
+            </button>
+          </div>
+        </>
+      )}
 
-      {isPaymentModalOpen &&
+      {isPaymentModalOpen && (
         <Modal
           open={isPaymentModalOpen}
           onClose={() => setIsPaymentModalOpen(false)}
@@ -143,9 +229,10 @@ export const AccountManagement = () => {
               onClick={handleCreatePayment}
             />
           </div>
-        </Modal>}
+        </Modal>
+      )}
 
-      {isResultModalOpen &&
+      {isResultModalOpen && (
         <Modal
           open={isResultModalOpen}
           onClose={() => setIsResultModalOpen(false)}
@@ -160,15 +247,14 @@ export const AccountManagement = () => {
                 : 'Transaction failed. Please, write to support'}
             </p>
             <Button
-              title={paymentResult === 'success'
-                ? 'OK'
-                : 'Back to payment'}
+              title={paymentResult === 'success' ? 'OK' : 'Back to payment'}
               width={'100%'}
               onClick={() => setIsResultModalOpen(false)}
-              style={{ 'marginTop': '54px' }}
+              style={{ marginTop: '54px' }}
             />
           </div>
-        </Modal>}
+        </Modal>
+      )}
     </>
   )
 }
