@@ -21,6 +21,7 @@
     "@types/react-custom-scrollbars": "^4.0.13",
     "@types/react-google-recaptcha": "^2.1.9",
     "async-mutex": "^0.5.0",
+    "clsx": "^2.1.1",
     "country-state-city": "^3.2.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",

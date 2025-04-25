@@ -19,24 +19,26 @@ type Props = {
   value?: string
   name?: string
   onBlur?: () => void
+  isPagination?: boolean
 }
 
 export const Select = ({
-  selectedValue,
-  width,
-  disabled,
-  title,
-  options,
-  onChange,
-  placeholder,
-  label,
-  required,
+                         selectedValue,
+                         width,
+                         disabled,
+                         title,
+                         options,
+                         onChange,
+                         placeholder,
+                         label,
+                         required,
                          error,
                          value,
                          onBlur,
                          name,
-  isLanguage,
-}: Props) => {
+                         isPagination = false,
+                         isLanguage,
+                       }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const [language, setLanguage] = useState<string>('English')
@@ -89,68 +91,69 @@ export const Select = ({
 
   return (
     <>
-    {title && <span className={styles.title}>{title}</span>}
-    {isLanguage ? (
-      <div ref={selectRef}
-        className={`${styles.selectBox} ${isOpen ? styles.open : ''} 
+      {title && <span className={styles.title}>{title}</span>}
+      {isLanguage ? (
+        <div ref={selectRef}
+             className={`${styles.selectBox} ${isOpen ? styles.open : ''} 
                ${disabled ? styles.disabled : ''}`}
-        style={{ width: width }}
-      >
-        <div className={styles.selectBoxHeader} onClick={toggleDropdown}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Image
-              src={language === 'English' ? '/flag.svg' : '/flagRussia.svg'}
-              alt={'флаг'}
-              width={'20'}
-              height={'20'}
-            />
-            <span>{selectedValue}</span>
+             style={{ width: width }}
+        >
+          <div className={styles.selectBoxHeader} onClick={toggleDropdown}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Image
+                src={language === 'English' ? '/flag.svg' : '/flagRussia.svg'}
+                alt={'флаг'}
+                width={'20'}
+                height={'20'}
+              />
+              <span>{selectedValue}</span>
+            </div>
+            <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
           </div>
-          <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
+          {isOpen && <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
+            <ul className={styles.selectBoxList}>
+              {options.map((option, index) => (
+                <li
+                  key={index}
+                  className={styles.selectBoxItem}
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option}
+                </li>
+              ))}
+            </ul>
+          </div>}
         </div>
-        {isOpen && <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
-          <ul className={styles.selectBoxList}>
-            {options.map((option, index) => (
-              <li
-                key={index}
-                className={styles.selectBoxItem}
-                onClick={() => handleOptionClick(option)}
-              >
-                {option}
-              </li>
-            ))}
-          </ul>
-        </div>}
-      </div>
-    ) : (<div style={{width: '100%'}} ref={selectRef}>
-      <div>{label && <label className={s.label}>{label}
-        {required && <span className={s.required}>*</span>}</label>}</div>
-      <div
-      className={`${styles.selectBox} ${isOpen ? styles.open : ''} ${
-      disabled ? styles.disabled : ''
-    }`}
-    >
-    <div className={styles.selectBoxHeader} onClick={toggleDropdown}>
-      <span>{internalValue ? internalValue : <span style={placeholder ? {color: 'var(--light-900)'} : {color: ''}}>{placeholder}</span>}</span>
-      <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
-    </div>
-    <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
-      <ul className={styles.selectBoxList}>
-        {options.map((option, index) => (
-          <li
-            key={index}
-            className={styles.selectBoxItem}
-            onClick={() => handleOptionClick(option)}
+      ) : (<div style={{ width: '100%' }} ref={selectRef}>
+          <div>{label && <label className={s.label}>{label}
+            {required && <span className={s.required}>*</span>}</label>}</div>
+          <div style={isPagination ? {height: '24px', minWidth: '52px', borderRadius: '2px', backgroundColor: 'var(--dark-500)', borderWidth: '1px'} : {}}
+            className={`${styles.selectBox} ${isOpen ? styles.open : ''} ${
+              disabled ? styles.disabled : ''
+            }`}
           >
-            {option}
-          </li>
-        ))}
-      </ul>
-    </div>
-    </div>
-      </div>
+            <div style={isPagination ? { gap: '10px', padding: '6px'} : {}} className={styles.selectBoxHeader} onClick={toggleDropdown}>
+              <span>{internalValue ? internalValue :
+                <span style={placeholder ? { color: 'var(--light-900)' } : { color: '' }}>{placeholder}</span>}</span>
+              <Image src={isOpen ? '/arrow2.svg' : '/arrow1.svg'} alt="arrow" width="15" height="8" />
+            </div>
+            <div className={`${styles.selectBoxListWrapper} ${isOpen ? styles.open : ''}`}>
+              <ul className={styles.selectBoxList}>
+                {options.map((option, index) => (
+                  <li
+                    key={index}
+                    className={styles.selectBoxItem}
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )
+      }
+    </>
   )
-}
-</>
-)
 }

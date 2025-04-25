@@ -47,16 +47,6 @@ export const AccountManagement = () => {
 
   const [createPayment, { isLoading }] = useCreatePaymentMutation()
 
-  // const currentSubscription = {
-  //   data: [
-  //     {
-  //       endDateOfSubscription: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // через 7 дней
-  //       autoRenewal: true,
-  //       dateOfPayment: new Date().toISOString(),
-  //     },
-  //   ],
-  // }
-
   useEffect(() => {
     const successParam = searchParams.get('success')
     if (successParam === 'true') {
@@ -111,7 +101,7 @@ export const AccountManagement = () => {
   const handleCostChange = (value: string) => {
     setSelectedCost(value as SubscriptionType)
   }
-  const subscription = currentSubscription?.data?.[0]
+  const subscription = currentSubscription?.data?.[currentSubscription?.data.length - 1]
 
   useEffect(() => {
     if (subscription) {

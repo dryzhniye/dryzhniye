@@ -6,6 +6,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useMeQuery } from '@/shared/api/authApi'
 import { PATH } from '@/shared/lib/const/PATH'
 import { AccountManagement } from '@/shared/ui/AccountManagement/AccountManagement'
+import { MyPayments } from '@/shared/ui/MyPayments/MyPayments'
 
 type TabPart = 'info' | 'devices' | 'subscriptions' | 'payments'
 
@@ -53,8 +54,7 @@ const UserProfilePage = () => {
       {
         id: 'payments',
         title: 'My payments',
-        content: <div>Payments history</div>,
-        disabled: true,
+        content: <MyPayments/>,
       },
     ] satisfies Tab[]
   }, [])
