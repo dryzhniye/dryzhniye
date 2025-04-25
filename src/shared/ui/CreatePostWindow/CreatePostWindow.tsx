@@ -11,13 +11,15 @@ import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { UserHeader } from '@/shared/ui/UserHeader/UserHeader'
 import { useGetProfileQuery } from '@/shared/api/profileApi'
+import type { PostType } from '@/shared/lib/types/postsTypes'
 
 type Props = {
   open: boolean;
   onCloseModal: () => void;
+  onPostCreated: (newPost: PostType) => void
 }
 
-export const CreatePostWindow = ({ open, onCloseModal }: Props) => {
+export const CreatePostWindow = ({ open, onCloseModal, onPostCreated }: Props) => {
   const [images, setImages] = useState<File[] | null>(null)
   const [description, setDescription] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -54,11 +56,14 @@ export const CreatePostWindow = ({ open, onCloseModal }: Props) => {
 
       const uploadedImages = await uploadImages({ files: images }).unwrap()
 
-      await createPost({
+      const newPost = await createPost({
         description,
         uploadIds: uploadedImages.images.map(img => img.uploadId),
       }).unwrap()
 
+      if (newPost) {
+        onPostCreated(newPost)
+      }
       onCloseModal()
       setImages(null)
       setDescription('')

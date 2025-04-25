@@ -77,6 +77,9 @@ useEffect(() => {
   }
 }, [publicData, isLoggedIn]);
 
+  const addNewPost = (newPost: PostType) => {
+    setPostsForRender(prev => [newPost, ...prev]);
+  };
 
   useEffect(() => {
     if (action === 'create' && postId) {
@@ -132,9 +135,6 @@ useEffect(() => {
     }
   }, [isLoading])
 
-//todo: apply useState and useEffects if necessary for correct scroll working
-  // const dataForRender = publicData?.items || data?.items
-
   const newPostId = Number(postId)
 
   return (
@@ -159,6 +159,7 @@ useEffect(() => {
         </div>
       </div>
       <CreatePostWindow open={isModalOpen}
+                        onPostCreated={addNewPost}
                         onCloseModal={closeModalsHandler} />
       {postId ?
         <CardPosts post={post} postId={newPostId} onCloseModal={closeModalsHandler} /> : ''}
