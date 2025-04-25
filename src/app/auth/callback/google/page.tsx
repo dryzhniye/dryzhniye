@@ -1,8 +1,8 @@
 'use client'
-
 import { useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useGoogleLoginMutation } from '@/lib/api/authApi'
+import { useGoogleLoginMutation } from '@/shared/api/authApi'
+import { setCookie } from '@/shared/lib/utils/cookieUtils'
 
 interface Error {
   statusCode: number,
@@ -26,7 +26,7 @@ const GoogleCallback = () => {
         .unwrap()
         .then((data: { accessToken: string, email: string}) => {
           if (data?.accessToken) {
-            localStorage.setItem('token', data.accessToken)
+            setCookie('accessToken', data.accessToken.trim(), 7)
             router.replace('/')
           }
         })
@@ -36,7 +36,7 @@ const GoogleCallback = () => {
     }
   }, [router, searchParams, googleLogin])
 
-  return <p>{isLoading ? 'Logging you in with Google...' : 'Google login failed'}</p>
+  return <p>{isLoading && 'Logging you in with Google...'}</p>
 }
 
 export default GoogleCallback

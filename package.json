@@ -13,14 +13,19 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
     "@radix-ui/themes": "^3.2.1",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.6.1",
     "@svgr/webpack": "^8.1.0",
     "@types/react-custom-scrollbars": "^4.0.13",
     "@types/react-google-recaptcha": "^2.1.9",
+    "async-mutex": "^0.5.0",
+    "clsx": "^2.1.1",
+    "country-state-city": "^3.2.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.483.0",
     "next": "15.2.3",
     "next-auth": "^4.24.11",
@@ -32,7 +37,11 @@
     "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.55.0",
     "react-perfect-scrollbar": "^1.5.8",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "react-use": "^17.6.0",
+    "swiper": "^11.2.6",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3",

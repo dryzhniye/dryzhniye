@@ -1,13 +1,13 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import s from '@/app/auth/forgot-password/forgot-password.module.scss'
-import Input from '@/shared/ui/Input/Input'
+import Input from '@/shared/ui/base/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import { redirect, useRouter, useSearchParams } from 'next/navigation'
-import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/lib/api/authApi'
+import { useCheckRecoveryCodeMutation, useCreateNewPasswordMutation } from '@/shared/api/authApi'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
+import { PATH } from '@/shared/lib/const/PATH'
 
 type createPasswordArgs = {
   password1: string
@@ -29,8 +29,6 @@ function Recovery() {
 
   const router = useRouter()
 
-  useRedirectIfAuthorized()
-
   const [isInitialized, setIsInitialized] = useState(false)
 
   const [checkRecoveryCode] = useCheckRecoveryCodeMutation()
@@ -42,7 +40,7 @@ function Recovery() {
 
   useEffect(() => {
     if (!code) {
-      router.push('auth/sign-in')
+      router.push(PATH.AUTH.LOGIN)
     } else {
       checkRecoveryCode(code)
         .unwrap()
@@ -50,7 +48,7 @@ function Recovery() {
           setIsInitialized(true)
         })
         .catch(() => {
-          router.push('/auth/recovery-resending?email=' + email)
+          router.push(PATH.AUTH.RECOVERY_RESENDING + '?email=' + email)
         })
     }
   }, [code, checkRecoveryCode, router, email])
@@ -61,7 +59,7 @@ function Recovery() {
     if (code) {
       try {
         await createNewPassword({ newPassword: data.password1, recoveryCode: code }).unwrap()
-        router.push('/auth/sign-in')
+        router.push(PATH.AUTH.LOGIN)
       } catch (error) {
         const apiError = (
           error as {
@@ -79,7 +77,7 @@ function Recovery() {
         })
       }
     } else {
-      redirect('/auth/sign-in')
+      redirect(PATH.AUTH.LOGIN)
     }
   }
 

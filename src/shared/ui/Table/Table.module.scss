@@ -1,0 +1,27 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-left: 1px solid var(--dark-500);
+  border-right: 1px solid var(--dark-500);
+  table-layout: fixed;
+
+  .th, .td {
+    font-size: 14px;
+    padding: 14px 24px;
+    text-align: left;
+    border-bottom: 1px solid var(--dark-500);
+    transition: background-color 0.3s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .th {
+    font-weight: 600;
+    background-color: var(--dark-500);
+  }
+
+  .tr:hover .td{
+    background-color: var(--dark-700);
+  }
+}

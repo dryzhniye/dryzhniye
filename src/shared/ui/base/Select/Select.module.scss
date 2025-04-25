@@ -1,0 +1,121 @@
+.title {
+  display: block;
+
+  margin: 4px 0;
+
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--light-900);
+}
+
+.selectBox {
+  cursor: pointer;
+
+  position: relative;
+
+  width: 100%;
+  height: 36px;
+  border: 1px solid var(--dark-100);
+  border-radius: 1px;
+
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--light-100);
+
+  background-color: inherit;
+
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+
+  display: inline-block;
+
+  &.disabled {
+    cursor: not-allowed;
+    color: var(--dark-100);
+  }
+
+  &:hover {
+    border-color: var(--light-900);
+    color: var(--light-900);
+  }
+
+  &:focus {
+    border-color: var(--accent-500);
+    color: var(--light-900);
+  }
+
+  &.open {
+    //border: 1px solid var(--light-100);
+    border-color: transparent;
+    outline: 2px solid var(--accent-500);
+    background-color: var(--dark-500);
+  }
+}
+
+.selectBoxHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 100%;
+  padding: 0 12px;
+}
+
+.selectBoxList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.selectBoxListWrapper {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  right: -1px;
+  left: -1px;
+
+  overflow: hidden;
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+  max-height: 0;
+  overflow-y: auto;
+  //border: 2px solid var(--accent-500);
+  outline: 2px solid var(--accent-500);
+  border-radius: 0 0 1px 1px;
+
+  opacity: 0;
+  background-color: var(--dark-500);
+
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+
+  &.open {
+    max-height: 200px;
+    opacity: 1;
+  }
+}
+
+.label {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 171% !important;
+  color: var(--light-900) !important;
+
+  .required {
+    color: var(--danger-300) !important;;
+    margin-left: 4px !important;;
+  }
+}
+
+
+.selectBoxItem {
+  cursor: pointer;
+  padding: 8px 10px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    color: var(--accent-500);
+    background-color: var(--dark-300);
+    transition: color 0.2s ease;
+  }
+}
