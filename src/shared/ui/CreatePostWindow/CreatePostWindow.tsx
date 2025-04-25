@@ -159,7 +159,7 @@ export const CreatePostWindow = ({ open, onCloseModal, onPostCreated }: Props) =
                     <UserHeader imageUrl={user?.avatars[0]?.url}/>
                     <div>
                       <p className={s.description}>Add publication descriptions</p>
-                      <TextArea width={'433px'} height={'120px'} title={description} onChange={setDescription} />
+                      <TextArea width={'433px'} height={'120px'} value={description} onChange={setDescription} />
                     </div>
                   </div>
 
