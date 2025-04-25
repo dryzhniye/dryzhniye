@@ -57,18 +57,25 @@ const UserProfile = ({ profile, post }: Props) => {
     sortDirection: 'desc',
   }, { skip: isLoggedIn })
 
-
   useEffect(() => {
-    if (data?.items) {
-      setPostsForRender(prev => [...prev, ...data.items])
-    }
-  }, [data])
+  if (data?.items) {
+    setPostsForRender(prev => {
+      const existingIds = new Set(prev.map(post => post.id));
+      const newItems = data.items.filter(post => !existingIds.has(post.id));
+      return [...prev, ...newItems];
+    });
+  }
+}, [data]);
 
-  useEffect(() => {
-    if (!isLoggedIn && publicData?.items?.length) {
-      setPostsForRender((prev) => [...prev, ...publicData.items]);
-    }
-  }, [publicData]);
+useEffect(() => {
+  if (!isLoggedIn && publicData?.items?.length) {
+    setPostsForRender(prev => {
+      const existingIds = new Set(prev.map(post => post.id));
+      const newItems = publicData.items.filter(post => !existingIds.has(post.id));
+      return [...prev, ...newItems];
+    });
+  }
+}, [publicData, isLoggedIn]);
 
 
   useEffect(() => {
