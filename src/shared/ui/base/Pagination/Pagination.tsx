@@ -76,7 +76,7 @@ export const Pagination = (props: Type) => {
     <div className={className ? `${className} ${s.wrapper}` : s.wrapper}>
       <div className={s.paginationContainer}>
         {/* стрелка навигации влево */}
-        <div style={paginationRange.length === 1 ? {pointerEvents: 'none'} : {}} className={s.paginationItem} onClick={onPrevious}>
+        <div style={paginationRange.length === 1 || currentPage === 1 ? {pointerEvents: 'none'} : {}} className={s.paginationItem} onClick={onPrevious}>
           {currentPage === 1 ? (
             <Image
               src="/Arrow_left_disabled.svg"
@@ -109,8 +109,8 @@ export const Pagination = (props: Type) => {
         })}
 
         {/*  стрелка навигации вправо */}
-        <div style={paginationRange.length === 1 ? {pointerEvents: 'none'} : {}} className={s.paginationItem} onClick={paginationRange.length === 1 ? ()=>{}: onNext}>
-          {paginationRange.length === 1 ? (
+        <div style={paginationRange.length === 1 || currentPage === paginationRange.length ? {pointerEvents: 'none'} : {}} className={s.paginationItem} onClick={paginationRange.length === 1 ? ()=>{}: onNext}>
+          {paginationRange.length === 1 || currentPage === paginationRange.length ? (
             <Image
               src="/Arrow_right_disabled.svg"
               alt="Arrow right disabled"
@@ -129,8 +129,9 @@ export const Pagination = (props: Type) => {
           options={ELEMENTS_ON_PAGE}
           onChange={onChangeHandler}
           value={String(pageSize)}
+          isPagination
         />
-        <span>on page</span>
+        <span style={{textWrap: 'nowrap'}}>on page</span>
       </div>
     </div>
   )

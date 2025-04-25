@@ -51,6 +51,18 @@
     }
   }
 }
+.paginationSelect {
+  width: 160px !important; // Force the width
+
+  // Target the internal elements of the Select component to apply border-radius
+  //:global {
+  //  .selectBox, // Target the main container class
+  //  div[class*="selectBox"] { // More general selector as fallback
+  //    border-radius: 4px !important;
+  //    width: 60px !important;
+  //  }
+  //}
+}
 
 .selectBox {
   display: flex;

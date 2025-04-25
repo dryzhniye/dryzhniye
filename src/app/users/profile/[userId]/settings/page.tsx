@@ -55,7 +55,6 @@ const UserProfilePage = () => {
         id: 'payments',
         title: 'My payments',
         content: <MyPayments/>,
-        // disabled: true,
       },
     ] satisfies Tab[]
   }, [])
