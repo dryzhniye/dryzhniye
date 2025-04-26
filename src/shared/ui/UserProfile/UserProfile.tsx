@@ -16,7 +16,7 @@ import { LockKeyhole } from 'lucide-react';
 
 type Props = {
   profile: PublicProfile
-  post: PostType
+  post: PostType | undefined
   postId: string | undefined
 }
 

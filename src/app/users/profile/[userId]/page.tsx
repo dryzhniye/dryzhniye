@@ -3,34 +3,47 @@ import UserProfile from '@/shared/ui/UserProfile/UserProfile'
 import type { PublicProfile } from '@/shared/lib/types/profileTypes'
 import { cookies } from 'next/headers'
 import { PostType } from '@/shared/lib/types/postsTypes'
-// @ts-expect-error - временное решение для конфликта типов Next.js
-export default async function PublicUserProfilePage({
-                                                      params: { userId },
-                                                      searchParams: { postId },
-                                                    }: {
-  params: { userId: string }
-  searchParams: { postId?: string }
-}) {
+
+type PageParams = {
+  params: {
+    userId: string
+  }
+  searchParams: {
+    postId?: string
+  }
+}
+
+export default async function PublicUserProfilePage(props: PageParams) {
+  const { userId } = props.params
+  const { postId } = props.searchParams
+
   try {
     const cookieStore = await cookies()
     const token = cookieStore.get('accessToken')?.value
-    const res = await fetch(`https://dryzhniye.ru/api/v1/public-user/profile/${userId}`)
-    const postResponse = await fetch(`https://dryzhniye.ru/api/v1/posts/id/${postId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
 
-    if (!res.ok) {
-      notFound() // returns 404
-    }
+    const profileResponse = await fetch(`https://dryzhniye.ru/api/v1/public-user/profile/${userId}`)
 
-    const profile: PublicProfile = await res.json()
-    if (!profile || !profile.userMetadata) {
+    if (!profileResponse.ok) {
       notFound()
     }
 
-    const post: PostType = await postResponse.json()
+    const profile: PublicProfile = await profileResponse.json()
+    if (!profile?.userMetadata) {
+      notFound()
+    }
+
+    let post: PostType | undefined
+    if (postId) {
+      const postResponse = await fetch(`https://dryzhniye.ru/api/v1/posts/id/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (postResponse.ok) {
+        post = await postResponse.json()
+      }
+    }
 
     return <UserProfile profile={profile} post={post} postId={postId} />
   } catch (error) {

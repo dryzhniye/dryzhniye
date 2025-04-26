@@ -13,7 +13,7 @@ import { useAppDispatch } from '@/shared/lib/hooks/appHooks'
 type Props = {
   onCloseModal: () => void
   postId: number
-  post: PostType
+  post: PostType | undefined
 }
 
 export const CardPosts = ({ onCloseModal, postId, post }: Props) => {
@@ -27,7 +27,7 @@ export const CardPosts = ({ onCloseModal, postId, post }: Props) => {
 
 
   useEffect(() => {
-    if (needInitPostInStore.current) {
+    if (needInitPostInStore.current && post) {
       dispatch(
         postApi.util.upsertQueryData('getProfilePost', postId, post),
       )
