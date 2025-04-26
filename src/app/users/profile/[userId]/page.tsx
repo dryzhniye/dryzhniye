@@ -3,7 +3,7 @@ import UserProfile from '@/shared/ui/UserProfile/UserProfile'
 import type { PublicProfile } from '@/shared/lib/types/profileTypes'
 import { cookies } from 'next/headers'
 import { PostType } from '@/shared/lib/types/postsTypes'
-// @ts-expect-error
+// @ts-expect-error - временное решение для конфликта типов Next.js
 export default async function PublicUserProfilePage({
                                                       params: { userId },
                                                       searchParams: { postId },
