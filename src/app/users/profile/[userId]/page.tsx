@@ -4,19 +4,13 @@ import type { PublicProfile } from '@/shared/lib/types/profileTypes'
 import { cookies } from 'next/headers'
 import { PostType } from '@/shared/lib/types/postsTypes'
 
-interface PublicUserProfilePageProps {
-  params: {
-    userId: string
-  }
-  searchParams: {
-    postId?: string
-  }
-}
-
 export default async function PublicUserProfilePage({
                                                       params,
                                                       searchParams,
-                                                    }: PublicUserProfilePageProps) {
+                                                    }: {
+  params: { userId: string }
+  searchParams: { postId?: string }
+}) {
   const { userId } = params
   const { postId } = searchParams
 
