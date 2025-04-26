@@ -4,15 +4,15 @@ import type { PublicProfile } from '@/shared/lib/types/profileTypes'
 import { cookies } from 'next/headers'
 import { PostType } from '@/shared/lib/types/postsTypes'
 
-type Props = {
+interface PageProps {
   params: { userId: string }
-  searchParams: { postId?: string }
+  searchParams: { [key: string]: string | undefined }
 }
 
-export default async function PublicUserProfilePage({ params: { userId }, searchParams: { postId } }: Props) {
+export default async function PublicUserProfilePage({ params: { userId }, searchParams: { postId } }: PageProps) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('accessToken')?.value;
+    const cookieStore = await cookies()
+    const token = cookieStore.get('accessToken')?.value
     const res = await fetch(`https://dryzhniye.ru/api/v1/public-user/profile/${userId}`)
     const postResponse = await fetch(`https://dryzhniye.ru/api/v1/posts/id/${postId}`, {
       headers: {
@@ -31,7 +31,7 @@ export default async function PublicUserProfilePage({ params: { userId }, search
 
     const post: PostType = await postResponse.json()
 
-    return <UserProfile profile={profile} post={post} postId={postId}/>
+    return <UserProfile profile={profile} post={post} postId={postId} />
   } catch (error) {
     console.error('Error fetching profile:', error)
     notFound()
