@@ -4,18 +4,15 @@ import type { PublicProfile } from '@/shared/lib/types/profileTypes'
 import { cookies } from 'next/headers'
 import { PostType } from '@/shared/lib/types/postsTypes'
 
-type PageParams = {
-  params: {
-    userId: string
-  }
-  searchParams: {
-    postId?: string
-  }
-}
-
-export default async function PublicUserProfilePage(props: PageParams) {
-  const { userId } = props.params
-  const { postId } = props.searchParams
+export default async function PublicUserProfilePage({
+                                                      params,
+                                                      searchParams,
+                                                    }: {
+  params: Record<string, string>
+  searchParams: Record<string, string | undefined>
+}) {
+  const { userId } = params
+  const { postId } = searchParams
 
   try {
     const cookieStore = await cookies()
@@ -23,14 +20,10 @@ export default async function PublicUserProfilePage(props: PageParams) {
 
     const profileResponse = await fetch(`https://dryzhniye.ru/api/v1/public-user/profile/${userId}`)
 
-    if (!profileResponse.ok) {
-      notFound()
-    }
+    if (!profileResponse.ok) notFound()
 
     const profile: PublicProfile = await profileResponse.json()
-    if (!profile?.userMetadata) {
-      notFound()
-    }
+    if (!profile?.userMetadata) notFound()
 
     let post: PostType | undefined
     if (postId) {
@@ -40,9 +33,7 @@ export default async function PublicUserProfilePage(props: PageParams) {
         },
       })
 
-      if (postResponse.ok) {
-        post = await postResponse.json()
-      }
+      post = await postResponse.json()
     }
 
     return <UserProfile profile={profile} post={post} postId={postId} />
