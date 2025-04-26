@@ -4,15 +4,22 @@ import type { PublicProfile } from '@/shared/lib/types/profileTypes'
 import { cookies } from 'next/headers'
 import { PostType } from '@/shared/lib/types/postsTypes'
 
+interface PublicUserProfilePageProps {
+  params: {
+    userId: string
+  }
+  searchParams: {
+    postId?: string
+  }
+}
+
 export default async function PublicUserProfilePage({
                                                       params,
                                                       searchParams,
-                                                    }: {
-  params: { userId: string }
-  searchParams: { postId?: string }
-}) {
+                                                    }: PublicUserProfilePageProps) {
   const { userId } = params
   const { postId } = searchParams
+
   try {
     const cookieStore = await cookies()
     const token = cookieStore.get('accessToken')?.value
@@ -24,7 +31,7 @@ export default async function PublicUserProfilePage({
     })
 
     if (!res.ok) {
-      notFound() // возвращает 404
+      notFound() // returns 404
     }
 
     const profile: PublicProfile = await res.json()
