@@ -3,7 +3,7 @@ import UserProfile from '@/shared/ui/UserProfile/UserProfile'
 import type { PublicProfile } from '@/shared/lib/types/profileTypes'
 import { cookies } from 'next/headers'
 import { PostType } from '@/shared/lib/types/postsTypes'
-// @ts-ignore
+// @ts-expect-error
 export default async function PublicUserProfilePage({
                                                       params: { userId },
                                                       searchParams: { postId },
