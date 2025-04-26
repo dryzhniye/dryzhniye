@@ -38,7 +38,7 @@ export default async function PublicUserProfilePage({
 
     return <UserProfile profile={profile} post={post} postId={postId} />
   } catch (error) {
-    console.error('Error fetching profile:', error)
+    console.error('Error fetching profile', error)
     notFound()
   }
 }
