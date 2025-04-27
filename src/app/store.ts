@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { baseApi } from '@/app/baseApi'
-import appSlice from '@/app/redux/appSlice'
+import appSlice from '@/store/slices/appSlice'
 
 export const makeStore = () =>
   configureStore({
