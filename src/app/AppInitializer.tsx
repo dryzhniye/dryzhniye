@@ -1,10 +1,9 @@
-// AppInitializer.tsx
 'use client'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useMeQuery } from '@/lib/api/authApi'
-import { useAppDispatch } from '@/lib/hooks/appHooks'
-import { setAppEmail, setIsLoggedIn } from '@/app/redux/appSlice'
+import { useMeQuery } from '@/shared/api/authApi'
+import { useAppDispatch } from '@/shared/lib/hooks/appHooks'
+import { setAppEmail, setIsLoggedIn } from '@/store/slices/appSlice'
 
 export const AppInitializer = ({ children }: { children: React.ReactNode }) => {
   const [isInitialized, setIsInitialized] = useState<boolean>(false)
