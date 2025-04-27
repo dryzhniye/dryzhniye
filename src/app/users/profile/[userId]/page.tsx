@@ -4,17 +4,15 @@ import type { PublicProfile } from '@/shared/lib/types/profileTypes'
 import { cookies } from 'next/headers'
 import { PostType } from '@/shared/lib/types/postsTypes'
 
-interface PageProps {
-  params: { userId: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+type Props = {
+  params: Promise<{ userId: string }>
+  searchParams: Promise<{ [key: string]: string | undefined }>
 }
 
-export default async function PublicUserProfilePage({
-                                                      params,
-                                                      searchParams,
-                                                    }: PageProps) {
-  const { userId } = params
-  const postId = searchParams.postId as string | undefined
+export default async function PublicUserProfilePage({ params, searchParams }: Props) {
+  const { userId } = await params
+  const resolvedSearchParams = await searchParams
+  const postId = resolvedSearchParams.postId
 
   try {
     const cookieStore = await cookies()
