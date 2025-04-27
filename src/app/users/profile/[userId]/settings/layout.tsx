@@ -3,9 +3,6 @@ import { cookies } from 'next/headers'
 
 type Props = {
   children: ReactNode
-  params: {
-    userId: string
-  }
 }
 
 export default async function ProtectedSettings({ children }: Props) {
