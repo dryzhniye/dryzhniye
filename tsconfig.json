@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["next", "next/types", "next/navigation"],
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

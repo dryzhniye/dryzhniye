@@ -1,116 +1,47 @@
 'use client'
-import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useEffect } from 'react'
+import { getDecodedToken } from '@/shared/lib/utils/getDecodedToken'
+import { PATH } from '@/shared/lib/const/PATH'
+import { setCookie } from '@/shared/lib/utils/cookieUtils'
 
-const GithubCallback = () => {
-  const router = useRouter()
+export default function GithubPage() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <GithubPageContent />
+    </Suspense>
+  )
+}
+
+const GithubPageContent = () => {
+  const { replace } = useRouter()
   const searchParams = useSearchParams()
 
   useEffect(() => {
     const accessToken = searchParams.get('accessToken')
-    const email = searchParams.get('email')
-
-    if (accessToken && email) {
-      localStorage.setItem('token', accessToken)
-      // Optionally set user/email in your store
-
-      router.replace('/')
+    if (!accessToken) {
+      const redirectUrl = 'http://localhost:3000/auth/callback'
+      window.location.assign(`https://inctagram.work/api/v1/auth/github/login?redirect_url=${redirectUrl}`)
     } else {
-      console.error('Missing access token or email in the URL')
+      try {
+        setCookie('accessToken', accessToken, 7)
+        setCookie('oauthProvider', 'github', 7)
+        const userId = getDecodedToken(accessToken)
+        if (userId) {
+          replace(`/users/profile`)
+        } else {
+          replace(PATH.AUTH.LOGIN)
+        }
+      } catch {
+        replace(PATH.AUTH.LOGIN)
+      }
     }
-  }, [searchParams, router])
+  }, [replace, searchParams])
 
-  return <p>Logging you in via GitHub...</p>
+  return (
+    <>
+      <p>Loading...</p>
+      Processing GitHub authorization...
+    </>
+  )
 }
-
-export default GithubCallback
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 'use client'
-//
-// import { useEffect, useState } from 'react'
-// import { useRouter, useSearchParams } from 'next/navigation'
-// import { useGoogleAuthMutation } from '@/app/auth/api/authApi'
-// import { setAppStatus } from '@/app/redux/appSlice'
-// import { useDispatch } from 'react-redux'
-//
-// export default function GoogleCallback() {
-//   const [error, setError] = useState<string | null>(null)
-//   const [loading, setLoading] = useState(true)
-//   const router = useRouter()
-//   const searchParams = useSearchParams()
-//   const code = searchParams.get('code')
-//   const [googleAuth] = useGoogleAuthMutation()
-//   const dispatch = useDispatch()
-//
-//   useEffect(() => {
-//     if (!code) {
-//       // setError('No authentication code provided')
-//       setError('All good')
-//       setLoading(false)
-//       return
-//     }
-//
-//     const handleGoogleCallback = async () => {
-//       try {
-//         dispatch(setAppStatus('loading'))
-//         const redirectUrl = `${window.location.origin}/auth/callback`
-//         const response = await googleAuth({ code, redirectUrl }).unwrap()
-//
-//         // Save the token
-//         localStorage.setItem('token', response.accessToken)
-//
-//         dispatch(setAppStatus('succeeded'))
-//         router.push('/') // Redirect to dashboard or homepage
-//       } catch (error) {
-//         console.error('Google authentication error:', error)
-//         setError('Failed to authenticate with Google')
-//         dispatch(setAppStatus('succeeded'))
-//       } finally {
-//         setLoading(false)
-//       }
-//     }
-//
-//     handleGoogleCallback()
-//   }, [code, googleAuth, router, dispatch])
-//
-//   if (loading) {
-//     return <div>Loading...</div>
-//   }
-//
-//   if (error) {
-//     return <div>{error}</div>
-//   }
-//
-//   return null
-// }

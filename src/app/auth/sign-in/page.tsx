@@ -1,38 +1,37 @@
 'use client'
-import { Button } from '@/shared/ui/Button/Button'
-import Cards from '@/shared/ui/Cards/Cards'
-import Input from '@/shared/ui/Input/Input'
-import { Typography } from '@/shared/ui/Typography'
+import { Button } from '@/shared/ui/base/Button/Button'
+import Cards from '@/shared/ui/base/Cards/Cards'
+import Input from '@/shared/ui/base/Input/Input'
+import { Typography } from '../../../shared/ui/base/Typography'
 import { useForm } from 'react-hook-form'
-import { useLoginMutation } from '@/lib/api/authApi'
+import { useLoginMutation } from '@/shared/api/authApi'
 import s from './sign-in.module.scss'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
 import { ErrorType } from '../sign-up/page'
-import { selectAppEmail } from '@/app/redux/appSlice'
-import { useAppSelector } from '@/lib/hooks/appHooks'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
+import Link from 'next/link'
+import { PATH } from '@/shared/lib/const/PATH'
+import { handleGoogleAuth } from '@/shared/lib/utils/google-auth-handler'
+import { formLoginSchema, type TFormLoginValues } from '@/shared/lib/schemas/authSchemas'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 type LoginArgs = {
   email: string
   password: string
 }
 
-function Page() {
+export default function Page() {
   const [login] = useLoginMutation()
   const router = useRouter()
-  const email = useAppSelector(selectAppEmail)
-  useRedirectIfAuthorized()
 
   const {
     register,
-    handleSubmit,
     setError,
+    handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginArgs>({
+  } = useForm<TFormLoginValues>({
     mode: 'onChange',
-    defaultValues: { email: '', password: '' },
+    resolver: zodResolver(formLoginSchema),
   })
 
   const onSubmit = async (data: LoginArgs) => {
@@ -48,7 +47,7 @@ function Page() {
           password: data.password,
         }).unwrap()
 
-        router.push(`../users/profile/${email}`)
+        router.push(PATH.USERS.PROFILE)
 
       } catch (error) {
         const err = error as ErrorType<string>
@@ -61,7 +60,7 @@ function Page() {
         }
 
         if (err.data.statusCode === 401) {
-          router.push('/sign-up')
+          router.push(PATH.AUTH.SIGNUP)
           return
         }
       }
@@ -80,10 +79,9 @@ function Page() {
                   onClick={handleGoogleAuth}>
             <Image src="/google.svg" alt="" width={34} height={34} />
           </button>
-          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }} type="button"
-                  onClick={handleGithubAuth}>
+          <Link href={PATH.GITHUB}>
             <Image src="/github.svg" alt="" width={34} height={34} />
-          </button>
+          </Link>
         </div>
 
         <Input
@@ -91,13 +89,7 @@ function Page() {
           placeholder={'Epam@epam.com'}
           width={'330px'}
           error={errors.email?.message}
-          {...register('email', {
-            required: 'Email is required',
-            pattern: {
-              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: 'The email must match the format example@example.com',
-            },
-          })}
+          {...register('email')}
         />
 
         <Input
@@ -106,25 +98,7 @@ function Page() {
           placeholder={'******************'}
           error={errors.password?.message}
           width={'330px'}
-          {...register('password', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Min 6 characters',
-            },
-            maxLength: {
-              value: 20,
-              message: 'Max 20 characters',
-            },
-            pattern: {
-              value:
-                /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
-              message:
-                'Password must contain 0-9, a-z, A-Z, ! "\n' +
-                '# $ % & \' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n' +
-                '_ { | } ~',
-            },
-          })}
+          {...register('password')}
         />
 
         <Button
@@ -132,7 +106,7 @@ function Page() {
           variant={'link'}
           asChild={'a'}
           title="Forgot Password"
-          href={'/auth/forgot-password'}
+          href={PATH.AUTH.FORGOT_PASSWORD}
         />
 
         <Button title="Sign In" width={'100%'} disabled={!isValid} type="submit" />
@@ -143,11 +117,9 @@ function Page() {
           variant={'link'}
           asChild={'a'}
           width={'100%'}
-          href={'/auth/sign-up'}
+          href={PATH.AUTH.SIGNUP}
         />
       </Cards>
     </>
   )
 }
-
-export default Page

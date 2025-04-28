@@ -1,26 +1,25 @@
 'use client'
 import s from './registration-confirmation.module.scss'
-import { Button } from '@/shared/ui/Button/Button'
+import { Button } from '@/shared/ui/base/Button/Button'
 import Image from 'next/image'
-import { useConfirmationMutation } from '@/lib/api/authApi'
-import React, { useEffect, useState } from 'react'
+import { useConfirmationMutation } from '@/shared/api/authApi'
+import React, { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
+import { PATH } from '@/shared/lib/const/PATH'
 
-const Page = () => {
+const RegistrationConfirmationContent = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
   const [isInitialized, setIsInitialized] = useState(false)
 
   const [confirmRegistration] = useConfirmationMutation()
-  useRedirectIfAuthorized()
 
   useEffect(() => {
     if (!code) {
-      router.push('auth/sign-in')
+      router.push(PATH.AUTH.LOGIN)
     } else {
       confirmRegistration({ confirmationCode: code })
         .unwrap()
@@ -28,7 +27,7 @@ const Page = () => {
           setIsInitialized(true)
         })
         .catch(() => {
-          router.push('/auth/registration-email-resending?email=')
+          router.push(PATH.AUTH.REGISTRATION_EMAIL_RESENDING)
         })
     }
   }, [code, confirmRegistration, router])
@@ -40,7 +39,7 @@ const Page = () => {
       <div className={s.container}>
         <h1>Congratulations!</h1>
         <p className={s.text}>Your email has been confirmed</p>
-        <Link href={'/auth/sign-in'}>
+        <Link href={PATH.AUTH.LOGIN}>
           <Button title={'Sign In'} />
         </Link>
         <Image
@@ -52,6 +51,14 @@ const Page = () => {
         />
       </div>
     </div>
+  )
+}
+
+const Page = () => {
+  return (
+    <Suspense fallback={<RecoverySkeleton />}>
+      <RegistrationConfirmationContent />
+    </Suspense>
   )
 }
 

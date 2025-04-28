@@ -1,17 +1,18 @@
 'use client'
-
 import s from './signUp.module.scss'
-import Input from '@/shared/ui/Input/Input'
-import { CheckBox } from '@/shared/ui/CheckBox/CheckBox'
-import { Button } from '@/shared/ui/Button/Button'
+import Input from '@/shared/ui/base/Input/Input'
+import { CheckBox } from '@/shared/ui/base/CheckBox/CheckBox'
+import { Button } from '@/shared/ui/base/Button/Button'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { useRegistrationMutation } from '@/lib/api/authApi'
+import { useRegistrationMutation } from '@/shared/api/authApi'
 import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRedirectIfAuthorized } from '@/lib/hooks/useRedirectIfAuthorized'
-import { handleGithubAuth, handleGoogleAuth } from '@/app/constants'
+import { PATH } from '@/shared/lib/const/PATH'
+import { formRegisterSchema, type TFormRegisterValues } from '@/shared/lib/schemas/authSchemas'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { handleGoogleAuth } from '@/shared/lib/utils/google-auth-handler'
 
 type Input = {
   email: string
@@ -33,25 +34,17 @@ export type ErrorType<T = [{ message: string }]> = {
 function Page() {
   const [linkModal, setLinkModal] = useState<string | boolean>(false)
 
-  useRedirectIfAuthorized()
 
   const {
     register,
     handleSubmit,
     reset,
-    watch,
     control,
     setError,
     formState: { errors, isValid },
-  } = useForm<Input>({
+  } = useForm<TFormRegisterValues>({
     mode: 'onChange',
-    defaultValues: {
-      email: '',
-      password: '',
-      rememberMe: false,
-      firstName: '',
-      confirmPassword: '',
-    },
+    resolver: zodResolver(formRegisterSchema)
   })
 
   const [registration] = useRegistrationMutation()
@@ -92,7 +85,6 @@ function Page() {
       }
     }
   }
-  console.log(process.env.GOOGLE_CLIENT_ID, `${process.env.GOOGLE_CLIENT_ID}`)
 
   return (
     <div>
@@ -103,9 +95,9 @@ function Page() {
           <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGoogleAuth}>
             <Image  src="/google.svg" alt="" width={34} height={34} />
           </button>
-          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGithubAuth}>
+          <Link href={PATH.GITHUB}>
             <Image src="/github.svg" alt="" width={34} height={34} />
-          </button>
+          </Link>
         </div>
 
         <Input
@@ -113,25 +105,14 @@ function Page() {
           placeholder={'Epam11'}
           width={'330px'}
           error={errors.firstName?.message}
-          {...register('firstName', {
-            required: 'FirstName is required',
-            minLength: { value: 6, message: 'Min 6 characters ' },
-            maxLength: { value: 20, message: 'Max 20 characters' },
-            pattern: { value: /^[a-zA-Z0-9_-]+$/, message: 'only letters' },
-          })}
+          {...register('firstName')}
         />
         <Input
           label={'Email'}
           placeholder={'Epam@epam.com'}
           width={'330px'}
           error={errors.email?.message}
-          {...register('email', {
-            required: 'Email is required',
-            pattern: {
-              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: 'The email must match the format example@example.com',
-            },
-          })}
+          {...register('email')}
         />
         <Input
           label={'Password'}
@@ -139,25 +120,7 @@ function Page() {
           placeholder={'******************'}
           error={errors.password?.message}
           width={'330px'}
-          {...register('password', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Min 6 characters',
-            },
-            maxLength: {
-              value: 20,
-              message: 'Max 20 characters',
-            },
-            pattern: {
-              value:
-                /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
-              message:
-                'Password must contain 0-9, a-z, A-Z, ! "\n' +
-                "# $ % & ' ( ) * + , - . / : ; < = > ? @ [ \\ ] ^\n" +
-                '_` { | } ~',
-            },
-          })}
+          {...register('password')}
         />
 
         <Input
@@ -166,40 +129,24 @@ function Page() {
           placeholder={'******************'}
           error={errors.confirmPassword?.message}
           width={'330px'}
-          {...register('confirmPassword', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Min 6 characters',
-            },
-            maxLength: {
-              value: 20,
-              message: 'Max 20 characters',
-            },
-            pattern: {
-              value:
-                /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
-              message: 'Passwords do not match',
-            },
-            validate: value => value === watch('password') || 'Passwords do not match',
-          })}
+          {...register('confirmPassword')}
         />
 
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <Controller
             control={control}
-            {...register('rememberMe', { required: true })}
+            {...register('rememberMe')}
             render={({ field }) => (
               <CheckBox checked={field.value} onChange={checked => field.onChange(checked)} />
             )}
           />
           <span style={{ color: 'var(--light-100)', fontSize: '12px' }}>
             I agree to the{' '}
-            <Link href={'/auth/terms-of-service'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={PATH.AUTH.TERMS_OF_SERVICE} style={{ color: 'var(--accent-700)' }}>
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href={'/auth/privacy-policy'} style={{ color: 'var(--accent-700)' }}>
+            <Link href={PATH.AUTH.PRIVACY_POLICY} style={{ color: 'var(--accent-700)' }}>
               Privacy Policy
             </Link>
           </span>
@@ -209,7 +156,7 @@ function Page() {
 
         <p style={{ color: 'var(--light-100)', fontSize: '16px' }}>Do you have an account?</p>
 
-        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} href={'/auth/sign-in'}/>
+        <Button title={'Sign In'} variant={'link'} asChild={'a'} className={s.button} href={PATH.AUTH.LOGIN}/>
       </form>
       <Modal open={!!linkModal} modalTitle={'Email sent'} onClose={() => setLinkModal(false)}>
         <p style={{ marginBottom: '20px' }}>

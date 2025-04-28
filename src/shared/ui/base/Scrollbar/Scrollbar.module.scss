@@ -1,0 +1,40 @@
+.scrollable-container {
+  & > div {
+    overflow: auto;
+
+    /* Firefox Browser */
+    @supports (-moz-appearance:none) {
+      scrollbar-width: thin;
+      scrollbar-color: var(--dark-300) transparent;
+    }
+
+    /* WebKit Browsers (Chrome, Safari, Edge) */
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      width: 15px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--dark-300);
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background:var(--light-900);
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+  }
+}
+
+
+
+
+

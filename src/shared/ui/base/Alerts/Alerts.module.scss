@@ -1,0 +1,41 @@
+.customAlert {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 387px;
+    min-height: 48px;
+    padding: 12px 24px;
+    border: 1px solid var(--success-500);
+
+    font-size: 16px;
+    color: var(--light-100);
+
+    background-color: var(--success-900);
+    z-index: 9999999;
+}
+
+.error {
+    border-color: var(--danger-500);
+    background-color: var(--danger-900);
+}
+
+.errorTitle {
+    font-weight: bold;
+}
+
+.closeIcon {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+
+    width: 24px;
+    height: 24px;
+}

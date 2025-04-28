@@ -1,0 +1,87 @@
+.postItem {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #1a1a1a;
+  width: 234px;
+  height: 228px;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.postImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  .postItem:hover & {
+    opacity: 1;
+  }
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: white;
+  font-weight: 600;
+}
+
+.statIcon {
+  font-size: 14px;
+}
+
+.statCount {
+  font-size: 14px;
+}
+
+.manyPostsIndicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  //background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Media queries for responsiveness
+//@media (max-width: 768px) {
+//  .overlay {
+//    opacity: 1;
+//    background: linear-gradient(rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.7) 100%);
+//  }
+//}
