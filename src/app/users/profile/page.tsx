@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
 import { PATH } from '@/shared/lib/const/PATH'
 import { useMeQuery } from '@/shared/api/authApi'
-import { deleteCookie, getCookie } from '@/shared/lib/utils/cookieUtils'
+import { getCookie } from '@/shared/lib/utils/cookieUtils'
 
 const Profile = () => {
 

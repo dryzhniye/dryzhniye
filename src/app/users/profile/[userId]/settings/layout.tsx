@@ -1,16 +1,11 @@
 import { type ReactNode } from 'react'
 import { cookies } from 'next/headers'
-import { ProfileContext } from '@/shared/lib/contexts/ProfileContext'
-import { notFound, redirect } from 'next/navigation'
 
 type Props = {
   children: ReactNode
-  params: {
-    userId: string
-  }
 }
 
-export default async function ProtectedSettings({ children, params }: Props) {
+export default async function ProtectedSettings({ children }: Props) {
   async function fetchMe() {
     const res = await fetch(`https://inctagram.work/api/v1/auth/me`, {
       headers: {
@@ -27,11 +22,11 @@ export default async function ProtectedSettings({ children, params }: Props) {
 
 //todo: make protected route for settings
 
-  const user = await fetchMe()
+  await fetchMe()
 
   const authUser = await fetch(`https://inctagram.work/api/v1/users/profile`)
 
-  const res = await authUser.json()
+  await authUser.json()
 
 
 

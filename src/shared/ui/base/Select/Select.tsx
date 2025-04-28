@@ -32,10 +32,8 @@ export const Select = ({
                          placeholder,
                          label,
                          required,
-                         error,
                          value,
                          onBlur,
-                         name,
                          isPagination = false,
                          isLanguage,
                        }: Props) => {

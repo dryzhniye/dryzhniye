@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import s from '@/app/auth/forgot-password/forgot-password.module.scss'
 import Input from '@/shared/ui/base/Input/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -14,7 +14,7 @@ type createPasswordArgs = {
   password2: string
 }
 
-function Recovery() {
+const RecoveryContent = () => {
   const {
     register,
     handleSubmit,
@@ -28,9 +28,7 @@ function Recovery() {
   })
 
   const router = useRouter()
-
   const [isInitialized, setIsInitialized] = useState(false)
-
   const [checkRecoveryCode] = useCheckRecoveryCodeMutation()
   const [createNewPassword] = useCreateNewPasswordMutation()
 
@@ -137,4 +135,13 @@ function Recovery() {
     </div>
   )
 }
+
+function Recovery() {
+  return (
+    <Suspense fallback={<RecoverySkeleton />}>
+      <RecoveryContent />
+    </Suspense>
+  )
+}
+
 export default Recovery

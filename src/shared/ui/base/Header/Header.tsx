@@ -18,7 +18,7 @@ type Props = {
 export const Header = ({ isLoggedIn, notifications, countNotifications }: Props) => {
   const [selectedValue, setSelectedValue] = useState<string | undefined>('English')
 
-  const { data } = useMeQuery()
+  const {} = useMeQuery()
 
   return (
     <>

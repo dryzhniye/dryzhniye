@@ -12,11 +12,11 @@ import { useAppSelector } from '@/shared/lib/hooks/appHooks'
 import { selectIsLoggedIn } from '@/store/slices/appSlice'
 import { PostItemSkeleton } from '@/shared/ui/PostItem/PostItemSkeleton'
 import { PostType } from '@/shared/lib/types/postsTypes'
-import { LockKeyhole } from 'lucide-react';
+import { LockKeyhole } from 'lucide-react'
 
 type Props = {
   profile: PublicProfile
-  post: PostType
+  post: PostType | undefined
   postId: string | undefined
 }
 
@@ -58,28 +58,28 @@ const UserProfile = ({ profile, post }: Props) => {
   }, { skip: isLoggedIn })
 
   useEffect(() => {
-  if (data?.items) {
-    setPostsForRender(prev => {
-      const existingIds = new Set(prev.map(post => post.id));
-      const newItems = data.items.filter(post => !existingIds.has(post.id));
-      return [...prev, ...newItems];
-    });
-  }
-}, [data]);
+    if (data?.items) {
+      setPostsForRender(prev => {
+        const existingIds = new Set(prev.map(post => post.id))
+        const newItems = data.items.filter(post => !existingIds.has(post.id))
+        return [...prev, ...newItems]
+      })
+    }
+  }, [data])
 
-useEffect(() => {
-  if (!isLoggedIn && publicData?.items?.length) {
-    setPostsForRender(prev => {
-      const existingIds = new Set(prev.map(post => post.id));
-      const newItems = publicData.items.filter(post => !existingIds.has(post.id));
-      return [...prev, ...newItems];
-    });
-  }
-}, [publicData, isLoggedIn]);
+  useEffect(() => {
+    if (!isLoggedIn && publicData?.items?.length) {
+      setPostsForRender(prev => {
+        const existingIds = new Set(prev.map(post => post.id))
+        const newItems = publicData.items.filter(post => !existingIds.has(post.id))
+        return [...prev, ...newItems]
+      })
+    }
+  }, [publicData, isLoggedIn])
 
   const addNewPost = (newPost: PostType) => {
-    setPostsForRender(prev => [newPost, ...prev]);
-  };
+    setPostsForRender(prev => [newPost, ...prev])
+  }
 
   useEffect(() => {
     if (action === 'create' && postId) {
@@ -108,6 +108,10 @@ useEffect(() => {
   }
 
   useEffect(() => {
+    const loaderNode = loaderRef.current
+
+    if (!loaderNode) return
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && pagesCount) {
@@ -124,16 +128,12 @@ useEffect(() => {
       { threshold: 1 },
     )
 
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current)
-    }
+    observer.observe(loaderNode)
 
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current)
-      }
+      observer.unobserve(loaderNode)
     }
-  }, [isLoading])
+  }, [isLoading, pagesCount])
 
   const newPostId = Number(postId)
 
@@ -151,7 +151,8 @@ useEffect(() => {
         {!isLoggedIn && !publicIsLoading &&
           <div className={s.bottomFadeContainer}>
             <div className={s.fadeOverlay}></div>
-            <div className={s.authNotice}><p>Зарегистрируйтесь или войдите, чтобы посмотреть больше постов </p><LockKeyhole className={s.lock} /></div>
+            <div className={s.authNotice}><p>Зарегистрируйтесь или войдите, чтобы посмотреть больше постов </p>
+              <LockKeyhole className={s.lock} /></div>
           </div>
         }
         <div ref={loaderRef} className={s.loaderContainer}>
