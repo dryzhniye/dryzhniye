@@ -1,147 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import s from './AccountManagement.module.scss'
+import { accountTypes, costs } from '@/shared/ui/AccountManagement/constants'
+import { useAccountManagemnet } from '@/shared/ui/AccountManagement/hooks'
+import { Button } from '@/shared/ui/base/Button/Button'
+import { CheckBox } from '@/shared/ui/base/CheckBox/CheckBox'
+import { Modal } from '@/shared/ui/Modal/Modal'
 import { RadioGroupWind } from '@/shared/ui/RadioGroupWind/RadioGroupWind'
 import Image from 'next/image'
-import { Modal } from '@/shared/ui/Modal/Modal'
-import { CheckBox } from '@/shared/ui/base/CheckBox/CheckBox'
-import { Button } from '@/shared/ui/base/Button/Button'
-import {
-  useCancelAutoRenewalMutation,
-  useCreatePaymentMutation,
-  useGetCurrentSubscriptionQuery,
-} from '@/shared/api/subscriptionApi'
-import {
-  createPaymentRequest,
-  PaymentType,
-  SubscriptionType,
-} from '@/shared/lib/types/subscriptionTypes'
-import { useGetProfileQuery } from '@/shared/api/profileApi'
-import { useSearchParams } from 'next/navigation'
+import React from 'react'
+import s from './AccountManagement.module.scss'
 
 export const AccountManagement = () => {
-  const accountTypes = [
-    { value: '1', label: 'Personal' },
-    { value: '2', label: 'Business' },
-  ]
-  const costs = [
-    { value: 'DAY', label: '$10 per 1 Day' },
-    { value: 'WEEKLY', label: '$50 per 7 Day' },
-    {
-      value: 'MONTHLY',
-      label: '$100 per month',
-    },
-  ]
-
-  const [selectedType, setSelectedType] = useState('1')
-  const [selectedCost, setSelectedCost] = useState<SubscriptionType>('DAY')
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
-  const [isResultModalOpen, setIsResultModalOpen] = useState(false)
-  const [paymentResult, setPaymentResult] = useState<'success' | 'failed' | null>(null)
-  const [isChecked, setIsChecked] = useState(false)
-  const [autoRenewalChecked, setAutoRenewalChecked] = useState(false)
-  const [selectedPaymentType, setSelectedPaymentType] = useState<PaymentType>('PAYPAL')
-  const { data: profileData } = useGetProfileQuery()
-  const searchParams = useSearchParams()
-  const { data: currentSubscription } = useGetCurrentSubscriptionQuery()
-  const [cancelAutoRenewal] = useCancelAutoRenewalMutation()
-
-  const [createPayment, { isLoading }] = useCreatePaymentMutation()
-
-  // const currentSubscription = {
-  //   data: [
-  //     {
-  //       endDateOfSubscription: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // через 7 дней
-  //       autoRenewal: true,
-  //       dateOfPayment: new Date().toISOString(),
-  //     },
-  //   ],
-  // }
-
-  useEffect(() => {
-    const successParam = searchParams.get('success')
-    if (successParam === 'true') {
-      setPaymentResult('success')
-      setIsResultModalOpen(true)
-    } else if (successParam === 'false') {
-      setPaymentResult('failed')
-      setIsResultModalOpen(true)
-    }
-  }, [searchParams])
-
-  const handleCreatePayment = async () => {
-    if (!profileData?.id) return
-
-    let amount: number
-
-    switch (selectedCost) {
-      case 'DAY':
-        amount = 10
-        break
-      case 'WEEKLY':
-        amount = 50
-        break
-      case 'MONTHLY':
-        amount = 100
-        break
-      default:
-        amount = 0
-    }
-
-    const req: createPaymentRequest = {
-      typeSubscription: selectedCost,
-      paymentType: selectedPaymentType,
-      amount,
-      baseUrl: `${window.location.origin}/users/profile/${profileData.id}/settings?part=subscriptions`,
-    }
-
-    try {
-      const response = await createPayment(req).unwrap()
-      if (response?.url) {
-        window.location.href = response.url
-      }
-    } catch (e) {
-      console.error('Payment error:', e)
-      setPaymentResult('failed')
-      setIsResultModalOpen(true)
-    } finally {
-      setIsPaymentModalOpen(false)
-    }
-  }
-
-  const handleCostChange = (value: string) => {
-    setSelectedCost(value as SubscriptionType)
-  }
-  const subscription = currentSubscription?.data?.[0]
-
-  useEffect(() => {
-    if (subscription) {
-      setAutoRenewalChecked(subscription.autoRenewal)
-      if (subscription.autoRenewal) {
-        setSelectedType('2')
-      } else {
-        const endDate = new Date(subscription.endDateOfSubscription)
-        const now = new Date()
-        if (now > endDate) {
-          setSelectedType('1')
-        } else {
-          setSelectedType('2')
-        }
-      }
-    }
-  }, [subscription])
-
-  const toggleAutoRenewal = async () => {
-    const newAutoRenewalState = !autoRenewalChecked
-    setAutoRenewalChecked(newAutoRenewalState)
-    try {
-      if (!newAutoRenewalState) {
-        await cancelAutoRenewal().unwrap()
-      }
-    } catch (error) {
-      console.error('Failed to cancel auto-renewal:', error)
-      setAutoRenewalChecked(autoRenewalChecked)
-    }
-  }
+  const {
+    subscription,
+    autoRenewalChecked,
+    toggleAutoRenewal,
+    selectedType,
+    setSelectedType,
+    handleCostChange,
+    selectedCost,
+    setSelectedPaymentType,
+    setIsPaymentModalOpen,
+    isPaymentModalOpen,
+    isChecked,
+    setIsChecked,
+    isLoading,
+    handleCreatePayment,
+    isResultModalOpen,
+    setIsResultModalOpen,
+    paymentResult,
+  } = useAccountManagemnet()
 
   return (
     <>
