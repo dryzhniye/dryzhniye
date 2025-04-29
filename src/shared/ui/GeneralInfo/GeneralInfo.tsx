@@ -19,7 +19,7 @@ export const GeneralInfo = () => {
   const { data: profileData } = useGetProfileQuery()
   const [updateProfile] = useUpdateProfileMutation()
   const [alert, setAlert] = useState<{ message: string; isError?: boolean; id: number } | null>(
-    null
+    null,
   )
 
   const showSuccess = (msg: string) => {
@@ -50,7 +50,7 @@ export const GeneralInfo = () => {
       setValue('lastName', profileData.lastName)
       setValue(
         'dateOfBirth',
-        profileData.dateOfBirth ? format(parseISO(profileData.dateOfBirth), 'dd/MM/yyyy') : ''
+        profileData.dateOfBirth ? format(parseISO(profileData.dateOfBirth), 'dd/MM/yyyy') : '',
       )
       // setValue('dateOfBirth', profileData.dateOfBirth?.slice(0, 10))
       // setValue('aboutMe', profileData.aboutMe)
@@ -79,10 +79,16 @@ export const GeneralInfo = () => {
       // setValue('country', '')
       // setValue('city', '')
       showSuccess('Your settings are saved')
-    } catch (err: any) {
-      const errMessage = err.data.messages[0].message
-      console.error('Update failed', errMessage)
-      showError(errMessage)
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'data' in err) {
+        const error = err as { data: { messages: Array<{ message: string }> } }
+        const errMessage = error.data.messages[0].message
+        console.error('Update failed', errMessage)
+        showError(errMessage)
+      } else {
+        console.error('Unknown error', err)
+        showError('An unknown error occurred')
+      }
     }
   }
 
@@ -97,7 +103,7 @@ export const GeneralInfo = () => {
     <form onSubmit={handleSubmit(onSettingsSubmit)}>
       <div className={s.generalInfoContainer}>
         <div className={s.photoSidebar}>
-          <ProfilePhotoAddForm/>
+          <ProfilePhotoAddForm />
         </div>
 
         <div className={s.generalInfoContent}>

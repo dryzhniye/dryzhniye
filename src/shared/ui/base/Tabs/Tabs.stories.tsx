@@ -4,10 +4,7 @@ import TabsComponent from './Tabs'
 const meta = {
   title: 'Tabs',
   component: TabsComponent,
-  tags: ['autodocs'],
-  argTypes: {
-    defaultTab: { control: 'text' },
-  },
+  tags: ['autodocs']
 } satisfies Meta<typeof TabsComponent>
 
 export default meta
@@ -20,7 +17,6 @@ export const Default: Story = {
       { id: 'tab2', title: 'Tab', content: <div>Content for Tab 2</div> },
       { id: 'tab3', title: 'Tab', content: <div>Content for Tab 3</div> },
     ],
-    defaultTab: 'tab1',
   },
 }
 export const Disabled: Story = {
@@ -30,6 +26,5 @@ export const Disabled: Story = {
       { id: 'tab2', title: 'Tab', content: <div>Content for Tab 2</div>, disabled: true },
       { id: 'tab3', title: 'Tab', content: <div>Content for Tab 3</div> },
     ],
-    defaultTab: 'tab1',
   },
 }

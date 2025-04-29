@@ -60,14 +60,26 @@ export const ProfileTopbar = ({ profile }: Props) => {
               />
             )}
           </h1>
-          {isLoggedIn && isCurrentUserProfile && (
+          {isLoggedIn && isCurrentUserProfile ? (
             <Button
               title="Profile Settings"
               variant="secondary"
               width="167px"
               onClick={onSettingsClickHandler}
             />
-          )}
+          ) : <div style={{display: 'flex', gap: 12}}>
+            <Button
+              title="Follow"
+              variant="primary"
+              onClick={onSettingsClickHandler}
+            />
+            <Button
+              title="Send Message"
+              variant="secondary"
+              onClick={onSettingsClickHandler}
+            />
+          </div>}
+
         </div>
 
         <div className={styles.stats}>

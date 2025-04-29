@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useGoogleLoginMutation } from '@/shared/api/authApi'
 import { setCookie } from '@/shared/lib/utils/cookieUtils'
@@ -10,7 +10,7 @@ interface Error {
   error: string
 }
 
-const GoogleCallback = () => {
+const GoogleCallbackContent = () => {
   const [googleLogin, { isLoading }] = useGoogleLoginMutation()
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -37,6 +37,14 @@ const GoogleCallback = () => {
   }, [router, searchParams, googleLogin])
 
   return <p>{isLoading && 'Logging you in with Google...'}</p>
+}
+
+const GoogleCallback = () => {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <GoogleCallbackContent />
+    </Suspense>
+  )
 }
 
 export default GoogleCallback

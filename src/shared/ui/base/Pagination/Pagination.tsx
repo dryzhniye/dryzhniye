@@ -3,7 +3,7 @@ import s from './Pagination.module.scss'
 import Image from 'next/image'
 import { DOTS, usePagination } from './usePagination'
 
-const ELEMENTS_ON_PAGE = ['10', '20', '30', '50', '100']
+const ELEMENTS_ON_PAGE = ['2', '10', '20', '30', '50', '100']
 
 type Type = {
   /**
@@ -58,7 +58,7 @@ export const Pagination = (props: Type) => {
     pageSize,
   })
 
-  if (currentPage === 0 || paginationRange.length < 2) {
+  if (currentPage === 0 || totalCount === 0) {
     return null
   }
   const onNext = () => {
@@ -76,7 +76,7 @@ export const Pagination = (props: Type) => {
     <div className={className ? `${className} ${s.wrapper}` : s.wrapper}>
       <div className={s.paginationContainer}>
         {/* стрелка навигации влево */}
-        <div className={s.paginationItem} onClick={onPrevious}>
+        <div style={paginationRange.length === 1 || currentPage === 1 ? {pointerEvents: 'none'} : {}} className={s.paginationItem} onClick={onPrevious}>
           {currentPage === 1 ? (
             <Image
               src="/Arrow_left_disabled.svg"
@@ -109,8 +109,18 @@ export const Pagination = (props: Type) => {
         })}
 
         {/*  стрелка навигации вправо */}
-        <div className={s.paginationItem} onClick={onNext}>
+        <div style={paginationRange.length === 1 || currentPage === paginationRange.length ? {pointerEvents: 'none'} : {}} className={s.paginationItem} onClick={paginationRange.length === 1 ? ()=>{}: onNext}>
+          {paginationRange.length === 1 || currentPage === paginationRange.length ? (
+            <Image
+              src="/Arrow_right_disabled.svg"
+              alt="Arrow right disabled"
+              style={{ cursor: 'default' }}
+              width={16}
+              height={16}
+            />
+          ) : (
           <Image src="/Arrow_right.svg" alt="Arrow right" width={16} height={16} />
+            )}
         </div>
       </div>
       <div className={s.selectBox}>
@@ -118,9 +128,10 @@ export const Pagination = (props: Type) => {
         <Select
           options={ELEMENTS_ON_PAGE}
           onChange={onChangeHandler}
-          selectedValue={String(pageSize)}
+          value={String(pageSize)}
+          isPagination
         />
-        <span>on page</span>
+        <span style={{textWrap: 'nowrap'}}>on page</span>
       </div>
     </div>
   )

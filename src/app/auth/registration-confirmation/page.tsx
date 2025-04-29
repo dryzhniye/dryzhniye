@@ -3,13 +3,13 @@ import s from './registration-confirmation.module.scss'
 import { Button } from '@/shared/ui/base/Button/Button'
 import Image from 'next/image'
 import { useConfirmationMutation } from '@/shared/api/authApi'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { RecoverySkeleton } from '@/app/auth/recovery/RecoverySkeleton'
 import { PATH } from '@/shared/lib/const/PATH'
 
-const Page = () => {
+const RegistrationConfirmationContent = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
@@ -51,6 +51,14 @@ const Page = () => {
         />
       </div>
     </div>
+  )
+}
+
+const Page = () => {
+  return (
+    <Suspense fallback={<RecoverySkeleton />}>
+      <RegistrationConfirmationContent />
+    </Suspense>
   )
 }
 

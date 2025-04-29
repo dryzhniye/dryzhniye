@@ -5,35 +5,39 @@ import { cookies } from 'next/headers'
 import { PostType } from '@/shared/lib/types/postsTypes'
 
 type Props = {
-  params: { userId: string }
-  searchParams: { postId?: string }
+  params: Promise<{ userId: string }>
+  searchParams: Promise<{ [key: string]: string | undefined }>
 }
 
-export default async function PublicUserProfilePage({ params: { userId }, searchParams: { postId } }: Props) {
+export default async function PublicUserProfilePage({ params, searchParams }: Props) {
+  const { userId } = await params
+  const resolvedSearchParams = await searchParams
+  const postId = resolvedSearchParams.postId
+
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('accessToken')?.value;
-    const res = await fetch(`https://dryzhniye.ru/api/v1/public-user/profile/${userId}`)
-    const postResponse = await fetch(`https://dryzhniye.ru/api/v1/posts/id/${postId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const cookieStore = await cookies()
+    const token = cookieStore.get('accessToken')?.value
 
-    if (!res.ok) {
-      notFound() // возвращает 404
+    const profileResponse = await fetch(`https://dryzhniye.ru/api/v1/public-user/profile/${userId}`)
+
+    if (!profileResponse.ok) notFound()
+
+    const profile: PublicProfile = await profileResponse.json()
+    if (!profile?.userMetadata) notFound()
+
+    let post: PostType | undefined
+    if (postId) {
+      const postResponse = await fetch(`https://dryzhniye.ru/api/v1/public-posts/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      post = await postResponse.json()
     }
-
-    const profile: PublicProfile = await res.json()
-    if (!profile || !profile.userMetadata) {
-      notFound()
-    }
-
-    const post: PostType = await postResponse.json()
-
-    return <UserProfile profile={profile} post={post} postId={postId}/>
+    return <UserProfile profile={profile} post={post} postId={postId} />
   } catch (error) {
-    console.error('Error fetching profile:', error)
+    console.error('Error fetching profile', error)
     notFound()
   }
 }

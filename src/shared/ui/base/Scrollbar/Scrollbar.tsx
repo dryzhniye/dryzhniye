@@ -10,7 +10,7 @@ interface CustomScrollbarProps {
 export const Scrollbar = ({ children, className, style}: CustomScrollbarProps) => {
 
   return (
-    <div className={`${s['scrollable-container']} ${className}`} style={style}>
+    <div className={`${s['scrollable-container']} ${className}`} style={{...style, display: 'contents'}}>
       {children}
     </div>
   );
