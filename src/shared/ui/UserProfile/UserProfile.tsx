@@ -15,10 +15,11 @@ import { useInfiniteScroll } from '@/shared/lib/hooks/useInfiniteScroll'
 
 type Props = {
   profile: PublicProfile
-  post: PostType | undefined
+  post?: PostType
+  postId?: string
 }
 
-const UserProfile = ({ profile, post }: Props) => {
+const UserProfile = ({ profile, post, postId: initialPostId }: Props) => {
   const loaderRef = useRef<HTMLDivElement>(null)
 
   const {
@@ -33,7 +34,7 @@ const UserProfile = ({ profile, post }: Props) => {
     publicIsLoading,
   } = useProfilePosts(profile)
 
-  const { isModalOpen, closeModalsHandler, postId } = useProfileModals()
+  const { isModalOpen, closeModalsHandler, postId } = useProfileModals(initialPostId)
 
   useInfiniteScroll(
     loaderRef,

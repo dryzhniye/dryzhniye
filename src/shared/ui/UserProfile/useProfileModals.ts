@@ -1,12 +1,24 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export const useProfileModals = () => {
+export const useProfileModals = (initialPostId?: string | number) => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const action = searchParams.get('action')
-  const postId = searchParams.get('postId')
+  const postIdFromParams = searchParams.get('postId')
+
+  const [postId, setPostId] = useState<string | number | undefined>(
+    postIdFromParams ? postIdFromParams : initialPostId
+  )
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  useEffect(() => {
+    if (postIdFromParams) {
+      setPostId(postIdFromParams)
+    } else if (!postIdFromParams && postId) {
+      setPostId(undefined)
+    }
+  }, [postIdFromParams])
 
   useEffect(() => {
     if (action === 'create' && postId) {
@@ -25,6 +37,7 @@ export const useProfileModals = () => {
 
   const closeModalsHandler = () => {
     setIsModalOpen(false)
+    setPostId(undefined)
 
     const params = new URLSearchParams(window.location.search)
     params.delete('postId')
