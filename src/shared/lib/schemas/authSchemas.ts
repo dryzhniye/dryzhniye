@@ -40,5 +40,26 @@ export const formRegisterSchema = formLoginSchema.extend({
   path: ['confirmPassword'], // set the error under confirmPassword
 })
 
+export const passwordRecoverySchema = z.object({
+  newPassword: z
+    .string()
+    .min(6, 'Min 6 characters')
+    .max(20, 'Max 20 characters')
+    .regex(
+      /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-.,])[A-Za-z\d!@#$%^&*()_+\-.,]{6,20}$/,
+      'Must contain: 1 uppercase letter, Latin characters, numbers, or special symbols'
+    ),
+  confirmPassword: z.string()
+}).superRefine((data, ctx) => {
+  if (data.newPassword !== data.confirmPassword) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['confirmPassword'],
+      message: 'Passwords must match'
+    })
+  }
+})
+
 export type TFormLoginValues = z.infer<typeof formLoginSchema>
 export type TFormRegisterValues = z.infer<typeof formRegisterSchema>
+export type TPasswordRecoveryValues = z.infer<typeof passwordRecoverySchema>

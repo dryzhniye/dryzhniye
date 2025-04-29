@@ -3,102 +3,31 @@ import s from './signUp.module.scss'
 import Input from '@/shared/ui/base/Input/Input'
 import { CheckBox } from '@/shared/ui/base/CheckBox/CheckBox'
 import { Button } from '@/shared/ui/base/Button/Button'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { useRegistrationMutation } from '@/shared/api/authApi'
+import { Controller } from 'react-hook-form'
 import { useState } from 'react'
 import { Modal } from '@/shared/ui/Modal/Modal'
-import Image from 'next/image'
 import Link from 'next/link'
 import { PATH } from '@/shared/lib/const/PATH'
-import { formRegisterSchema, type TFormRegisterValues } from '@/shared/lib/schemas/authSchemas'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { handleGoogleAuth } from '@/shared/lib/utils/google-auth-handler'
-
-type Input = {
-  email: string
-  password: string
-  rememberMe: boolean
-  firstName: string
-  confirmPassword: string
-}
-
-export type ErrorType<T = [{ message: string }]> = {
-  data: {
-    error: string
-    messages: T
-    statusCode: number
-  }
-  status: number
-}
+import { SocialAuth } from '@/shared/ui/SocialAuth/SocialAuth'
+import { useRegisterForm } from '@/shared/lib/hooks/useRegisterForm'
 
 function Page() {
   const [linkModal, setLinkModal] = useState<string | boolean>(false)
 
-
   const {
     register,
     handleSubmit,
-    reset,
     control,
-    setError,
+    onSubmit,
     formState: { errors, isValid },
-  } = useForm<TFormRegisterValues>({
-    mode: 'onChange',
-    resolver: zodResolver(formRegisterSchema)
-  })
-
-  const [registration] = useRegistrationMutation()
-
-  const onSubmit: SubmitHandler<Input> = async data => {
-
-    try {
-      await registration({
-        email: data.email,
-        password: data.password,
-        userName: data.firstName,
-      }).unwrap()
-
-      reset({
-        email: '',
-        password: '',
-        rememberMe: false,
-        firstName: '',
-        confirmPassword: '',
-      })
-
-      setLinkModal(false)
-      setLinkModal(data.email)
-    } catch (error) {
-      const err = error as ErrorType
-      if (err.data.statusCode === 400 && err.data.messages.length > 0) {
-        const message = err.data.messages[0].message.toLowerCase()
-
-        if (message.includes('username')) {
-          setError('firstName', { type: 'manual', message: err.data.messages[0].message })
-        } else if (message.includes('email')) {
-          setError('email', { type: 'manual', message: err.data.messages[0].message })
-        } else {
-          console.log('Неизвестная ошибка:', err.data.messages[0].message)
-        }
-      } else {
-        console.log('Ошибка сервера:', error)
-      }
-    }
-  }
+  } = useRegisterForm()
 
   return (
     <div>
       <form className={s.block} onSubmit={handleSubmit(onSubmit)}>
         <h1 style={{ color: 'var(--light-100)', fontSize: '20px' }}>Sign Up</h1>
 
-        <div className={s.autorizationIcon}>
-          <button style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} type="button" onClick={handleGoogleAuth}>
-            <Image  src="/google.svg" alt="" width={34} height={34} />
-          </button>
-          <Link href={PATH.GITHUB}>
-            <Image src="/github.svg" alt="" width={34} height={34} />
-          </Link>
-        </div>
+        <SocialAuth/>
 
         <Input
           label={'Username'}
