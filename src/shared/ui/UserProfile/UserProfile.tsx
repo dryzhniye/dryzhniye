@@ -11,7 +11,7 @@ import { PostType } from '@/shared/lib/types/postsTypes'
 import { LockKeyhole } from 'lucide-react'
 import { useProfilePosts } from '@/shared/ui/UserProfile/useProfilePosts'
 import { useProfileModals } from '@/shared/ui/UserProfile/useProfileModals'
-import { useInfiniteScroll } from '@/shared/ui/UserProfile/useInfiniteScroll'
+import { useInfiniteScroll } from '@/shared/lib/utils/useInfiniteScroll'
 
 type Props = {
   profile: PublicProfile
