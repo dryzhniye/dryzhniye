@@ -20,7 +20,7 @@ const GithubPageContent = () => {
   useEffect(() => {
     const accessToken = searchParams.get('accessToken')
     if (!accessToken) {
-      const redirectUrl = 'http://localhost:3000/auth/callback'
+      const redirectUrl = `${window.location.origin}/auth/callback`;
       window.location.assign(`https://inctagram.work/api/v1/auth/github/login?redirect_url=${redirectUrl}`)
     } else {
       try {

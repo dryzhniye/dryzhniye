@@ -1,38 +1,42 @@
 .card {
-  margin: 36px auto 0;
-  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
+
+  margin: 36px auto 0;
+  padding: 24px;
+
   background-color: var(--dark-500);
 }
 
 .sign {
-  text-align: center;
   font-size: 20px;
   font-weight: 700;
+  text-align: center;
 }
 
 .forgot {
-  padding: 0;
   width: 114px;
   height: 24px;
-  color: var(--light-900) !important;
+  margin-left: 200px;
+  padding: 0;
+
   font-size: 14px;
   font-weight: 400;
-  margin-left: 200px;
+  color: var(--light-900) !important;
 }
 
 .account {
-  text-align: center;
   font-size: 16px;
   font-weight: 400;
+  text-align: center;
 }
 
 .alternativeAuthorisations {
   display: flex;
-  justify-content: center;
   gap: 60px;
+  justify-content: center;
 }
 
 .input {
