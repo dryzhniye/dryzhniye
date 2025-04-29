@@ -27,7 +27,7 @@ export default async function PublicUserProfilePage({ params, searchParams }: Pr
 
     let post: PostType | undefined
     if (postId) {
-      const postResponse = await fetch(`https://dryzhniye.ru/api/v1/posts/id/${postId}`, {
+      const postResponse = await fetch(`https://dryzhniye.ru/api/v1/public-posts/${postId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
