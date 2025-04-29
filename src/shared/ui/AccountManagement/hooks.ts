@@ -89,6 +89,30 @@ export const useCreatePayment = (
   return { handleCreatePayment, isLoading, setSelectedPaymentType }
 }
 
+// const useAutoRenewal = (setSelectedType) => {
+//   const [autoRenewalChecked, setAutoRenewalChecked] = useState(subscription?.autoRenewal ?? false)
+//   const { data: currentSubscription } = useGetCurrentSubscriptionQuery()
+//   const subscription = currentSubscription?.data?.[0]
+//   useEffect(() => {
+//     if (subscription) {
+//       setAutoRenewalChecked(subscription.autoRenewal)
+//       if (subscription.autoRenewal) {
+//         setSelectedType('2')
+//       } else {
+//         const endDate = new Date(subscription.endDateOfSubscription)
+//         const now = new Date()
+//         if (now > endDate) {
+//           setSelectedType('1')
+//         } else {
+//           setSelectedType('2')
+//         }
+//       }
+//     }
+//   }, [subscription])
+//
+//   return {autoRenewalChecked, subscription, setAutoRenewalChecked}
+// }
+
 export const useAccountManagemnet = () => {
   const { data: currentSubscription } = useGetCurrentSubscriptionQuery()
   const subscription = currentSubscription?.data?.[0]
@@ -110,28 +134,28 @@ export const useAccountManagemnet = () => {
     setIsResultModalOpen,
     setIsPaymentModalOpen
   )
+  // const {autoRenewalChecked, subscription, setAutoRenewalChecked} = useAutoRenewal(setSelectedType)
 
   const handleCostChange = (value: string) => {
     setSelectedCost(value as SubscriptionType)
   }
 
-  // Cсинхронизируем переключатель типов после удачной или неудачноц попытки оплатить
-  useEffect(() => {
-    if (subscription) {
-      setAutoRenewalChecked(subscription.autoRenewal)
-      if (subscription.autoRenewal) {
-        setSelectedType('2')
-      } else {
-        const endDate = new Date(subscription.endDateOfSubscription)
-        const now = new Date()
-        if (now > endDate) {
-          setSelectedType('1')
-        } else {
-          setSelectedType('2')
-        }
-      }
-    }
-  }, [subscription])
+  // useEffect(() => {
+  //   if (subscription) {
+  //     setAutoRenewalChecked(subscription.autoRenewal)
+  //     if (subscription.autoRenewal) {
+  //       setSelectedType('2')
+  //     } else {
+  //       const endDate = new Date(subscription.endDateOfSubscription)
+  //       const now = new Date()
+  //       if (now > endDate) {
+  //         setSelectedType('1')
+  //       } else {
+  //         setSelectedType('2')
+  //       }
+  //     }
+  //   }
+  // }, [subscription])
 
   const toggleAutoRenewal = async () => {
     const newAutoRenewalState = !autoRenewalChecked

@@ -50,7 +50,7 @@ export const ProfileTopbar = ({ profile }: Props) => {
         <div className={styles.profileHeader}>
           <h1 className={styles.username}>
             {profile.userName}
-            {subscription && (
+            {subscription && isCurrentUserProfile && (
               <Image
                 src={'/Paid.svg'}
                 alt="Subscription badge"
