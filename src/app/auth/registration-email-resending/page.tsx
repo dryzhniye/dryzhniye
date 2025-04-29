@@ -3,14 +3,10 @@ import s from '@/app/auth/registration-confirmation/registration-confirmation.mo
 import { Button } from '@/shared/ui/base/Button/Button'
 import Image from 'next/image'
 import Input from '@/shared/ui/base/Input/Input'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useResetEmailMutation } from '@/shared/api/authApi'
 import { Modal } from '@/shared/ui/Modal/Modal'
 import { useState } from 'react'
+import { useResetEmailForm } from '@/shared/lib/hooks/useResetEmailForm'
 
-type Input = {
-  email: string
-}
 
 const ResetEmailPage = () => {
   const [modal, setModal] = useState<string | boolean>(false)
@@ -18,27 +14,9 @@ const ResetEmailPage = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    onSubmit,
     formState: { errors, isValid },
-  } = useForm<Input>({
-    mode: 'onChange',
-    defaultValues: {
-      email: '',
-    },
-  })
-
-  const [resetEmail] = useResetEmailMutation()
-
-  const onSubmit: SubmitHandler<Input> = async data => {
-    try {
-      await resetEmail({ email: data.email }).unwrap()
-      setModal(!modal)
-      setModal(data.email)
-      reset()
-    } catch (error) {
-      console.log('error', error)
-    }
-  }
+  } = useResetEmailForm()
 
   return (
     <div>
