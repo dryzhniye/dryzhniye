@@ -94,7 +94,20 @@ export const AccountManagementProvider = ({ children }: { children: ReactNode })
     setSelectedCost(value as SubscriptionType)
   }
 
-  const toggleAutoRenewal = async () => {
+  // const toggleAutoRenewal = async () => {
+  //   const newState = !autoRenewalChecked
+  //   setAutoRenewalChecked(newState)
+  //   try {
+  //     if (!newState) {
+  //       await cancelAutoRenewal().unwrap()
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to cancel auto-renewal:', error)
+  //     setAutoRenewalChecked(autoRenewalChecked)
+  //   }
+  // }
+
+  const toggleAutoRenewal = useCallback(async () => {
     const newState = !autoRenewalChecked
     setAutoRenewalChecked(newState)
     try {
@@ -105,7 +118,7 @@ export const AccountManagementProvider = ({ children }: { children: ReactNode })
       console.error('Failed to cancel auto-renewal:', error)
       setAutoRenewalChecked(autoRenewalChecked)
     }
-  }
+  }, [autoRenewalChecked, cancelAutoRenewal])
 
   const handleCreatePayment = useCallback(async () => {
     if (!profileData?.id) return
@@ -161,6 +174,7 @@ export const AccountManagementProvider = ({ children }: { children: ReactNode })
     }),
     [
       subscription,
+      toggleAutoRenewal,
       autoRenewalChecked,
       selectedType,
       selectedCost,
