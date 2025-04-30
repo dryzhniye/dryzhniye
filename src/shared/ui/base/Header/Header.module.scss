@@ -57,3 +57,42 @@
     background: red;
   }
 }
+
+.notificationItem {
+  padding: 12px 0px;
+  border-bottom: 1px solid var(--dark-300);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.notificationHeader {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.notificationTitle {
+  font-weight: 500;
+  line-height: 171%;
+  color: var(--light-100);
+}
+
+.notificationNew {
+  font-size: 12px;
+  line-height: 133%;
+  color: var(--accent-500);
+}
+
+.notificationText {
+  line-height: 171%;
+  font-size: 16px;
+  color: var(--light-100);
+}
+
+.notificationTime {
+  font-size: 12px;
+  color: var(--dark-100);
+}
