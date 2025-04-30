@@ -1,4 +1,4 @@
-type Avatar = {
+export type Avatar = {
   url: string
   width: number
   height: number

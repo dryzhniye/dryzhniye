@@ -29,7 +29,8 @@ export const baseQueryWithReAuth: BaseQueryFn<FetchArgs | string, unknown, Fetch
   const dynamicBaseUrl =
     oauthProvider === 'github' && (isMeRequest || isLogoutRequest || isUpdateToken)
       ? 'https://inctagram.work/api/v1/'
-      : 'https://dryzhniye.ru/api/v1/'
+      // : 'https://dryzhniye.ru/api/v1/'
+      : 'https://inctagram.work/api/v1/'
 
 
   const dynamicBaseQuery = fetchBaseQuery({

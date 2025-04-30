@@ -8,23 +8,48 @@ import s from './Header.module.scss'
 import { useMeQuery } from '@/shared/api/authApi'
 import { PATH } from '@/shared/lib/const/PATH'
 import Link from 'next/link'
+import { PopoverModal } from '@/shared/ui/PopoverModal/PopoverModal'
+import type { Notification } from '@/shared/lib/types/wsTypes'
+import { useMarkNotificationsAsReadMutation } from '@/shared/api/notificationsApi'
+import { formatTimeAgo } from '@/shared/lib/utils/formatTimeAgo'
 
 type Props = {
   isLoggedIn: boolean
-  notifications?: boolean
+  hasUnread?: boolean
+  notifications: Notification[]
   countNotifications?: number
 }
 
-export const Header = ({ isLoggedIn, notifications, countNotifications }: Props) => {
+export const Header = ({ isLoggedIn, hasUnread, notifications, countNotifications }: Props) => {
   const [selectedValue, setSelectedValue] = useState<string | undefined>('English')
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false)
 
   const {} = useMeQuery()
+  const [markAsRead] = useMarkNotificationsAsReadMutation()
+
+  const handleMarkAsRead = async () => {
+    try {
+      await markAsRead({ ids: notifications.map(n => n.id) }).unwrap();
+    } catch (error) {
+      console.error('Failed to mark as read:', error);
+    }
+  };
+
+  const handleNotificationClick = () => {
+    setIsPopoverOpen(prev => !prev)
+  }
+  const closeNotifications = () => {
+    setIsPopoverOpen(false)
+    if (hasUnread) {
+      handleMarkAsRead()
+    }
+  }
 
   return (
     <>
       <Flex asChild>
         <header className={s.header}>
-          <Link href={PATH.MAIN} style={{textDecoration: 'none'}}>
+          <Link href={PATH.MAIN} style={{ textDecoration: 'none' }}>
             <h1 style={{ color: 'var(--light-100)', fontSize: '26px' }}>Inctagram</h1>
           </Link>
           {isLoggedIn ? (
@@ -35,10 +60,28 @@ export const Header = ({ isLoggedIn, notifications, countNotifications }: Props)
                     '--notification-count': countNotifications ? `"${countNotifications}"` : ' ',
                   } as React.CSSProperties
                 }
-                className={` ${s.notifications} ${notifications ? s.box : ''}`}
+                className={` ${s.notifications} ${hasUnread ? s.box : ''}`}
+                onMouseDown={handleNotificationClick}
               >
                 <Image src={'/notification.svg'} alt={'Уведомление'} width={'18'} height={'20'} />
               </button>
+              <PopoverModal isOpen={isPopoverOpen} onClose={closeNotifications}>
+                {notifications.map(n => {
+                  return (
+                    <div key={n.id} className={s.notificationItem}>
+                      <div className={s.notificationHeader}>
+                        <span className={s.notificationTitle}>Новое уведомление!</span>
+                        {!n.isRead && <span className={s.notificationNew}>Новое</span>}
+                      </div>
+                      <div className={s.notificationText}>
+                        {n.message}
+                      </div>
+                      <div className={s.notificationTime}>{formatTimeAgo(n.createdAt)}</div>
+                    </div>
+                  )
+                })}
+
+              </PopoverModal>
 
               <Select
                 options={['English', 'Russian']}
