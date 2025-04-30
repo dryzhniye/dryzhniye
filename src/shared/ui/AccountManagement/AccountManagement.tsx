@@ -1,5 +1,5 @@
 import { accountTypes, costs } from '@/shared/ui/AccountManagement/constants'
-import { useAccountManagement } from '@/shared/ui/AccountManagement/AccountManagementContext'
+import { useAccountManagement } from '@/shared/ui/AccountManagement/useAccountManagement'
 import { Button } from '@/shared/ui/base/Button/Button'
 import { CheckBox } from '@/shared/ui/base/CheckBox/CheckBox'
 import { Modal } from '@/shared/ui/Modal/Modal'

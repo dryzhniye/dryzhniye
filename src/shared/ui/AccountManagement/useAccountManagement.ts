@@ -110,7 +110,7 @@ const useAutoRenewal = (setSelectedType: (value: string) => void) => {
         }
       }
     }
-  }, [subscription])
+  }, [subscription, setSelectedType])
 
   return { autoRenewalChecked, subscription, setAutoRenewalChecked }
 }
