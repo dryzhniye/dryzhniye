@@ -18,7 +18,7 @@ export type Payment = {
   paymentType: PaymentType
 }
 
-type Subscription = {
+export type Subscription = {
   userId: number
   subscriptionId: string
   dateOfPayment: string

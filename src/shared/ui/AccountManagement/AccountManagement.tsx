@@ -1,5 +1,5 @@
 import { accountTypes, costs } from '@/shared/ui/AccountManagement/constants'
-import { useAccountManagemnet } from '@/shared/ui/AccountManagement/hooks'
+import { useAccountManagementContext } from '@/shared/ui/AccountManagement/AccountManagementContext'
 import { Button } from '@/shared/ui/base/Button/Button'
 import { CheckBox } from '@/shared/ui/base/CheckBox/CheckBox'
 import { Modal } from '@/shared/ui/Modal/Modal'
@@ -27,12 +27,11 @@ export const AccountManagement = () => {
     isResultModalOpen,
     setIsResultModalOpen,
     paymentResult,
-  } = useAccountManagemnet()
-
+  } = useAccountManagementContext()
   return (
     <>
       {subscription && (
-        <div className={s.subscriptionontainer}>
+        <div className={s.subscription}>
           <h3 className={s.subscribtionTitle}>Current Subscription:</h3>
           <div className={s.infoBox}>
             <div>
@@ -48,11 +47,13 @@ export const AccountManagement = () => {
               </p>
             </div>
           </div>
-          <CheckBox
-            title={'Auto-Renewal'}
-            checked={autoRenewalChecked}
-            onChange={toggleAutoRenewal}
-          />
+          {autoRenewalChecked && (
+            <CheckBox
+              title={'Auto-Renewal'}
+              checked={autoRenewalChecked}
+              onChange={toggleAutoRenewal}
+            />
+          )}
         </div>
       )}
       <RadioGroupWind
