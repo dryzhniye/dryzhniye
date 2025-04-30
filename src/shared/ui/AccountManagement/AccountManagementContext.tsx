@@ -93,7 +93,6 @@ export const AccountManagementProvider = ({ children }: { children: ReactNode })
   const handleCostChange = (value: string) => {
     setSelectedCost(value as SubscriptionType)
   }
-
   const toggleAutoRenewal = useCallback(async () => {
     const newState = !autoRenewalChecked
     setAutoRenewalChecked(newState)
