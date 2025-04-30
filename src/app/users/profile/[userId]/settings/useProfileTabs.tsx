@@ -1,4 +1,3 @@
-import { AccountManagementProvider } from '@/shared/ui/AccountManagement/AccountManagementContext'
 import { useMemo } from 'react'
 import { Tab } from '@/shared/ui/base/Tabs/Tabs'
 import { GeneralInfo } from '@/shared/ui/GeneralInfo/GeneralInfo'
@@ -21,11 +20,7 @@ export const useProfileTabs = () => {
       {
         id: 'subscriptions',
         title: 'Account Management',
-        content: (
-          <AccountManagementProvider>
-            <AccountManagement />
-          </AccountManagementProvider>
-        ),
+        content: <AccountManagement />,
       },
       {
         id: 'payments',

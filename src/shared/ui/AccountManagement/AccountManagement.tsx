@@ -1,5 +1,5 @@
 import { accountTypes, costs } from '@/shared/ui/AccountManagement/constants'
-import { useAccountManagementContext } from '@/shared/ui/AccountManagement/AccountManagementContext'
+import { useAccountManagement } from '@/shared/ui/AccountManagement/AccountManagementContext'
 import { Button } from '@/shared/ui/base/Button/Button'
 import { CheckBox } from '@/shared/ui/base/CheckBox/CheckBox'
 import { Modal } from '@/shared/ui/Modal/Modal'
@@ -27,7 +27,7 @@ export const AccountManagement = () => {
     isResultModalOpen,
     setIsResultModalOpen,
     paymentResult,
-  } = useAccountManagementContext()
+  } = useAccountManagement()
   return (
     <>
       {subscription && (
