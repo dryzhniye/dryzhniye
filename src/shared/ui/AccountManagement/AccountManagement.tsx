@@ -47,13 +47,12 @@ export const AccountManagement = () => {
               </p>
             </div>
           </div>
-          {autoRenewalChecked && (
-            <CheckBox
-              title={'Auto-Renewal'}
-              checked={autoRenewalChecked}
-              onChange={toggleAutoRenewal}
-            />
-          )}
+
+          <CheckBox
+            title={'Auto-Renewal'}
+            checked={autoRenewalChecked}
+            onChange={toggleAutoRenewal}
+          />
         </div>
       )}
       <RadioGroupWind

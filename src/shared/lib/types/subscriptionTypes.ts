@@ -1,5 +1,6 @@
 export type PaymentType = 'STRIPE' | 'PAYPAL' | 'CREDIT_CARD'
 export type SubscriptionType = 'MONTHLY' | 'DAY' | 'WEEKLY'
+export type PaymentResult = 'success' | 'failed' | null
 
 export type createPaymentRequest = {
   typeSubscription: SubscriptionType
