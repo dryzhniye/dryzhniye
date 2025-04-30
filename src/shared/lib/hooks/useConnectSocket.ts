@@ -17,21 +17,6 @@ export const useConnectSocket = () => {
       setNotifications(initialNotifications?.items)
     }
 
-    //todo: for sorting by date and filter 1 month ago
-
-    // const now = new Date();
-    // const oneMonthFromNow = new Date();
-    // oneMonthFromNow.setMonth(now.getMonth() - 1);
-    //
-    // if (initialNotifications?.items) {
-    //   const sortedNotifications = [...initialNotifications?.items]
-    //     .filter(item => {
-    //     const createdAt = new Date(item.createdAt);
-    //     return createdAt >= oneMonthFromNow && createdAt <= now;
-    //   })
-    //     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    //   setNotifications(sortedNotifications)
-    // }
   }, [initialNotifications])
 
 
